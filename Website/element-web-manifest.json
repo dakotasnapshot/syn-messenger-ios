@@ -1,0 +1,15 @@
+{
+  "name": "SYN Messenger",
+  "short_name": "SYN",
+  "display": "standalone",
+  "theme_color": "#1878df",
+  "background_color": "#080b14",
+  "start_url": "/chat/",
+  "scope": "/chat/",
+  "icons": [
+    { "src": "/syn-icons/120.png?v=20260908", "sizes": "120x120", "type": "image/png" },
+    { "src": "/syn-icons/180.png?v=20260908", "sizes": "180x180", "type": "image/png" },
+    { "src": "/syn-icons/512.png?v=20260908", "sizes": "512x512", "type": "image/png" },
+    { "src": "/syn-icons/1024.png?v=20260908", "sizes": "1024x1024", "type": "image/png" }
+  ]
+}

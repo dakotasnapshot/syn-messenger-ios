@@ -1,0 +1,17 @@
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+RewriteRule ^chat$ /chat/ [R=301,L]
+
+RewriteRule ^privacy/?$ /privacy.html [L]
+RewriteRule ^terms/?$ /terms.html [L]
+RewriteRule ^support/?$ /support.html [L]
+
+<Files "apple-app-site-association">
+  ForceType application/json
+</Files>
+
+<FilesMatch "^(config(?:\.[^/]+)?\.json|index\.html|version)$">
+  Header set Cache-Control "no-cache"
+</FilesMatch>

@@ -1,0 +1,25 @@
+{
+  "version": 8,
+  "name": "SYN Map Light",
+  "sources": {
+    "openstreetmap": {
+      "type": "raster",
+      "tiles": ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      "tileSize": 256,
+      "attribution": "© OpenStreetMap contributors",
+      "maxzoom": 19
+    }
+  },
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": { "background-color": "#e9eef2" }
+    },
+    {
+      "id": "openstreetmap",
+      "type": "raster",
+      "source": "openstreetmap"
+    }
+  ]
+}

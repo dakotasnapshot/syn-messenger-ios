@@ -1,0 +1,12 @@
+{
+  "currentRelease": "0.1.4",
+  "releases": [
+    {
+      "version": "0.1.4",
+      "updateTo": {
+        "version": "0.1.4",
+        "url": "https://synmessenger.com/desktop/update/macos/SYN-Messenger-0.1.4-macOS-universal.zip"
+      }
+    }
+  ]
+}

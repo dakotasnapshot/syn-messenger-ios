@@ -1,0 +1,7 @@
+4bb84adf9859139bb92945d18c66019c5aeb1bc3c7898bff6aa7cb2de2583a46  SYN-Messenger-0.1.0-macOS-universal.dmg
+b0d6665a55775bffe3365b34e65047a6e9d182e1304ba5a1f09a0f395163fd91  SYN-Messenger-0.1.1-macOS-universal.dmg
+0183a93578816ddcd2b6dc162bfa833c25211dac0c6c1b8cab6fe90552f48b50  SYN-Messenger-0.1.2-macOS-universal.dmg
+9a41f5a2e3fcb8e548e4a88b2dcfa3c60b728de03b73f5536714e6efb521e831  SYN-Messenger-0.1.3-macOS-universal.dmg
+6f849daef5182c478bf3fd190a6ac1faea9810824212c4c6f32bbc298b583e39  SYN-Messenger-0.1.4-macOS-universal.dmg
+9b79d967c09a6bbaf1d8387c80759c75e816932fedd7a862f6d4495d8f7ddd64  SYN-Messenger-0.1.3-Linux-x86_64.deb
+de3b968c0f8c025d25fe6fc490088f603b1a3c7e3719ca08684a384a6ec826cc  SYN-Messenger-0.1.3-Linux-x86_64.tar.gz

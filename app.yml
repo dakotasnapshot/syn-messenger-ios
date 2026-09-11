@@ -1,0 +1,14 @@
+settings:
+  APP_DISPLAY_NAME: SYN Msgr
+  PRODUCTION_APP_NAME: SYN Messenger
+  APP_GROUP_IDENTIFIER: group.app.syn.messenger
+  BASE_BUNDLE_IDENTIFIER: app.syn.messenger
+  ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: "colors/accent-color"
+  DEVELOPMENT_TEAM: S6BUVDCKVJ
+  IS_NIGHTLY_BUILD: false
+
+  # Optional configuration to load accounts from Element Classic.
+  CLASSIC_APP_GROUP_IDENTIFIER: group.app.syn.messenger.classic
+  CLASSIC_APP_KEYCHAIN_SERVICE_IDENTIFIER: app.syn.messenger.classic.encryption-manager-service
+  CLASSIC_APP_KEYCHAIN_ACCESS_GROUP_IDENTIFIER: "$(DEVELOPMENT_TEAM).app.syn.messenger.classic.keychain.shared"
+  CLASSIC_APP_DEEP_LINK_URL: "synmessenger://open"

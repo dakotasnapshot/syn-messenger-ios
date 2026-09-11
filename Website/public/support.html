@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Help &amp; FAQ — SYN Messenger</title>
+  <meta name="description" content="Help with SYN Messenger accounts, encryption, recovery, verification, and notifications.">
+  <style>
+    :root { color-scheme: dark; font-family: ui-rounded, -apple-system, BlinkMacSystemFont, sans-serif; background: #080b14; color: #f6f7ff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: radial-gradient(circle at 75% 5%, #183e77 0, transparent 34rem), linear-gradient(150deg, #080b14, #12152a 48%, #101c2b); }
+    a { color: #90c5ff; }
+    header, main, footer { width: min(62rem, calc(100% - 2rem)); margin: auto; }
+    header { padding: 1.25rem 0; }
+    .brand { display: flex; align-items: center; gap: .75rem; color: white; text-decoration: none; font-weight: 800; font-size: 1.2rem; }
+    .brand img { width: 2.5rem; height: 2.5rem; }
+    main { padding: 3rem 0 5rem; }
+    h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); letter-spacing: -.05em; margin: 0 0 1rem; }
+    h2 { margin-top: 0; }
+    .lead, article p, article li { color: #bdc9df; line-height: 1.65; }
+    nav { display: flex; flex-wrap: wrap; gap: .65rem; margin: 2rem 0; }
+    nav a { padding: .55rem .8rem; border: 1px solid #425678; border-radius: 999px; text-decoration: none; }
+    article { scroll-margin-top: 1rem; border: 1px solid #273552; background: #11182aeb; border-radius: 1.25rem; padding: 1.5rem; margin: 1rem 0; }
+    code { color: #b9dcff; }
+    footer { border-top: 1px solid #273552; padding: 2rem 0 3rem; color: #8fa0bc; }
+  </style>
+</head>
+<body>
+  <header><a class="brand" href="/"><img src="/logo.svg" alt="">SYN Messenger</a></header>
+  <main>
+    <h1>Help &amp; FAQ</h1>
+    <p class="lead">Answers for SYN Messenger on iPhone, Mac, Apple Watch, and the web.</p>
+    <nav aria-label="FAQ topics">
+      <a href="#accounts">Accounts</a><a href="#encryption">Encryption</a><a href="#recovery">Recovery</a><a href="#device-verification">Verification</a><a href="#notifications">Notifications</a><a href="#identity-changes">Identity warnings</a>
+    </nav>
+
+    <article id="accounts">
+      <h2>Accounts and homeservers</h2>
+      <p>Your Matrix account belongs to a homeserver. Sign in with the same homeserver and credentials on each device. Your Matrix ID looks like <code>@you:example.org</code>; the part after the colon usually identifies your homeserver.</p>
+      <p>If SYN cannot find your server, enter its full HTTPS address or ask its administrator whether Matrix client discovery is configured.</p>
+    </article>
+
+    <article id="encryption">
+      <h2>End-to-end encryption</h2>
+      <p>Encrypted-room messages are readable only by verified devices holding the correct encryption keys. Encryption cannot be disabled after it is enabled for a room.</p>
+      <p>When signing in on a new device, verify it from an existing device or use your recovery key. Messages whose keys were never backed up may remain unavailable.</p>
+    </article>
+
+    <article id="recovery">
+      <h2>Recovery and secure key storage</h2>
+      <p>Secure key storage backs up encrypted-message keys to your homeserver in protected form. Keep your recovery key somewhere private and separate from your Matrix password.</p>
+      <ul><li>SYN support cannot recover or recreate a lost recovery key.</li><li>Never send anyone your recovery key, password, access token, or exported keys.</li><li>Before resetting recovery, verify that another signed-in device can still read your encrypted history.</li></ul>
+    </article>
+
+    <article id="device-verification">
+      <h2>Device verification</h2>
+      <p>Verification confirms that a new session belongs to you. Compare the emoji or numbers shown on both devices, or verify using your recovery key. Approve only when both displays match exactly.</p>
+      <p>If you do not recognize a session, do not verify it. Sign it out from your security settings and change your password if you suspect account access.</p>
+    </article>
+
+    <article id="notifications">
+      <h2>Notification settings</h2>
+      <p>Room notification rules are synchronized through your homeserver. Device-level permission is separate: SYN must also be allowed under the operating system’s notification settings.</p>
+      <p>If alerts are missing, check the room is not muted, confirm your global notification mode, and verify SYN has system permission to show notifications.</p>
+    </article>
+
+    <article id="identity-changes">
+      <h2>Identity-change warnings</h2>
+      <p>SYN warns when a person’s cryptographic identity changes, commonly after they reset account recovery. Verify the person through a trusted channel before accepting the new identity, especially before sharing sensitive information.</p>
+    </article>
+
+    <article id="contact">
+      <h2>Still need help?</h2>
+      <p>Email <a href="mailto:support@synmessenger.com">support@synmessenger.com</a> with your SYN version, operating-system version, homeserver domain, and a description of the problem. Never include passwords, recovery keys, access tokens, or private message content.</p>
+    </article>
+  </main>
+  <footer><a href="/">SYN Messenger</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></footer>
+</body>
+</html>

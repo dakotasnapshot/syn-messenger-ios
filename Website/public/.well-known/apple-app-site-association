@@ -1,0 +1,17 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["S6BUVDCKVJ.app.syn.messenger"],
+        "components": [
+          { "/": "/oauth/ios/*", "comment": "Matrix OIDC callback" },
+          { "/": "/room/*", "comment": "SYN Messenger room links" },
+          { "/": "/user/*", "comment": "SYN Messenger user links" }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["S6BUVDCKVJ.app.syn.messenger"]
+  }
+}

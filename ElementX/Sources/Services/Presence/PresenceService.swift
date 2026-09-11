@@ -1,0 +1,157 @@
+//
+// Copyright 2026 Element Creations Ltd.
+//
+// SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-Element-Commercial.
+// Please see LICENSE files in the repository root for full details.
+//
+
+import Combine
+import Foundation
+import UIKit
+
+final class PresenceService {
+    private let clientProxy: ClientProxyProtocol
+    private let appSettings: AppSettings
+    private let notificationCenter: NotificationCenter
+    
+    private var isForegroundActive: Bool
+    private var lastSentPresence: ClientProxyPresence?
+    private var pendingPresence: ClientProxyPresence?
+    private var sendTask: Task<Void, Never>?
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(clientProxy: ClientProxyProtocol,
+         appSettings: AppSettings,
+         notificationCenter: NotificationCenter = .default,
+         initialApplicationState: UIApplication.State = UIApplication.shared.applicationState) {
+        self.clientProxy = clientProxy
+        self.appSettings = appSettings
+        self.notificationCenter = notificationCenter
+        isForegroundActive = initialApplicationState == .active
+        
+        observeApplicationState()
+        observeSharePresence()
+        reportCurrentState()
+    }
+    
+    isolated deinit {
+        sendTask?.cancel()
+        cancellables.forEach { $0.cancel() }
+    }
+    
+    private var desiredPresence: ClientProxyPresence {
+        guard appSettings.sharePresence else {
+            return .offline
+        }
+        
+        switch appSettings.synPresenceMode {
+        case .automatic where isForegroundActive:
+            return .online
+        case .automatic:
+            return .unavailable
+        case .online: return .online
+        case .unavailable: return .unavailable
+        case .offline: return .offline
+        }
+    }
+    
+    private func observeApplicationState() {
+        notificationCenter.publisher(for: UIApplication.willResignActiveNotification)
+            .sink { [weak self] _ in
+                self?.apply(applicationState: .inactive)
+            }
+            .store(in: &cancellables)
+        
+        notificationCenter.publisher(for: UIApplication.didBecomeActiveNotification)
+            .sink { [weak self] _ in
+                self?.apply(applicationState: .active)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func observeSharePresence() {
+        Publishers.CombineLatest3(appSettings.sharePresencePublisher,
+                                  appSettings.synPresenceModePublisher,
+                                  appSettings.synPresenceStatusMessagePublisher)
+            .removeDuplicates { lhs, rhs in
+                lhs.0 == rhs.0 && lhs.1 == rhs.1 && lhs.2 == rhs.2
+            }
+            .sink { [weak self] _ in
+                self?.reportCurrentState()
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func apply(applicationState: UIApplication.State) {
+        isForegroundActive = applicationState == .active
+        reportCurrentState()
+    }
+    
+    private func reportCurrentState() {
+        let presence = desiredPresence
+        guard sendTask != nil || presence != lastSentPresence else {
+            return
+        }
+        
+        guard pendingPresence != presence else {
+            return
+        }
+        
+        pendingPresence = presence
+        startSendTaskIfNeeded()
+    }
+    
+    private func startSendTaskIfNeeded() {
+        guard sendTask == nil else {
+            return
+        }
+        
+        sendTask = Task { [weak self, clientProxy] in
+            while !Task.isCancelled {
+                guard let presence = self?.nextPendingPresence() else {
+                    break
+                }
+                
+                let statusMessage = self?.appSettings.synPresenceStatusMessage
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                _ = await clientProxy.configurePresence(presence,
+                                                        statusMessage: statusMessage ?? "",
+                                                        sendImmediately: true)
+                
+                guard !Task.isCancelled else {
+                    break
+                }
+                
+                self?.finishSending(presence)
+            }
+            
+            self?.finishSendTask()
+        }
+    }
+    
+    private func nextPendingPresence() -> ClientProxyPresence? {
+        guard let pendingPresence else {
+            return nil
+        }
+        
+        self.pendingPresence = nil
+        return pendingPresence
+    }
+    
+    private func finishSending(_ presence: ClientProxyPresence) {
+        lastSentPresence = presence
+        
+        if pendingPresence == presence {
+            pendingPresence = nil
+        }
+    }
+    
+    private func finishSendTask() {
+        sendTask = nil
+        
+        if pendingPresence != nil {
+            startSendTaskIfNeeded()
+        }
+    }
+}
