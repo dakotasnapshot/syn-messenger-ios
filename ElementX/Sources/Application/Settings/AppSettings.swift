@@ -452,7 +452,7 @@ final nonisolated class AppSettings: @unchecked Sendable {
     @UserPreference(defaultValue: false)
     var focusEventOnNotificationTap: Bool
     
-    @UserPreference(defaultValue: false)
+    @UserPreference(defaultValue: true)
     var linkPreviewsEnabled: Bool
     
     /// Enables *sending* gallery messages (multiple media in a single message).
