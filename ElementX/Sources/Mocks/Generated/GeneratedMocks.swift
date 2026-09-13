@@ -8705,6 +8705,37 @@ nonisolated class NotificationManagerMock: NotificationManagerProtocol, @uncheck
         removeDeliveredNotificationsForFullyReadRoomsReceivedInvocationsLock.withLock { removeDeliveredNotificationsForFullyReadRoomsUnderlyingReceivedInvocations.append(rooms) }
         await removeDeliveredNotificationsForFullyReadRoomsClosure?(rooms)
     }
+    //MARK: - reconcileBadgeCount
+
+    private let reconcileBadgeCountWithCallsCountLock = NSLock()
+    private nonisolated(unsafe) var reconcileBadgeCountWithUnderlyingCallsCount = 0
+    var reconcileBadgeCountWithCallsCount: Int {
+        get { reconcileBadgeCountWithCallsCountLock.withLock { reconcileBadgeCountWithUnderlyingCallsCount } }
+        set { reconcileBadgeCountWithCallsCountLock.withLock { reconcileBadgeCountWithUnderlyingCallsCount = newValue } }
+    }
+    var reconcileBadgeCountWithCalled: Bool {
+        return reconcileBadgeCountWithCallsCount > 0
+    }
+    private let reconcileBadgeCountWithReceivedRoomsLock = NSLock()
+    private nonisolated(unsafe) var reconcileBadgeCountWithUnderlyingReceivedRooms: [RoomSummary]?
+    var reconcileBadgeCountWithReceivedRooms: [RoomSummary]? {
+        get { reconcileBadgeCountWithReceivedRoomsLock.withLock { reconcileBadgeCountWithUnderlyingReceivedRooms } }
+        set { reconcileBadgeCountWithReceivedRoomsLock.withLock { reconcileBadgeCountWithUnderlyingReceivedRooms = newValue } }
+    }
+    private let reconcileBadgeCountWithReceivedInvocationsLock = NSLock()
+    private nonisolated(unsafe) var reconcileBadgeCountWithUnderlyingReceivedInvocations: [[RoomSummary]] = []
+    var reconcileBadgeCountWithReceivedInvocations: [[RoomSummary]] {
+        get { reconcileBadgeCountWithReceivedInvocationsLock.withLock { reconcileBadgeCountWithUnderlyingReceivedInvocations } }
+        set { reconcileBadgeCountWithReceivedInvocationsLock.withLock { reconcileBadgeCountWithUnderlyingReceivedInvocations = newValue } }
+    }
+    nonisolated(unsafe) var reconcileBadgeCountWithClosure: (([RoomSummary]) async -> Void)?
+
+    @concurrent func reconcileBadgeCount(with rooms: [RoomSummary]) async {
+        reconcileBadgeCountWithCallsCountLock.withLock { reconcileBadgeCountWithUnderlyingCallsCount += 1 }
+        reconcileBadgeCountWithReceivedRooms = rooms
+        reconcileBadgeCountWithReceivedInvocationsLock.withLock { reconcileBadgeCountWithUnderlyingReceivedInvocations.append(rooms) }
+        await reconcileBadgeCountWithClosure?(rooms)
+    }
 }
 nonisolated class NotificationSettingsProxyMock: NotificationSettingsProxyProtocol, @unchecked Sendable {
     var callbacks: PassthroughSubject<NotificationSettingsProxyCallback, Never> {
@@ -14179,6 +14210,41 @@ nonisolated class UserNotificationCenterMock: UserNotificationCenterProtocol, @u
         removeDeliveredNotificationsWithIdentifiersReceivedIdentifiers = identifiers
         removeDeliveredNotificationsWithIdentifiersReceivedInvocationsLock.withLock { removeDeliveredNotificationsWithIdentifiersUnderlyingReceivedInvocations.append(identifiers) }
         removeDeliveredNotificationsWithIdentifiersClosure?(identifiers)
+    }
+    //MARK: - setBadgeCount
+
+    nonisolated(unsafe) var setBadgeCountThrowableError: Error?
+    private let setBadgeCountCallsCountLock = NSLock()
+    private nonisolated(unsafe) var setBadgeCountUnderlyingCallsCount = 0
+    var setBadgeCountCallsCount: Int {
+        get { setBadgeCountCallsCountLock.withLock { setBadgeCountUnderlyingCallsCount } }
+        set { setBadgeCountCallsCountLock.withLock { setBadgeCountUnderlyingCallsCount = newValue } }
+    }
+    var setBadgeCountCalled: Bool {
+        return setBadgeCountCallsCount > 0
+    }
+    private let setBadgeCountReceivedNewBadgeCountLock = NSLock()
+    private nonisolated(unsafe) var setBadgeCountUnderlyingReceivedNewBadgeCount: Int?
+    var setBadgeCountReceivedNewBadgeCount: Int? {
+        get { setBadgeCountReceivedNewBadgeCountLock.withLock { setBadgeCountUnderlyingReceivedNewBadgeCount } }
+        set { setBadgeCountReceivedNewBadgeCountLock.withLock { setBadgeCountUnderlyingReceivedNewBadgeCount = newValue } }
+    }
+    private let setBadgeCountReceivedInvocationsLock = NSLock()
+    private nonisolated(unsafe) var setBadgeCountUnderlyingReceivedInvocations: [Int] = []
+    var setBadgeCountReceivedInvocations: [Int] {
+        get { setBadgeCountReceivedInvocationsLock.withLock { setBadgeCountUnderlyingReceivedInvocations } }
+        set { setBadgeCountReceivedInvocationsLock.withLock { setBadgeCountUnderlyingReceivedInvocations = newValue } }
+    }
+    nonisolated(unsafe) var setBadgeCountClosure: ((Int) async throws -> Void)?
+
+    @concurrent func setBadgeCount(_ newBadgeCount: Int) async throws {
+        if let error = setBadgeCountThrowableError {
+            throw error
+        }
+        setBadgeCountCallsCountLock.withLock { setBadgeCountUnderlyingCallsCount += 1 }
+        setBadgeCountReceivedNewBadgeCount = newBadgeCount
+        setBadgeCountReceivedInvocationsLock.withLock { setBadgeCountUnderlyingReceivedInvocations.append(newBadgeCount) }
+        try await setBadgeCountClosure?(newBadgeCount)
     }
     //MARK: - setNotificationCategories
 

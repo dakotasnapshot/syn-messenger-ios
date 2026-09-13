@@ -10,7 +10,7 @@ struct ConversationListView: View {
                 if session.conversations.isEmpty {
                     ContentUnavailableView("No Messages",
                                            systemImage: "bubble.left.and.bubble.right",
-                                           description: Text("Open SYN Messenger on your iPhone to sync."))
+                                           description: Text("Open Syndicate on your iPhone to sync."))
                 } else {
                     List(session.conversations) { conversation in
                         NavigationLink(value: conversation) {

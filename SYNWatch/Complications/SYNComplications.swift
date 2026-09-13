@@ -44,7 +44,7 @@ struct SYNComplicationView: View {
             Label("\(entry.unreadCount) unread", systemImage: "message.fill")
         case .accessoryRectangular:
             VStack(alignment: .leading) {
-                Label("SYN Messenger", systemImage: "message.fill")
+                Label("Syndicate", systemImage: "message.fill")
                 Text(entry.unreadCount == 0 ? "No unread messages" : "\(entry.unreadCount) unread · \(entry.latestRoom ?? "Messages")")
                     .font(.caption)
                     .privacySensitive()

@@ -341,6 +341,7 @@ class ChatsTabFlowCoordinator: FlowCoordinatorProtocol {
                     Task {
                         let roomSummaries = self.userSession.clientProxy.staticRoomSummaryProvider.roomListPublisher.value
                         await self.flowParameters.notificationManager.removeDeliveredNotificationsForFullyReadRooms(roomSummaries)
+                        await self.flowParameters.notificationManager.reconcileBadgeCount(with: roomSummaries)
                     }
                 default:
                     break

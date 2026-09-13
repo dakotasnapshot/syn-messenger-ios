@@ -23,19 +23,19 @@ final class NotificationManagerTests {
     private var notificationTappedDelegateCalled = false
     private var registerForRemoteNotificationsDelegateCalled: (() -> Void)?
     private let appSettings: AppSettings
-    
+
     init() {
         appSettings = AppSettings.volatile()
         notificationCenter = UserNotificationCenterMock()
         notificationCenter.requestAuthorizationOptionsReturnValue = true
         notificationCenter.authorizationStatusReturnValue = .authorized
         notificationCenter.notificationSettingsClosure = { await UNUserNotificationCenter.current().notificationSettings() }
-        
+
         notificationManager = NotificationManager(notificationCenter: notificationCenter, appSettings: appSettings)
         notificationManager.start()
         notificationManager.setUserSession(mockUserSession)
     }
-    
+
     isolated deinit {
         notificationCenter = nil
         notificationManager = nil
@@ -44,10 +44,10 @@ final class NotificationManagerTests {
     @Test
     func whenRegistered_pusherIsCalled() async {
         _ = await notificationManager.register(with: Data())
-        
+
         #expect(clientProxy.setPusherWithCalled)
     }
-    
+
     @Test
     func whenRegisteredSuccess_completionSuccessIsCalled() async {
         let success = await notificationManager.register(with: Data())
@@ -116,6 +116,21 @@ final class NotificationManagerTests {
         #expect(request.content.subtitle == "Subtitle")
     }
     
+    @Test
+    func reconcileBadgeCountClearsBadgeWhenAllRoomsAreRead() async {
+        await notificationManager.reconcileBadgeCount(with: [])
+
+        #expect(notificationCenter.setBadgeCountReceivedNewBadgeCount == 0)
+    }
+
+    @Test
+    func reconcileBadgeCountUsesSyncedNotificationTotals() async {
+        await notificationManager.reconcileBadgeCount(with: .mockRooms)
+
+        let expectedCount = [RoomSummary].mockRooms.reduce(0) { $0 + Int($1.unreadNotificationsCount) }
+        #expect(notificationCenter.setBadgeCountReceivedNewBadgeCount == expectedCount)
+    }
+
     @Test
     func whenStart_notificationCategoriesAreSet() {
         let replyAction = UNTextInputNotificationAction(identifier: NotificationConstants.Action.inlineReply,

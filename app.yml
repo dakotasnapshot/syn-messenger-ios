@@ -1,5 +1,5 @@
 settings:
-  APP_DISPLAY_NAME: SYN Msgr
+  APP_DISPLAY_NAME: Syndicate
   PRODUCTION_APP_NAME: SYN Messenger
   APP_GROUP_IDENTIFIER: group.app.syn.messenger
   BASE_BUNDLE_IDENTIFIER: app.syn.messenger
