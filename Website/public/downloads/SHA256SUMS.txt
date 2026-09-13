@@ -5,3 +5,8 @@ b0d6665a55775bffe3365b34e65047a6e9d182e1304ba5a1f09a0f395163fd91  SYN-Messenger-
 6f849daef5182c478bf3fd190a6ac1faea9810824212c4c6f32bbc298b583e39  SYN-Messenger-0.1.4-macOS-universal.dmg
 9b79d967c09a6bbaf1d8387c80759c75e816932fedd7a862f6d4495d8f7ddd64  SYN-Messenger-0.1.3-Linux-x86_64.deb
 de3b968c0f8c025d25fe6fc490088f603b1a3c7e3719ca08684a384a6ec826cc  SYN-Messenger-0.1.3-Linux-x86_64.tar.gz
+40908d7705cbcc2af5cfe19429278d908a47a17fe9017c0e30ea8ddf9fc0c63a  Syndicate-0.1.5-macOS-universal.dmg
+182e723bc32b6d180e5790fe5bf2df8543b406dfb4fb77f7aa87ea78d39f8832  Syndicate-0.1.5-Linux-x86_64.deb
+a97a7db87741b357ea8c803045a6caac51de2277310089a303ecf2766f42e3d0  Syndicate-0.1.5-Linux-x86_64.tar.gz
+0846688ec5a9b65c0b119e9b74bca8e0029272dc28325f0f0939c24db5d5c8b2  Syndicate-Setup-0.1.5-Windows-x64.exe
+6ffbd7aff213f2536382f28df6011d2c39e38a93dab21a763ab6e75e62c329cc  Syndicate-0.1.5-Windows-x64.msi
