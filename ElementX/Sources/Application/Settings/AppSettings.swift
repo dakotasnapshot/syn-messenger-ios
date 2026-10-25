@@ -229,7 +229,7 @@ final nonisolated class AppSettings: @unchecked Sendable {
     /// A path that is appended to `websiteURL` to form the OAuth `clientURI`. MAS uses `clientURI` as the identifier for a specific app, allowing us to
     /// distinguish the various clients we have for Android, iOS and Web from each other.
     /// Intentionally a distinct property so it can be easily overridden without having to manipulate the website URL.
-    private(set) var oAuthClientURIPath: String? = "apps/ios"
+    private(set) var oAuthClientURIPath: String? = "apps/ios.html"
     
     var oAuthConfiguration: OAuthConfiguration {
         OAuthConfiguration(clientName: InfoPlistReader.main.bundleDisplayName,

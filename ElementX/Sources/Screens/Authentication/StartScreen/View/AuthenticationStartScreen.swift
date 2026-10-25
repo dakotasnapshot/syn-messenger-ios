@@ -81,7 +81,7 @@ struct AuthenticationStartScreen: View {
                         .foregroundColor(.compound.textPrimary)
                         .multilineTextAlignment(.center)
                         .accessibilityAddTraits(.isHeader)
-                    Text(L10n.screenOnboardingWelcomeMessage(InfoPlistReader.main.productionAppName))
+                    Text(UntranslatedL10n.screenOnboardingSynMatrixClientDescription)
                         .font(.compound.bodyLG)
                         .foregroundColor(.compound.textPrimary)
                         .multilineTextAlignment(.center)
@@ -134,8 +134,9 @@ struct AuthenticationStartScreen: View {
                 }
                 .padding(.top, 16)
         }
-        .padding(.horizontal, verticalSizeClass == .compact ? 128 : 24)
+        .padding(.horizontal, 24)
         .readableFrame()
+        .synFoldAwareControls()
     }
     
     var versionText: Text {

@@ -26,6 +26,8 @@ internal nonisolated enum UntranslatedL10n {
   internal static var screenNotificationSettingsSoundSynDefault: String { return UntranslatedL10n.tr("Untranslated", "screen_notification_settings_sound_syn_default") }
   /// SYN Fade
   internal static var screenNotificationSettingsSoundSynFade: String { return UntranslatedL10n.tr("Untranslated", "screen_notification_settings_sound_syn_fade") }
+  /// Syndicate is a Matrix messaging client. Sign in with an account from your Matrix homeserver. Your server manages your account and sign-in options.
+  internal static var screenOnboardingSynMatrixClientDescription: String { return UntranslatedL10n.tr("Untranslated", "screen_onboarding_syn_matrix_client_description") }
   /// Welcome to SYN
   internal static var screenOnboardingSynWelcomeTitle: String { return UntranslatedL10n.tr("Untranslated", "screen_onboarding_syn_welcome_title") }
   /// GIFs

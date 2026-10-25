@@ -20,6 +20,7 @@
 "screen_notification_settings_sound_syn_default" = "SYN Default";
 "screen_notification_settings_sound_syn_fade" = "SYN Fade";
 "screen_onboarding_syn_welcome_title" = "Welcome to SYN";
+"screen_onboarding_syn_matrix_client_description" = "Syndicate is a Matrix messaging client. Sign in with an account from your Matrix homeserver. Your server manages your account and sign-in options.";
 "screen_room_timeline_syn_legacy_call" = "Unsupported call. Ask the caller to update their Matrix app and try again.";
 "screen_settings_presence_title" = "Presence";
 "screen_settings_presence_availability" = "Availability";

@@ -58,12 +58,40 @@ struct FullscreenDialog<Content: View, BottomContent: View>: View {
                     .ignoresSafeArea()
             }
             
-            if dynamicTypeSize < .accessibility1 {
-                standardLayout
-            } else {
-                accessibilityLayout
+            GeometryReader { geometry in
+                if #available(iOS 27.1, *), !geometry.reservedRegions(kind: .division).isEmpty {
+                    foldedLayout
+                } else if dynamicTypeSize < .accessibility1 {
+                    standardLayout
+                } else {
+                    accessibilityLayout
+                }
             }
         }
+    }
+    
+    @available(iOS 27.1, *)
+    private var foldedLayout: some View {
+        ArrangementView {
+            ScrollView {
+                content()
+                    .readableFrame()
+                    .padding(.horizontal, horizontalPadding)
+                    .padding(.top, topPadding)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+        } secondary: {
+            ScrollView {
+                bottomContent()
+                    .readableFrame()
+                    .padding(.horizontal, bottomHorizontalPadding)
+                    .padding(.top, spacing)
+                    .padding(.bottom, UIConstants.actionButtonBottomPadding)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            .background(bottomContentBackgroundStyle ?? AnyShapeStyle(Color.clear))
+        }
+        .arrangementViewStyle(.split)
     }
     
     /// A layout where the content scrolls with the bottom content overlaid. Used with regular font sizes.

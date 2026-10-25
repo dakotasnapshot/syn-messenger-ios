@@ -23,28 +23,37 @@ struct AppLockScreen: View {
     }
     
     var body: some View {
-        FullscreenDialog {
-            VStack(spacing: 32) {
-                header
-                
-                pinInputField
-                    .padding(.bottom, 16)
-                    .offset(x: pinInputFieldOffset)
-                    .onChange(of: context.viewState.numberOfPINAttempts) { _, newValue in
-                        guard newValue > 0 else { return } // Reset without animation in Previews.
-                        accessibilitySubtitleFocus = true
-                        Task { await animatePINFailure() }
+        GeometryReader { geometry in
+            if #available(iOS 27.1, *), !geometry.reservedRegions(kind: .division).isEmpty {
+                ArrangementView {
+                    ScrollView {
+                        pinHeader
+                            .padding(24)
+                            .frame(maxWidth: .infinity)
                     }
-                    .accessibilityLabel(L10n.a11yPinField)
-                    .accessibilityValue(L10n.a11yDigitsEntered(context.viewState.numberOfDigitsEntered))
-                
-                AppLockScreenPINKeypad(pinCode: $context.pinCode)
+                    .scrollBounceBehavior(.basedOnSize)
+                } secondary: {
+                    ScrollView {
+                        VStack(spacing: 24) {
+                            AppLockScreenPINKeypad(pinCode: $context.pinCode)
+                            forgotPINButton
+                        }
+                        .padding(24)
+                        .frame(maxWidth: .infinity)
+                    }
+                    .scrollBounceBehavior(.basedOnSize)
+                }
+                .arrangementViewStyle(.split)
+            } else {
+                FullscreenDialog {
+                    VStack(spacing: 32) {
+                        pinHeader
+                        AppLockScreenPINKeypad(pinCode: $context.pinCode)
+                    }
+                } bottomContent: {
+                    forgotPINButton
+                }
             }
-        } bottomContent: {
-            Button(L10n.screenAppLockForgotPin) {
-                context.send(viewAction: .forgotPIN)
-            }
-            .font(.compound.bodyMDSemibold)
         }
         .background()
         .backgroundStyle(.compound.bgCanvasDefault)
@@ -55,6 +64,29 @@ struct AppLockScreen: View {
         }
         .alert(item: $context.alertInfo)
         .toolbar { toolbar }
+    }
+    
+    private var pinHeader: some View {
+        VStack(spacing: 32) {
+            header
+            pinInputField
+                .padding(.bottom, 16)
+                .offset(x: pinInputFieldOffset)
+                .onChange(of: context.viewState.numberOfPINAttempts) { _, newValue in
+                    guard newValue > 0 else { return }
+                    accessibilitySubtitleFocus = true
+                    Task { await animatePINFailure() }
+                }
+                .accessibilityLabel(L10n.a11yPinField)
+                .accessibilityValue(L10n.a11yDigitsEntered(context.viewState.numberOfDigitsEntered))
+        }
+    }
+    
+    private var forgotPINButton: some View {
+        Button(L10n.screenAppLockForgotPin) {
+            context.send(viewAction: .forgotPIN)
+        }
+        .font(.compound.bodyMDSemibold)
     }
     
     @ToolbarContentBuilder
