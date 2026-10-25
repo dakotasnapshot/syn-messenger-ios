@@ -9,9 +9,9 @@ Signed simulator verification: partial synthetic PIN input preserved across cove
 - iPhone Debug (including Watch Debug/extensions), Watch Release, signed iOS Release archive/export passed.
 - 110 focused tests across 6 suites passed; `/tmp/syndicate44-tests.xcresult`.
 - All five components verified as 0.1.5 (44), expected distribution team and deep/strict signature verification passed.
-- Apple validation and upload succeeded with no errors. Delivery: `e95184bf-77e0-4682-b95a-81e1a816db1d`. Processing/tester verification pending.
+- Apple validation and upload succeeded with no errors. Delivery: `e95184bf-77e0-4682-b95a-81e1a816db1d`. Processing VALID; Internal TestFlight IN_BETA_TESTING and group membership verified. Test notes exact readback verified.
 - Source checkpoint: `049e795b4`; public runtime candidate: `7ed49bff3`.
 - IPA SHA-256: `0b7643b1080d9115da1aa4c8c7a82bf1703a68058f8a3e3ecebd190f785c45eb`, 135,091,595 bytes.
-- Public IPA: https://synmessenger.com/downloads/Syndicate-0.1.5-build44.ipa (publication/readback pending).
+- Public IPA: https://synmessenger.com/downloads/Syndicate-0.1.5-build44.ipa (full HTTPS download, SHA-256, embedded version/build, live page and checksum manifest verified).
 - App Store review not submitted; prior rejection-remediation physical-device checks remain separate.
 
