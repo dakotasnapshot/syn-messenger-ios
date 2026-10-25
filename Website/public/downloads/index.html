@@ -33,9 +33,9 @@
       <section class="download">
         <h2>macOS</h2>
         <p>Universal Apple Silicon and Intel build. Requires macOS 12 or later.</p>
-        <a class="button" href="/downloads/Syndicate-0.1.5-macOS-universal.dmg">Download DMG 0.1.5</a>
+        <a class="button" href="/downloads/Syndicate-0.1.8-macOS-universal.dmg">Download DMG 0.1.8</a>
         <p>Developer ID signed and Apple notarized.</p>
-        <p class="checksum">SHA-256: <code>40908d7705cbcc2af5cfe19429278d908a47a17fe9017c0e30ea8ddf9fc0c63a</code></p>
+        <p class="checksum">SHA-256: <code>b43be02a17aeca768d90e50ac3f02263b2898f87db401887410eca665a9c4c24</code></p>
       </section>
       <section class="download">
         <h2>Linux</h2>
@@ -54,9 +54,21 @@
         <p class="checksum">EXE SHA-256: <code>0846688ec5a9b65c0b119e9b74bca8e0029272dc28325f0f0939c24db5d5c8b2</code></p>
         <p class="checksum">MSI SHA-256: <code>6ffbd7aff213f2536382f28df6011d2c39e38a93dab21a763ab6e75e62c329cc</code></p>
       </section>
+      <section class="download" id="loader-download">
+        <h2>Syndicate Loader</h2>
+        <p>Apple Silicon preview for installing any compatible IPA directly on a trusted iPhone or iPad—without depending on an app store.</p>
+        <a class="button" id="loader-download-link" href="/downloads/Syndicate-Loader-0.1.4-mac-arm64.dmg">Download Loader 0.1.4</a>
+        <a class="button secondary" href="/downloads/Syndicate-0.1.5-build43.ipa">Download latest Syndicate IPA</a>
+        <p id="loader-description">Developer ID signed, Apple notarized, and local-first. Installs compatible IPAs over USB or trusted network connections and detects provisioning problems before installation.</p>
+        <p><strong>Test steps:</strong> install the DMG, connect and trust the device over USB, and choose an IPA. The supplied Syndicate 0.1.5 build 43 IPA uses App Store distribution provisioning and <strong>cannot install as downloaded</strong>. Re-sign it in Loader step 3 using a credential and matching profiles that include your device, then install it. Enable Developer Mode when prompted.</p>
+        <p>USB is the dependable first test. Trusted Wi-Fi and WireGuard support depend on Apple pairing discovery being reachable across that network.</p>
+        <p class="checksum">Loader SHA-256: <code id="loader-sha256">7a0a4f8eab8eeae0d36a1b113f0a7e1a5efccf6352bf3fd2b709ee62c33b034e</code></p>
+        <p class="checksum">Syndicate IPA SHA-256: <code>fe99bc9f3ec94aa992567b4a7f1ab4a93fa75d4dc8e685e5eebe51943d57adcf</code></p>
+      </section>
     </div>
     <p>Windows code signing is pending. The published checksums let you verify these preview installers.</p>
     <p><a href="/copyright.html">Open-source notices</a> · <a href="/privacy.html">Privacy</a> · <a href="/support.html">Support</a> · <a href="https://github.com/dakotasnapshot/syn-messenger-desktop/blob/syn/main/CODE_SIGNING_POLICY.md">Code signing policy</a></p>
   </main>
+  <script src="/downloads/loader-release.js"></script>
 </body>
 </html>

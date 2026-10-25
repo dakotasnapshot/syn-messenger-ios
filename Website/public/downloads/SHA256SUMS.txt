@@ -10,3 +10,12 @@ de3b968c0f8c025d25fe6fc490088f603b1a3c7e3719ca08684a384a6ec826cc  SYN-Messenger-
 a97a7db87741b357ea8c803045a6caac51de2277310089a303ecf2766f42e3d0  Syndicate-0.1.5-Linux-x86_64.tar.gz
 0846688ec5a9b65c0b119e9b74bca8e0029272dc28325f0f0939c24db5d5c8b2  Syndicate-Setup-0.1.5-Windows-x64.exe
 6ffbd7aff213f2536382f28df6011d2c39e38a93dab21a763ab6e75e62c329cc  Syndicate-0.1.5-Windows-x64.msi
+0054a4e779a55f66fc03ad7fd8d2ff4cc9de73f9f78d40292b0b1a1c956742d9  Syndicate-Loader-0.1.0-mac-arm64.dmg
+15edda63b5a43b4383d5c2e494528f3a81bee312550adc8d465aac39979d967f  Syndicate-0.1.7-macOS-universal.dmg
+b43be02a17aeca768d90e50ac3f02263b2898f87db401887410eca665a9c4c24  Syndicate-0.1.8-macOS-universal.dmg
+4581119f8ae804e5d2787fa0e692562e0330c7bd24dd35ea511cc39dde310537  Syndicate-0.1.5-build36.ipa
+a500c4cf3e5358af23b0dee491ad2dda0d48eb063becd3e3e77430c3464746cb  Syndicate-Loader-0.1.1-mac-arm64.dmg
+b5159805b09f03ec961e37138fafe2e775ef11eb5ecf5bb154e4fa0c2caf371d  Syndicate-Loader-0.1.2-mac-arm64.dmg
+22de4f49a12d1b0a71b44b7b3645a7d157729a1eed7a24d1ff119950364a08ad  Syndicate-Loader-0.1.3-mac-arm64.dmg
+7a0a4f8eab8eeae0d36a1b113f0a7e1a5efccf6352bf3fd2b709ee62c33b034e  Syndicate-Loader-0.1.4-mac-arm64.dmg
+fe99bc9f3ec94aa992567b4a7f1ab4a93fa75d4dc8e685e5eebe51943d57adcf  Syndicate-0.1.5-build43.ipa
