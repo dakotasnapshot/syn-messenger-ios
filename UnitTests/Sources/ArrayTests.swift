@@ -8,6 +8,7 @@
 
 @testable import ElementX
 import Foundation
+import MatrixRustSDK
 import Testing
 
 @MainActor
@@ -33,6 +34,18 @@ struct ArrayTests {
         #expect([0, 0, 0, 1, 2, 3, 0, 0].groupBy { $0 == 0 } == [[0, 0, 0], [1], [2], [3], [0, 0]])
         
         #expect([0, 0, 0, 1, 0, 2, 3, 0, 0].groupBy { $0 == 0 } == [[0, 0, 0], [1], [0], [2], [3], [0, 0]])
+    }
+    
+    @Test
+    func duplicateTimelineEventsAreRemovedByEventID() {
+        let items: [TimelineItemProxy] = [makeEvent(eventID: "$event1", uniqueID: "unique1"),
+                                          makeEvent(eventID: "$event1", uniqueID: "unique2"),
+                                          makeEvent(eventID: "$event2", uniqueID: "unique3")]
+        
+        let deduplicatedItems = items.removingDuplicateEvents()
+        
+        #expect(deduplicatedItems.count == 2)
+        #expect(deduplicatedItems.compactMap(\.eventID) == ["$event1", "$event2"])
     }
     
     // MARK: - Voice message autoplay
@@ -113,5 +126,16 @@ struct ArrayTests {
                              canBeRepliedTo: true,
                              sender: .init(id: "@sender:example.com"),
                              content: .init(body: "Test message"))
+    }
+    
+    private func makeEvent(eventID: String, uniqueID: String) -> TimelineItemProxy {
+        .event(.init(item: EventTimelineItem(configuration: .init(eventID: eventID)), uniqueID: .init(uniqueID)))
+    }
+}
+
+private extension TimelineItemProxy {
+    var eventID: String? {
+        guard case let .event(event) = self else { return nil }
+        return event.id.eventID
     }
 }

@@ -40,6 +40,14 @@
 
 ## Upload gate
 
-- [ ] Obtain Dakota's explicit approval immediately before archive upload.
+- [ ] Confirm release authorization (Syndicate maintenance workflow includes standing TestFlight authorization).
 - [x] Upload build 1 to TestFlight.
 - [x] Wait for processing, resolve validation issues, then invite Dakota.
+
+## Every iOS release
+
+- [ ] Publish matching validated IPA at `https://synmessenger.com/downloads/`.
+- [ ] Update downloads page, checksums, and latest-release/Loader references; preserve historical releases.
+- [ ] Verify public download SHA-256 and embedded version/build against export.
+- [ ] Publish matching public source checkpoint with Element attribution and AGPL licensing.
+- [ ] Record TestFlight delivery and processing state separately from website publication.

@@ -1401,7 +1401,7 @@
 "screen_room_timeline_add_reaction" = "أضف تفاعل";
 "screen_room_timeline_beginning_of_room" = "هنا بداية %1$@";
 "screen_room_timeline_beginning_of_room_no_name" = "هنا بداية المحادثة";
-"screen_room_timeline_legacy_call" = "مكالمة غير مدعومة. اسأل المتصل عما إذا كان بإمكانه استخدام تطبيق Element X الجديد.";
+"screen_room_timeline_legacy_call" = "مكالمة غير مدعومة. اسأل المتصل عما إذا كان بإمكانه استخدام تطبيق Syndicate الجديد.";
 "screen_room_timeline_less_reactions" = "أظهر أقل";
 "screen_room_timeline_message_copied" = "نُسِخت الرسالة";
 "screen_room_timeline_no_permission_to_post" = "لا تملك الإذن بالنشر في هذه الغرفة";

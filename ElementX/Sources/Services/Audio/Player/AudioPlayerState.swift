@@ -179,7 +179,7 @@ class AudioPlayerState: ObservableObject, Identifiable {
             stopPublishProgress()
         }
         displayLink = CADisplayLink(target: self, selector: #selector(updateProgress))
-        displayLink?.preferredFrameRateRange = .init(minimum: 10, maximum: 20)
+        displayLink?.preferredFrameRateRange = .init(minimum: 2, maximum: 4)
         displayLink?.add(to: .current, forMode: .common)
     }
     

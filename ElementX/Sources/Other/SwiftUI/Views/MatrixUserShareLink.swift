@@ -6,7 +6,6 @@
 // Please see LICENSE files in the repository root for full details.
 //
 
-import MatrixRustSDK
 import SwiftUI
 
 struct MatrixUserShareLink<Label: View>: View {
@@ -15,7 +14,7 @@ struct MatrixUserShareLink<Label: View>: View {
     
     init(userID: String, @ViewBuilder label: () -> Label) {
         self.label = label()
-        permalink = try? URL(string: matrixToUserPermalink(userId: userID))
+        permalink = SyndicatePermalink.user(userID)
     }
     
     var body: some View {

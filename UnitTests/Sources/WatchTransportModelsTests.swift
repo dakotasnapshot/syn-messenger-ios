@@ -26,13 +26,17 @@ struct WatchTransportModelsTests {
     
     @Test
     func messageRoundTripsBetweenPhoneAndWatch() throws {
-        let expected = WatchMessage(id: "$synthetic-event",
-                                    eventID: "$synthetic-event",
-                                    reactions: [WatchReaction(key: "👍", count: 2)],
-                                    sender: "Alice",
-                                    body: "See you soon",
-                                    timestamp: Date(timeIntervalSince1970: 1_788_703_200),
-                                    isOutgoing: false)
+        let expected = try WatchMessage(id: "$synthetic-event",
+                                        eventID: "$synthetic-event",
+                                        reactions: [WatchReaction(key: "👍", count: 2)],
+                                        thumbnailData: Data("thumbnail".utf8),
+                                        linkPreview: WatchLinkPreview(url: #require(URL(string: "https://example.org/story")),
+                                                                      title: "Synthetic story",
+                                                                      imageData: Data("preview".utf8)),
+                                        sender: "Alice",
+                                        body: "See you soon",
+                                        timestamp: Date(timeIntervalSince1970: 1_788_703_200),
+                                        isOutgoing: false)
         
         let data = try JSONEncoder().encode([expected])
         let decoded = try JSONDecoder().decode([WatchMessage].self, from: data)
@@ -46,11 +50,14 @@ struct WatchTransportModelsTests {
         let decoded = try JSONDecoder().decode(WatchMessage.self, from: data)
         
         #expect(decoded.eventID == nil)
+        #expect(decoded.thumbnailData == nil)
+        #expect(decoded.linkPreview == nil)
     }
     
     @Test
     func payloadKeysRemainStable() {
         #expect(WatchPayloadKey.conversations == "conversations")
+        #expect(WatchPayloadKey.requestConversations == "requestConversations")
         #expect(WatchPayloadKey.replyRoomID == "replyRoomID")
         #expect(WatchPayloadKey.replyBody == "replyBody")
         #expect(WatchPayloadKey.replyAccepted == "replyAccepted")

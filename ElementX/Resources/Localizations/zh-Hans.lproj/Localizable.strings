@@ -1402,7 +1402,7 @@
 "screen_room_timeline_add_reaction" = "添加反应";
 "screen_room_timeline_beginning_of_room" = "这是房间 %1$@ 的开头。";
 "screen_room_timeline_beginning_of_room_no_name" = "这是本对话的开始。";
-"screen_room_timeline_legacy_call" = "不受支持的通话。询问呼叫方是否可以使用新的 Element X app。";
+"screen_room_timeline_legacy_call" = "不受支持的通话。询问呼叫方是否可以使用新的 Syndicate app。";
 "screen_room_timeline_less_reactions" = "折叠";
 "screen_room_timeline_message_copied" = "消息已复制";
 "screen_room_timeline_no_permission_to_post" = "你无权在此房间发言";

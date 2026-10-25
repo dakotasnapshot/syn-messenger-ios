@@ -34,6 +34,7 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
     
     /// Common background task to continue long-running tasks in the background.
     private var backgroundTask: UIBackgroundTaskIdentifier?
+    private var backgroundPauseTask: Task<Void, Never>?
     
     private var userSessionMigrationsOldVersion: Version?
     private var userSession: UserSessionProtocol? {
@@ -193,7 +194,7 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
                     // a background task. Handle both manually here.
                     Task {
                         await self?.resumeClientServices()
-                        self?.scheduleDelayedPauseServices()
+                        self?.schedulePauseServices()
                     }
                 default:
                     break
@@ -228,12 +229,7 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
         }
         .environment(\.analyticsService, analyticsService)
         .onReceive(appSettings.synColorModePublisher) { [weak self] colorMode in
-            guard let self else { return }
-            
-            windowManager.windows.forEach { window in
-                // Unfortunately .preferredColorScheme doesn't propagate properly throughout the app when changed
-                window.overrideUserInterfaceStyle = colorMode.interfaceStyle
-            }
+            self?.updateWindowAppearance(colorMode: colorMode)
         })
     }
     
@@ -387,6 +383,7 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
     func windowManagerDidConfigureWindows(_ windowManager: SecureWindowManagerProtocol) {
         windowManager.alternateWindow.rootViewController = UIHostingController(rootView: appLockFlowCoordinator.toPresentable())
         userIndicatorController.window = windowManager.overlayWindow
+        updateWindowAppearance(colorMode: appSettings.synColorMode)
     }
     
     // MARK: - NotificationManagerDelegate
@@ -1178,7 +1175,7 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
     private func applicationDidEnterBackground() {
         MXLog.info("Application did enter background")
         
-        scheduleDelayedPauseServices()
+        schedulePauseServices()
         scheduleBackgroundAppRefresh()
     }
     
@@ -1187,27 +1184,28 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
         MXLog.info("Application will resign active")
     }
     
-    private func scheduleDelayedPauseServices() {
+    private func schedulePauseServices() {
         guard backgroundTask == nil else {
             return
         }
         
-        backgroundTask = appMediator.beginBackgroundTask {
+        backgroundTask = appMediator.beginBackgroundTask { [weak self] in
             MXLog.info("Background task is about to expire.")
-            
-            // We're intentionally strongly retaining self here to an EXC_BAD_ACCESS
-            // `backgroundTask` will be eventually released in `endActiveBackgroundTask`
-            // https://sentry.tools.element.io/organizations/element/issues/4477794/events/9cfd04e4d045440f87498809cf718de5/
-            Task { @MainActor in
-                await self.pauseClientServices(isBackgroundTask: true)
-                self.endActiveBackgroundTask()
-            }
+            self?.endActiveBackgroundTask()
+        }
+        backgroundPauseTask = Task { [weak self] in
+            guard let self else { return }
+            await pauseClientServices(isBackgroundTask: true)
+            endActiveBackgroundTask()
         }
     }
     
     @objc
     private func applicationWillEnterForeground() {
         MXLog.info("Application will enter foreground")
+        updateWindowAppearance(colorMode: appSettings.synColorMode)
+        backgroundPauseTask?.cancel()
+        backgroundPauseTask = nil
         endActiveBackgroundTask()
         Task {
             await resumeClientServices()
@@ -1217,6 +1215,7 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
     @objc
     private func applicationDidBecomeActive() {
         MXLog.info("Application did become active")
+        updateWindowAppearance(colorMode: appSettings.synColorMode, refreshKeyboard: true)
     }
     
     private func endActiveBackgroundTask() {
@@ -1227,6 +1226,7 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
         MXLog.info("Ending background task.")
         appMediator.endBackgroundTask(backgroundTask)
         self.backgroundTask = nil
+        backgroundPauseTask = nil
     }
     
     // MARK: Background app refresh
@@ -1250,7 +1250,7 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
         let request = BGAppRefreshTaskRequest(identifier: appSettings.backgroundAppRefreshTaskIdentifier)
         
         // We have other background tasks that keep the app alive
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 30)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
         
         do {
             try BGTaskScheduler.shared.submit(request)
@@ -1314,5 +1314,13 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
                     task.setTaskCompleted(success: true)
                 }
             }
+    }
+}
+
+private extension AppCoordinator {
+    func updateWindowAppearance(colorMode: SYNColorMode, refreshKeyboard: Bool = false) {
+        for window in windowManager.windows {
+            SYNWindowAppearance.apply(to: window, colorMode: colorMode, refreshKeyboard: refreshKeyboard)
+        }
     }
 }

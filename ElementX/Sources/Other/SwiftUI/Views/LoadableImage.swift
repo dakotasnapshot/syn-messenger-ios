@@ -88,8 +88,8 @@ struct LoadableImage<TransformerView: View, PlaceholderView: View>: View {
     private var stableMediaIdentifier: String? {
         switch mediaType {
         case .timelineItem(let uniqueID):
-            // Consider media for the same item to be the same view
-            uniqueID.value
+            // Keep timeline identity stable until a local echo is replaced by its uploaded source.
+            "\(uniqueID.value)|\(mediaSource?.url.absoluteString ?? "")"
         default:
             // Binds the lifecycle of the LoadableImage to the associated URL.
             // This fixes the problem of the cache returning old values after a change in the URL.

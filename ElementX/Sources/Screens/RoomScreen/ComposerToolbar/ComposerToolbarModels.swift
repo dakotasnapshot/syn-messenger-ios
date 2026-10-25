@@ -62,6 +62,7 @@ enum ComposerToolbarViewAction {
 enum ComposerAttachmentType {
     case camera
     case photoLibrary
+    case gif
     case file
     case location
     case poll
@@ -78,6 +79,7 @@ struct ComposerToolbarViewState: BindableState {
     
     var isRoomEncrypted: Bool
     var isLocationSharingEnabled: Bool
+    var isGIFPickerEnabled: Bool
     
     var keyCommands: [WysiwygKeyCommand] = []
     

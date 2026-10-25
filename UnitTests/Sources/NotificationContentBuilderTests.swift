@@ -297,4 +297,21 @@ nonisolated struct NotificationContentBuilderTests {
         #expect(notificationContent.threadIdentifier == "bob:matrix.org!testroom:matrix.orgthread123")
         #expect(notificationContent.attachments == [])
     }
+    
+    @Test
+    func notificationLinkPreviewFindsPlainURL() {
+        #expect(NotificationContentBuilder.firstURL(in: "See https://example.com/story", formattedBody: nil) == URL(string: "https://example.com/story"))
+    }
+    
+    @Test
+    func notificationLinkPreviewFindsFormattedURL() {
+        let html = "Read <a href=\"https://example.com/story\">this story</a>"
+        #expect(NotificationContentBuilder.firstURL(in: "Read this story", formattedBody: html) == URL(string: "https://example.com/story"))
+    }
+    
+    @Test
+    func notificationLinkPreviewRejectsUnsafeURL() {
+        let html = "Open <a href=\"javascript:alert(1)\">this</a>"
+        #expect(NotificationContentBuilder.firstURL(in: "Open this", formattedBody: html) == nil)
+    }
 }

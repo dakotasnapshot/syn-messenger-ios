@@ -50,10 +50,10 @@ options:
 settings:
   CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: true
   ENABLE_BITCODE: false
-  APP_NAME: ElementX
+  APP_NAME: Syndicate
   KEYCHAIN_ACCESS_GROUP_IDENTIFIER: "$(DEVELOPMENT_TEAM).$(BASE_BUNDLE_IDENTIFIER)"
   MARKETING_VERSION: 0.1.5
-  CURRENT_PROJECT_VERSION: 28
+  CURRENT_PROJECT_VERSION: 43
   SUPPORTS_MACCATALYST: false
 
 include:
@@ -76,7 +76,7 @@ packages:
   # Element/Matrix dependencies
   MatrixRustSDK:
     url: https://github.com/element-hq/matrix-rust-components-swift
-    exactVersion: 26.09.01
+    exactVersion: 26.09.25
     # path: ../matrix-rust-sdk
   Compound:
     path: compound-ios
@@ -131,6 +131,9 @@ packages:
   Kingfisher:
     url: https://github.com/onevcat/Kingfisher
     exactVersion: 8.11.0
+  GiphyUISDK:
+    url: https://github.com/Giphy/giphy-ios-sdk
+    exactVersion: 2.2.13
   KZFileWatchers:
     url: https://github.com/krzysztofzablocki/KZFileWatchers
     exactVersion: 1.2.0

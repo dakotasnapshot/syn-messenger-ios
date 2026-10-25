@@ -66,6 +66,7 @@ final class ComposerToolbarViewModel: ComposerToolbarViewModelType, ComposerTool
         super.init(initialViewState: ComposerToolbarViewState(wysiwygViewModel: wysiwygViewModel,
                                                               isRoomEncrypted: roomProxy.infoPublisher.value.isEncrypted,
                                                               isLocationSharingEnabled: appSettings.mapTilerConfiguration.publisher.value.isEnabled,
+                                                              isGIFPickerEnabled: Secrets.giphyAPIKey?.isEmpty == false,
                                                               bindings: .init()),
                    mediaProvider: mediaProvider)
         
@@ -633,9 +634,7 @@ final class ComposerToolbarViewModel: ComposerToolbarViewModelType, ComposerTool
             let fullRange = match.range(at: 0)
             
             let userID = nsText.substring(with: userIDRange)
-            let fullURLString = "https://matrix.to/#/\(userID)"
-            
-            if let url = URL(string: fullURLString) {
+            if let url = SyndicatePermalink.user(userID) {
                 callback(fullRange, url)
             }
         }

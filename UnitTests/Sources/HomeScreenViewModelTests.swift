@@ -162,6 +162,55 @@ final class HomeScreenViewModelTests {
     }
     
     @Test
+    func markRoomAsRead() async throws {
+        setupViewModel()
+        
+        let mockRoomID = "1"
+        let room = JoinedRoomProxyMock(.init(id: mockRoomID, name: "Some room"))
+        clientProxy.roomForIdentifierClosure = { _ in .joined(room) }
+        
+        let (fullyReadReceipts, continuation) = AsyncStream.makeStream(of: Void.self)
+        room.markAsReadReceiptTypeClosure = { receiptType in
+            if receiptType == .fullyRead {
+                continuation.yield()
+            }
+            return .success(())
+        }
+        
+        let deferred = deferFulfillment(fullyReadReceipts) { _ in true }
+        context.send(viewAction: .markRoomAsRead(roomIdentifier: mockRoomID))
+        try await deferred.fulfill()
+        
+        #expect(room.flagAsUnreadReceivedInvocations == [false])
+        #expect(room.markAsReadReceiptTypeReceivedInvocations == [appSettings.sharePresence ? .read : .readPrivate, .fullyRead])
+    }
+    
+    @Test
+    func markRoomAsReadWhenClearingUnreadFlagFails() async throws {
+        setupViewModel()
+        
+        let mockRoomID = "1"
+        let room = JoinedRoomProxyMock(.init(id: mockRoomID, name: "Some room"))
+        room.flagAsUnreadReturnValue = .failure(.invalidURL)
+        clientProxy.roomForIdentifierClosure = { _ in .joined(room) }
+        
+        let (fullyReadReceipts, continuation) = AsyncStream.makeStream(of: Void.self)
+        room.markAsReadReceiptTypeClosure = { receiptType in
+            if receiptType == .fullyRead {
+                continuation.yield()
+            }
+            return .success(())
+        }
+        
+        let deferred = deferFulfillment(fullyReadReceipts) { _ in true }
+        context.send(viewAction: .markRoomAsRead(roomIdentifier: mockRoomID))
+        try await deferred.fulfill()
+        
+        #expect(room.flagAsUnreadReceivedInvocations == [false])
+        #expect(room.markAsReadReceiptTypeReceivedInvocations == [appSettings.sharePresence ? .read : .readPrivate, .fullyRead])
+    }
+    
+    @Test
     func filters() async throws {
         setupViewModel()
         

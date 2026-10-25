@@ -35,7 +35,11 @@ final class WatchSessionController: NSObject {
     }
     
     func refresh() {
-        guard let session, session.isReachable else { return }
+        guard let session else { return }
+        guard session.isReachable else {
+            session.transferUserInfo([WatchPayloadKey.requestConversations: true])
+            return
+        }
         let replyHandler: @Sendable ([String: Any]) -> Void = { [weak self] response in
             guard let data = response[WatchPayloadKey.conversations] as? Data else { return }
             Task { @MainActor in self?.consume([WatchPayloadKey.conversations: data]) }
@@ -205,6 +209,7 @@ extension WatchSessionController: WCSessionDelegate {
             if let data {
                 consume([WatchPayloadKey.conversations: data])
             }
+            refresh()
         }
     }
     
@@ -212,8 +217,11 @@ extension WatchSessionController: WCSessionDelegate {
         let isReachable = session.isReachable
         Task { @MainActor in
             self.isPhoneReachable = isReachable
-            if isReachable, let roomID = pendingHistoryRoomID {
-                requestHistory(roomID: roomID, using: session)
+            if isReachable {
+                refresh()
+                if let roomID = pendingHistoryRoomID {
+                    requestHistory(roomID: roomID, using: session)
+                }
             }
         }
     }
@@ -224,6 +232,11 @@ extension WatchSessionController: WCSessionDelegate {
     }
     
     nonisolated func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any] = [:]) {
+        if let data = userInfo[WatchPayloadKey.conversations] as? Data {
+            Task { @MainActor in consume([WatchPayloadKey.conversations: data]) }
+            return
+        }
+        
         guard let roomID = userInfo[WatchPayloadKey.historyRoomID] as? String,
               let data = userInfo[WatchPayloadKey.messages] as? Data else { return }
         Task { @MainActor in consumeHistory(data: data, roomID: roomID) }

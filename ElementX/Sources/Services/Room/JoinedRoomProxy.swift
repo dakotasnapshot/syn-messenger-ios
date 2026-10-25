@@ -112,6 +112,7 @@ class JoinedRoomProxy: JoinedRoomProxyProtocol {
         }
         
         subscribedForUpdates = true
+        subscribeToTypingNotifications()
         
         do {
             try await roomListService.setRoomSubscriptions(roomIds: [id])
@@ -123,8 +124,6 @@ class JoinedRoomProxy: JoinedRoomProxyProtocol {
         
         Task {
             subscribeToRoomInfoUpdates()
-            
-            subscribeToTypingNotifications()
             
             await subscribeToKnockRequests()
             
@@ -649,7 +648,8 @@ class JoinedRoomProxy: JoinedRoomProxyProtocol {
         do {
             let urlString = try await room.matrixToPermalink()
             
-            guard let url = URL(string: urlString) else {
+            guard let matrixURL = URL(string: urlString),
+                  let url = SyndicatePermalink.converting(matrixURL) else {
                 MXLog.error("Failed creating permalink for roomID: \(id), invalid permalink URL string: \(urlString)")
                 return .failure(.invalidURL)
             }
@@ -665,7 +665,8 @@ class JoinedRoomProxy: JoinedRoomProxyProtocol {
         do {
             let urlString = try await room.matrixToEventPermalink(eventId: eventID)
             
-            guard let url = URL(string: urlString) else {
+            guard let matrixURL = URL(string: urlString),
+                  let url = SyndicatePermalink.converting(matrixURL) else {
                 MXLog.error("Failed creating permalink for eventID: \(eventID), invalid permalink URL string: \(urlString)")
                 return .failure(.invalidURL)
             }
@@ -795,19 +796,19 @@ class JoinedRoomProxy: JoinedRoomProxyProtocol {
     }
     
     private static let excludedEventsFilter: TimelineEventFilter = {
-        var stateEventFilters: [StateEventType] = [.roomCanonicalAlias,
-                                                   .roomGuestAccess,
-                                                   .roomHistoryVisibility,
-                                                   .roomJoinRules,
-                                                   .roomPinnedEvents,
-                                                   .roomPowerLevels,
-                                                   .roomServerAcl,
-                                                   .roomTombstone,
-                                                   .spaceChild,
-                                                   .spaceParent,
-                                                   .policyRuleRoom,
-                                                   .policyRuleServer,
-                                                   .policyRuleUser]
-        return .excludeEventTypes(eventTypes: stateEventFilters.map { FilterTimelineEventType.state(eventType: $0) })
+        var stateEventFilters: [TimelineEventType] = [.roomCanonicalAlias,
+                                                      .roomGuestAccess,
+                                                      .roomHistoryVisibility,
+                                                      .roomJoinRules,
+                                                      .roomPinnedEvents,
+                                                      .roomPowerLevels,
+                                                      .roomServerAcl,
+                                                      .roomTombstone,
+                                                      .spaceChild,
+                                                      .spaceParent,
+                                                      .policyRuleRoom,
+                                                      .policyRuleServer,
+                                                      .policyRuleUser]
+        return .exclude(stateEventFilters.map { TimelineEventCondition.eventType($0) })
     }()
 }

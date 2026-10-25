@@ -67,6 +67,14 @@ struct RoomAttachmentPicker: View {
             }
             .accessibilityIdentifier(A11yIdentifiers.roomScreen.attachmentPickerPhotoLibrary)
             
+            if context.viewState.isGIFPickerEnabled {
+                Button {
+                    context.send(viewAction: .attach(.gif))
+                } label: {
+                    Label(UntranslatedL10n.screenRoomAttachmentSourceGif, icon: \.image)
+                }
+            }
+            
             Button {
                 context.send(viewAction: .attach(.camera))
             } label: {

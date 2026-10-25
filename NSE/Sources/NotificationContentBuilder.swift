@@ -9,6 +9,7 @@
 import Foundation
 import Intents
 import MatrixRustSDK
+import SwiftSoup
 import SwiftUI
 import UserNotifications
 import Version
@@ -17,6 +18,17 @@ nonisolated struct NotificationContentBuilder {
     let messageEventStringBuilder: RoomMessageEventStringBuilder
     let notificationSoundName: UNNotificationSoundName
     let userSession: NSEUserSessionProtocol
+    let linkPreviewProvider: any NotificationLinkPreviewProviderProtocol
+    
+    init(messageEventStringBuilder: RoomMessageEventStringBuilder,
+         notificationSoundName: UNNotificationSoundName,
+         userSession: NSEUserSessionProtocol,
+         linkPreviewProvider: any NotificationLinkPreviewProviderProtocol = NotificationLinkPreviewProvider()) {
+        self.messageEventStringBuilder = messageEventStringBuilder
+        self.notificationSoundName = notificationSoundName
+        self.userSession = userSession
+        self.linkPreviewProvider = linkPreviewProvider
+    }
     
     /// Process the given notification item proxy
     /// - Parameters:
@@ -214,9 +226,53 @@ nonisolated struct NotificationContentBuilder {
                                          using: mediaProvider,
                                          mediaSource: mediaSource)
             }
+        case .text(content: let content):
+            await addLinkPreviewAttachment(notificationContent: &notificationContent,
+                                           body: content.body,
+                                           formattedBody: content.formatted?.body)
         default:
             break
         }
+    }
+    
+    private func addLinkPreviewAttachment(notificationContent: inout UNMutableNotificationContent,
+                                          body: String,
+                                          formattedBody: String?) async {
+        guard let url = Self.firstURL(in: body, formattedBody: formattedBody),
+              let data = await linkPreviewProvider.imageData(for: url) else {
+            return
+        }
+        
+        do {
+            let identifier = ProcessInfo.processInfo.globallyUniqueString
+            let temporaryURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent(identifier)
+                .appendingPathExtension("jpg")
+            try data.write(to: temporaryURL, options: .atomic)
+            try notificationContent.attachments.append(UNNotificationAttachment(identifier: identifier,
+                                                                                url: temporaryURL,
+                                                                                options: nil))
+        } catch {
+            MXLog.error("Couldn't add link preview attachment: \(error)")
+        }
+    }
+    
+    static func firstURL(in body: String, formattedBody: String?) -> URL? {
+        if let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue),
+           let match = detector.firstMatch(in: body, range: NSRange(body.startIndex..., in: body)),
+           let url = match.url,
+           ["http", "https"].contains(url.scheme?.lowercased()) {
+            return url
+        }
+        
+        guard let formattedBody,
+              let document = try? SwiftSoup.parseBodyFragment(formattedBody),
+              let href = try? document.select("a[href]").first()?.attr("href"),
+              let url = URL(string: href),
+              ["http", "https"].contains(url.scheme?.lowercased()) else {
+            return nil
+        }
+        return url
     }
     
     private func addMediaAttachment(notificationContent: inout UNMutableNotificationContent,

@@ -76,7 +76,7 @@ class MediaEventsTimelineScreenViewModel: MediaEventsTimelineScreenViewModelType
                 displayMediaPreview(mediaPreviewViewModel)
             case .displayMediaDetails(item: let item):
                 displayMediaPreviewSheet(for: item)
-            case .displayEmojiPicker, .displayReportContent, .displayCameraPicker, .displayMediaPicker,
+            case .displayEmojiPicker, .displayReportContent, .displayCameraPicker, .displayMediaPicker, .displayGIFPicker,
                  .displayDocumentPicker, .displayLocationPicker, .displayLiveLocation, .displayNewPollForm, .displayEditPollForm, .displayMediaUploadPreviewScreen,
                  .displaySenderDetails, .displayMessageForwarding, .displayLocation, .displayResolveSendFailure,
                  .displayThread, .composer, .hasScrolled, .viewInRoomTimeline, .displayRoom, .presentCallScreen:
@@ -101,7 +101,7 @@ class MediaEventsTimelineScreenViewModel: MediaEventsTimelineScreenViewModelType
                 displayMediaPreview(mediaPreviewViewModel)
             case .displayMediaDetails(item: let item):
                 displayMediaPreviewSheet(for: item)
-            case .displayEmojiPicker, .displayReportContent, .displayCameraPicker, .displayMediaPicker,
+            case .displayEmojiPicker, .displayReportContent, .displayCameraPicker, .displayMediaPicker, .displayGIFPicker,
                  .displayDocumentPicker, .displayLocationPicker, .displayLiveLocation, .displayNewPollForm, .displayEditPollForm, .displayMediaUploadPreviewScreen,
                  .displaySenderDetails, .displayMessageForwarding, .displayLocation, .displayResolveSendFailure,
                  .displayThread, .composer, .hasScrolled, .viewInRoomTimeline, .displayRoom, .presentCallScreen:

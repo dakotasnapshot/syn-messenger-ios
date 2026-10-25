@@ -31,3 +31,5 @@
 "screen_settings_presence_share_description" = "Allow people in shared rooms to see your availability.";
 "screen_settings_presence_message" = "Presence message";
 "screen_settings_presence_description" = "Automatic shows you online while SYN is active and away when it is in the background. Turn sharing off to appear offline.";
+"screen_room_attachment_source_gif" = "GIFs";
+"screen_gif_picker_download_error" = "Couldn’t download that GIF.";

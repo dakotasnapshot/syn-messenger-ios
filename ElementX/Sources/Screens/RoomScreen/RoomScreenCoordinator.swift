@@ -35,6 +35,7 @@ struct RoomScreenCoordinatorParameters {
 enum RoomScreenCoordinatorAction {
     case presentReportContent(itemID: TimelineItemIdentifier, senderID: String)
     case presentMediaUploadPicker(mode: MediaPickerScreenMode, caption: NSAttributedString)
+    case presentGIFPicker(caption: NSAttributedString)
     case presentMediaUploadPreviewScreen(mediaURLs: [URL], caption: NSAttributedString)
     case presentRoomDetails
     case presentLocationPicker
@@ -130,6 +131,8 @@ final class RoomScreenCoordinator: CoordinatorProtocol {
                 case .displayMediaPicker:
                     actionsSubject.send(.presentMediaUploadPicker(mode: .init(source: .photoLibrary, selectionType: .multiple(galleryEnabled: appSettings.galleryEnabled)),
                                                                   caption: composerViewModel.context.plainComposerText))
+                case .displayGIFPicker:
+                    actionsSubject.send(.presentGIFPicker(caption: composerViewModel.context.plainComposerText))
                 case .displayDocumentPicker:
                     actionsSubject.send(.presentMediaUploadPicker(mode: .init(source: .documents(), selectionType: .multiple(galleryEnabled: appSettings.galleryEnabled)),
                                                                   caption: composerViewModel.context.plainComposerText))

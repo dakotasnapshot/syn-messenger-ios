@@ -85,7 +85,7 @@ class AudioRecorderState: ObservableObject, Identifiable {
             stopPublishUpdates()
         }
         displayLink = CADisplayLink(target: self, selector: #selector(publishUpdate))
-        displayLink?.preferredFrameRateRange = .init(minimum: 30, maximum: 60)
+        displayLink?.preferredFrameRateRange = .init(minimum: 10, maximum: 15)
         displayLink?.add(to: .current, forMode: .common)
     }
     

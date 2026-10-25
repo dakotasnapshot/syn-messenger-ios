@@ -7,6 +7,7 @@
 //
 
 import Combine
+import GiphyUISDK
 import SwiftState
 import SwiftUI
 import UserNotifications
@@ -702,6 +703,8 @@ class RoomFlowCoordinator: FlowCoordinatorProtocol {
                 case .presentMediaUploadPicker(let mode, let caption):
                     stateMachine.tryEvent(.presentMediaUploadPicker(mode: mode, caption: caption),
                                           userInfo: EventUserInfo(animated: animated, timelineController: timelineController))
+                case .presentGIFPicker(let caption):
+                    presentGIFPicker(caption: caption, timelineController: timelineController, animated: animated)
                 case .presentMediaUploadPreviewScreen(let url, let caption):
                     stateMachine.tryEvent(.presentMediaUploadPreview(mediaURLs: url, caption: caption),
                                           userInfo: EventUserInfo(animated: animated, timelineController: timelineController))
@@ -814,6 +817,8 @@ class RoomFlowCoordinator: FlowCoordinatorProtocol {
             case .presentMediaUploadPicker(let mode, let caption):
                 stateMachine.tryEvent(.presentMediaUploadPicker(mode: mode, caption: caption),
                                       userInfo: EventUserInfo(animated: animated, timelineController: timelineController))
+            case .presentGIFPicker(let caption):
+                presentGIFPicker(caption: caption, timelineController: timelineController, animated: animated)
             case .presentMediaUploadPreviewScreen(let mediaURLs, let caption):
                 stateMachine.tryEvent(.presentMediaUploadPreview(mediaURLs: mediaURLs, caption: caption),
                                       userInfo: EventUserInfo(animated: animated, timelineController: timelineController))
@@ -1102,6 +1107,26 @@ class RoomFlowCoordinator: FlowCoordinatorProtocol {
                 self?.stateMachine.tryEvent(.dismissMediaUploadPicker)
             }
         }
+    }
+    
+    private func presentGIFPicker(caption: NSAttributedString,
+                                  timelineController: TimelineControllerProtocol,
+                                  animated: Bool) {
+        guard let apiKey = Secrets.giphyAPIKey, !apiKey.isEmpty else { return }
+        Giphy.configure(apiKey: apiKey)
+        
+        let coordinator = GIFPickerScreenCoordinator(userIndicatorController: flowParameters.userIndicatorController) { [weak self] action in
+            guard let self else { return }
+            switch action {
+            case .cancel:
+                navigationStackCoordinator.setSheetCoordinator(nil)
+            case .selectedGIF(let url):
+                navigationStackCoordinator.setSheetCoordinator(nil)
+                stateMachine.tryEvent(.presentMediaUploadPreview(mediaURLs: [url], caption: caption),
+                                      userInfo: EventUserInfo(animated: animated, timelineController: timelineController))
+            }
+        }
+        navigationStackCoordinator.setSheetCoordinator(coordinator, animated: animated)
     }
     
     private func presentMediaUploadPreviewScreen(for mediaURLs: [URL],

@@ -270,7 +270,6 @@ extension TimelineItemProxy {
                                                                                                body: body,
                                                                                                isEdited: isEdited,
                                                                                                mentions: nil)),
-                                                                 reactions: [],
                                                                  inReplyTo: nil,
                                                                  threadRoot: nil,
                                                                  threadSummary: nil))
@@ -295,7 +294,6 @@ private extension TimelineItemProxy {
                                                                                                body: body,
                                                                                                isEdited: false,
                                                                                                mentions: nil)),
-                                                                 reactions: [],
                                                                  inReplyTo: nil,
                                                                  threadRoot: nil,
                                                                  threadSummary: nil))

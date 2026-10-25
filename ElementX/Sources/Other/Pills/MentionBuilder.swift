@@ -6,8 +6,8 @@
 // Please see LICENSE files in the repository root for full details.
 //
 
-import Foundation
-import UIKit
+import Compound
+import SwiftUI
 
 nonisolated struct MentionBuilder: MentionBuilderProtocol {
     struct AttributesToRestore {
@@ -158,7 +158,7 @@ nonisolated struct MentionBuilder: MentionBuilderProtocol {
         let attributes = attributedString.attributes(at: 0, longestEffectiveRange: nil, in: range)
         let font = attributes[.font] as? UIFont ?? .preferredFont(forTextStyle: .body)
         let blockquote = attributes[.MatrixBlockquote] as? Bool
-        let foregroundColor = attributes[.foregroundColor] as? UIColor ?? .compound.textPrimary
+        let foregroundColor = attributes[.foregroundColor] as? UIColor ?? CompoundUIColors.defaultTextPrimaryColor
         
         return AttributesToRestore(font: font, blockquote: blockquote, foregroundColor: foregroundColor)
     }

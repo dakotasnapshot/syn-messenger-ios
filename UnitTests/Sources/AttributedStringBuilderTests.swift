@@ -30,6 +30,16 @@ struct AttributedStringBuilderTests {
     }
     
     @Test
+    func renderInlineCodeOffMainActor() async {
+        let rendered = await Task.detached {
+            let builder = AttributedStringBuilder(mentionBuilder: MentionBuilder())
+            guard let result = builder.fromHTML("<code>Example</code>") else { return false }
+            return String(result.characters) == "Example" && result.runs.contains { $0.uiKit.backgroundColor != nil }
+        }.value
+        #expect(rendered)
+    }
+    
+    @Test
     func renderHTMLStringWithPreCode() throws {
         let attributedString = try #require(attributedStringBuilder.fromHTML(HTMLFixtures.code.rawValue), "Could not build the attributed string")
         

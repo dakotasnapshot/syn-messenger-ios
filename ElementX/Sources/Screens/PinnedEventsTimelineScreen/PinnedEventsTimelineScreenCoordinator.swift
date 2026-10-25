@@ -95,7 +95,7 @@ final class PinnedEventsTimelineScreenCoordinator: CoordinatorProtocol {
             case .viewInRoomTimeline(let eventID, let threadRootEventID):
                 actionsSubject.send(.displayRoomScreenWithFocussedPin(eventID: eventID, threadRootEventID: threadRootEventID))
             // These other actions will not be handled in this view
-            case .displayEmojiPicker, .displayReportContent, .displayCameraPicker, .displayMediaPicker,
+            case .displayEmojiPicker, .displayReportContent, .displayCameraPicker, .displayMediaPicker, .displayGIFPicker,
                  .displayDocumentPicker, .displayLocationPicker, .displayNewPollForm, .displayEditPollForm, .displayMediaUploadPreviewScreen,
                  .displayResolveSendFailure, .displayThread, .composer, .hasScrolled, .displayRoom, .displayMediaDetails,
                  .presentCallScreen:

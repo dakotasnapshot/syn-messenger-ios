@@ -79,3 +79,13 @@ nonisolated extension Array where Element == RoomTimelineItemProtocol {
         return nil
     }
 }
+
+nonisolated extension Array where Element == TimelineItemProxy {
+    func removingDuplicateEvents() -> [TimelineItemProxy] {
+        var eventIDs = Set<String>()
+        return filter { item in
+            guard case let .event(event) = item, let eventID = event.id.eventID else { return true }
+            return eventIDs.insert(eventID).inserted
+        }
+    }
+}

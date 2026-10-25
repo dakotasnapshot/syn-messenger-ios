@@ -18,6 +18,8 @@ nonisolated struct WatchMessage: Codable, Identifiable, Hashable, Sendable {
     let id: String
     let eventID: String?
     let reactions: [WatchReaction]?
+    let thumbnailData: Data?
+    let linkPreview: WatchLinkPreview?
     let sender: String
     let body: String
     let timestamp: Date
@@ -26,6 +28,8 @@ nonisolated struct WatchMessage: Codable, Identifiable, Hashable, Sendable {
     init(id: String,
          eventID: String? = nil,
          reactions: [WatchReaction]? = nil,
+         thumbnailData: Data? = nil,
+         linkPreview: WatchLinkPreview? = nil,
          sender: String,
          body: String,
          timestamp: Date,
@@ -33,11 +37,19 @@ nonisolated struct WatchMessage: Codable, Identifiable, Hashable, Sendable {
         self.id = id
         self.eventID = eventID
         self.reactions = reactions
+        self.thumbnailData = thumbnailData
+        self.linkPreview = linkPreview
         self.sender = sender
         self.body = body
         self.timestamp = timestamp
         self.isOutgoing = isOutgoing
     }
+}
+
+nonisolated struct WatchLinkPreview: Codable, Hashable, Sendable {
+    let url: URL
+    let title: String
+    let imageData: Data?
 }
 
 nonisolated struct WatchReaction: Codable, Identifiable, Hashable, Sendable {
@@ -51,6 +63,7 @@ nonisolated struct WatchReaction: Codable, Identifiable, Hashable, Sendable {
 
 nonisolated enum WatchPayloadKey {
     static let conversations = "conversations"
+    static let requestConversations = "requestConversations"
     static let replyRoomID = "replyRoomID"
     static let replyBody = "replyBody"
     static let replyAccepted = "replyAccepted"

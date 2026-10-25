@@ -385,3 +385,7 @@ Same pattern for publishers.
 | `localazy.json` | Localazy translation config |
 | `codecov.yml` | Codecov config |
 | `.periphery.yml` | Periphery dead-code detection |
+
+## Syndicate Release Rule
+
+- Every iOS release: publish matching validated IPA on `synmessenger.com`. Update downloads page, checksums, latest-release/Loader references. Keep historical files. Verify public checksum and embedded version/build. Publish matching public source; preserve AGPL attribution. TestFlight upload alone not complete.

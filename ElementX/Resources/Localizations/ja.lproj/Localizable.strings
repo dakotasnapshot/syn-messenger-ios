@@ -1402,7 +1402,7 @@
 "screen_room_timeline_add_reaction" = "リアクションを追加";
 "screen_room_timeline_beginning_of_room" = "%1$@ の始まりです。";
 "screen_room_timeline_beginning_of_room_no_name" = "ここが会話の開始点です。";
-"screen_room_timeline_legacy_call" = "非対応の着信です。新しい Element X を使用できないか確認してください。";
+"screen_room_timeline_legacy_call" = "非対応の着信です。新しい Syndicate を使用できないか確認してください。";
 "screen_room_timeline_less_reactions" = "一部を表示";
 "screen_room_timeline_message_copied" = "メッセージをコピーしました";
 "screen_room_timeline_no_permission_to_post" = "このルームに発言する権限がありません";

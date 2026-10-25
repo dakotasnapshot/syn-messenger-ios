@@ -134,6 +134,7 @@ class TimelineController: TimelineControllerProtocol {
         }
         
         _ = await activeTimeline.sendReadReceipt(for: eventID, type: receiptType)
+        _ = await activeTimeline.sendReadReceipt(for: eventID, type: .fullyRead)
     }
     
     func processItemAppearance(_ itemID: TimelineItemIdentifier) async {
@@ -483,7 +484,7 @@ class TimelineController: TimelineControllerProtocol {
         var newTimelineItems = await Task.detached { [timelineItemFactory, activeTimeline] in
             var newTimelineItems = [RoomTimelineItemProtocol]()
             
-            let collapsibleChunks = itemProxies.groupBy { $0.isItemCollapsible }
+            let collapsibleChunks = itemProxies.removingDuplicateEvents().groupBy { $0.isItemCollapsible }
             
             for (index, collapsibleChunk) in collapsibleChunks.enumerated() {
                 let isLastItem = index == collapsibleChunks.indices.last

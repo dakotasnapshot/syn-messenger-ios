@@ -24,7 +24,7 @@ struct PresenceServiceTests {
         appSettings = AppSettings.volatile()
         notificationCenter = NotificationCenter()
         
-        clientProxy.configurePresenceSendImmediatelyClosure = { [sendsSubject] presence, sendImmediately in
+        clientProxy.configurePresenceStatusMessageSendImmediatelyClosure = { [sendsSubject] presence, _, sendImmediately in
             sendsSubject.send((presence, sendImmediately))
             return .success(())
         }
@@ -47,7 +47,7 @@ struct PresenceServiceTests {
         
         #expect(send.presence == .online)
         #expect(send.sendImmediately)
-        #expect(clientProxy.configurePresenceSendImmediatelyReceivedInvocations.filter { $0.presence == .online }.count == 1)
+        #expect(clientProxy.configurePresenceStatusMessageSendImmediatelyReceivedInvocations.filter { $0.presence == .online }.count == 1)
         _ = service
     }
     
@@ -142,14 +142,14 @@ struct PresenceServiceTests {
         notificationCenter.post(name: UIApplication.didBecomeActiveNotification, object: nil)
         await Task.yield()
         
-        #expect(clientProxy.configurePresenceSendImmediatelyReceivedInvocations.map(\.presence) == [.online])
+        #expect(clientProxy.configurePresenceStatusMessageSendImmediatelyReceivedInvocations.map(\.presence) == [.online])
         _ = service
     }
     
     @Test
     func failedImmediateSendIsNotRetriedUntilTheDesiredPresenceChanges() async throws {
         appSettings.sharePresence = true
-        clientProxy.configurePresenceSendImmediatelyClosure = { [sendsSubject] presence, sendImmediately in
+        clientProxy.configurePresenceStatusMessageSendImmediatelyClosure = { [sendsSubject] presence, _, sendImmediately in
             sendsSubject.send((presence, sendImmediately))
             return presence == .online ? .failure(.forbiddenAccess) : .success(())
         }
@@ -161,13 +161,13 @@ struct PresenceServiceTests {
         
         notificationCenter.post(name: UIApplication.didBecomeActiveNotification, object: nil)
         await Task.yield()
-        #expect(clientProxy.configurePresenceSendImmediatelyReceivedInvocations.map(\.presence) == [.online])
+        #expect(clientProxy.configurePresenceStatusMessageSendImmediatelyReceivedInvocations.map(\.presence) == [.online])
         
         let transitionDeferred = deferFulfillment(sendsSubject) { $0.presence == .unavailable }
         notificationCenter.post(name: UIApplication.willResignActiveNotification, object: nil)
         _ = try await transitionDeferred.fulfill()
         
-        #expect(clientProxy.configurePresenceSendImmediatelyReceivedInvocations.map(\.presence) == [.online, .unavailable])
+        #expect(clientProxy.configurePresenceStatusMessageSendImmediatelyReceivedInvocations.map(\.presence) == [.online, .unavailable])
         _ = service
     }
     
@@ -177,7 +177,7 @@ struct PresenceServiceTests {
         
         let (onlineStartedStream, onlineStartedContinuation) = AsyncStream<Void>.makeStream()
         let (resumeOnlineSendStream, resumeOnlineSendContinuation) = AsyncStream<Void>.makeStream()
-        clientProxy.configurePresenceSendImmediatelyClosure = { [sendsSubject] presence, sendImmediately in
+        clientProxy.configurePresenceStatusMessageSendImmediatelyClosure = { [sendsSubject] presence, _, sendImmediately in
             if presence == .online {
                 onlineStartedContinuation.yield()
                 var iterator = resumeOnlineSendStream.makeAsyncIterator()
@@ -199,7 +199,7 @@ struct PresenceServiceTests {
         resumeOnlineSendContinuation.finish()
         try await unavailableDeferred.fulfill()
         
-        let applied = clientProxy.configurePresenceSendImmediatelyReceivedInvocations.map(\.presence)
+        let applied = clientProxy.configurePresenceStatusMessageSendImmediatelyReceivedInvocations.map(\.presence)
         #expect(applied == [.online, .unavailable], "Expected in-order latest-wins drain, got \(applied)")
         _ = service
     }
@@ -210,7 +210,7 @@ struct PresenceServiceTests {
         
         let (onlineStartedStream, onlineStartedContinuation) = AsyncStream.makeStream(of: Void.self)
         let (onlineFinishedStream, onlineFinishedContinuation) = AsyncStream.makeStream(of: Void.self)
-        clientProxy.configurePresenceSendImmediatelyClosure = { presence, _ in
+        clientProxy.configurePresenceStatusMessageSendImmediatelyClosure = { presence, _, _ in
             if presence == .online {
                 onlineStartedContinuation.yield()
                 try? await Task.sleep(for: .seconds(3600)) // Interrupted by the service's deinit cancelling the send task.
@@ -232,7 +232,7 @@ struct PresenceServiceTests {
         service = nil
         try await onlineFinishedDeferred.fulfill()
         
-        let applied = clientProxy.configurePresenceSendImmediatelyReceivedInvocations.map(\.presence)
+        let applied = clientProxy.configurePresenceStatusMessageSendImmediatelyReceivedInvocations.map(\.presence)
         #expect(applied == [.online], "Expected deinit to cancel the queued unavailable send, got \(applied)")
     }
 }

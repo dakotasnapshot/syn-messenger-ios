@@ -67,6 +67,7 @@ struct TimelineControllerMockConfiguration {
         sendReadReceiptForClosure = { [roomProxy] itemID in
             guard let roomProxy, let eventID = itemID.eventID else { return }
             _ = await roomProxy.timeline.sendReadReceipt(for: eventID, type: .read)
+            _ = await roomProxy.timeline.sendReadReceipt(for: eventID, type: .fullyRead)
         }
         
         toggleReactionToClosure = { [timelineProxy] reaction, eventOrTransactionID in

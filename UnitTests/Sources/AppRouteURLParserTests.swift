@@ -72,7 +72,7 @@ struct AppRouteURLParserTests {
     @Test
     func webRoomIDURL() throws {
         let id = "!abcdefghijklmnopqrstuvwxyz1234567890:matrix.org"
-        let url = try #require(URL(string: "https://app.element.io/#/room/\(id)"))
+        let url = try #require(URL(string: "https://synmessenger.com/chat/#/room/\(id)"))
         
         let route = appRouteURLParser.route(from: url)
         
@@ -82,10 +82,30 @@ struct AppRouteURLParserTests {
     @Test
     func webUserIDURL() throws {
         let id = "@alice:matrix.org"
-        let url = try #require(URL(string: "https://develop.element.io/#/user/\(id)"))
+        let url = try #require(URL(string: "https://synmessenger.com/chat/#/user/\(id)"))
         
         let route = appRouteURLParser.route(from: url)
         
         #expect(route == .userProfile(userID: id))
+    }
+    
+    @Test
+    func syndicateEventURL() throws {
+        let roomID = "!abcdefghijklmnopqrstuvwxyz1234567890:matrix.org"
+        let eventID = "$abcdefghijklmnopqrstuvwxyz1234567890"
+        let url = try #require(URL(string: "https://synmessenger.com/chat/#/\(roomID)/\(eventID)"))
+        
+        let route = appRouteURLParser.route(from: url)
+        
+        #expect(route == .event(eventID: eventID, roomID: roomID, via: []))
+    }
+    
+    @Test
+    func syndicateOutboundPermalink() throws {
+        let matrixURL = try #require(URL(string: "https://matrix.to/#/!room:matrix.org/$event"))
+        
+        let url = SyndicatePermalink.converting(matrixURL)
+        
+        #expect(url?.absoluteString == "https://synmessenger.com/chat/#/!room:matrix.org/$event")
     }
 }

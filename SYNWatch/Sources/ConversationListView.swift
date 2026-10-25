@@ -53,6 +53,7 @@ struct ConversationListView: View {
             }
         }
         #endif
+        .task { session.refresh() }
     }
 }
 
@@ -160,6 +161,36 @@ private struct MessageBubble: View {
             VStack(alignment: .leading, spacing: 2) {
                 if !message.isOutgoing {
                     Text(message.sender).font(.caption2).foregroundStyle(.secondary)
+                }
+                if let data = message.thumbnailData, let image = UIImage(data: data) {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
+                if let preview = message.linkPreview {
+                    Link(destination: preview.url) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            if let data = preview.imageData, let image = UIImage(data: data) {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 70)
+                                    .clipped()
+                            }
+                            Text(preview.title)
+                                .font(.caption)
+                                .fontWeight(.semibold)
+                                .lineLimit(2)
+                            Text(preview.url.host() ?? preview.url.absoluteString)
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                        }
+                        .padding(6)
+                        .background(.quaternary, in: RoundedRectangle(cornerRadius: 8))
+                    }
+                    .buttonStyle(.plain)
                 }
                 Text(message.body)
                 if let reactions = message.reactions, !reactions.isEmpty {

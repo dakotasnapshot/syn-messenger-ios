@@ -51,6 +51,7 @@ targets:
         UILaunchScreen:
           UIColorName: colors/background-color
         CFBundleDisplayName: $(APP_DISPLAY_NAME)
+        CFBundleName: $(APP_NAME)
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleURLTypes: [
@@ -119,7 +120,6 @@ targets:
         aps-environment: development
         com.apple.developer.associated-domains:
         - applinks:synmessenger.com
-        - applinks:matrix.to
         # - applinks:localhost?mode=developer # developer mode only works with https (but self-signed is fine).
         - webcredentials:synmessenger.com
         com.apple.developer.usernotifications.communication: true
@@ -133,6 +133,9 @@ targets:
     settings:
       base:
         PRODUCT_NAME: $(APP_NAME)
+        # Keep the upstream Swift module stable for tests and merges. This is not
+        # exposed in the installed app; PRODUCT_NAME controls the shipped bundle.
+        PRODUCT_MODULE_NAME: ElementX
         PRODUCT_BUNDLE_IDENTIFIER: $(BASE_BUNDLE_IDENTIFIER)
         MARKETING_VERSION: $(MARKETING_VERSION)
         CURRENT_PROJECT_VERSION: $(CURRENT_PROJECT_VERSION)
@@ -240,6 +243,7 @@ targets:
     - package: EmbeddedElementCall
     - package: KeychainAccess
     - package: Kingfisher
+    - package: GiphyUISDK
     - package: KZFileWatchers
     - package: LoremSwiftum
     - package: LRUCache

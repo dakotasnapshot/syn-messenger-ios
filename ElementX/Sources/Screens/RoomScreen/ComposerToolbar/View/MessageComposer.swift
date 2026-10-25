@@ -106,7 +106,7 @@ struct MessageComposer: View {
     private var dragGesture: some Gesture {
         DragGesture()
             .onChanged { value in
-                composerTranslation += value.translation.height
+                composerTranslation = value.translation.height
             }
             .onEnded { _ in
                 withElementAnimation(.easeIn(duration: 0.3)) {

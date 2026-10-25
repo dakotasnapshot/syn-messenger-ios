@@ -10,6 +10,8 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal nonisolated enum UntranslatedL10n {
+  /// Couldn’t download that GIF.
+  internal static var screenGifPickerDownloadError: String { return UntranslatedL10n.tr("Untranslated", "screen_gif_picker_download_error") }
   /// Search
   internal static var screenHomeTabSearch: String { return UntranslatedL10n.tr("Untranslated", "screen_home_tab_search") }
   /// Separate words or phrases with commas. Rooms set to Mentions and keywords will notify for these matches.
@@ -26,6 +28,8 @@ internal nonisolated enum UntranslatedL10n {
   internal static var screenNotificationSettingsSoundSynFade: String { return UntranslatedL10n.tr("Untranslated", "screen_notification_settings_sound_syn_fade") }
   /// Welcome to SYN
   internal static var screenOnboardingSynWelcomeTitle: String { return UntranslatedL10n.tr("Untranslated", "screen_onboarding_syn_welcome_title") }
+  /// GIFs
+  internal static var screenRoomAttachmentSourceGif: String { return UntranslatedL10n.tr("Untranslated", "screen_room_attachment_source_gif") }
   /// Unsupported call. Ask the caller to update their Matrix app and try again.
   internal static var screenRoomTimelineSynLegacyCall: String { return UntranslatedL10n.tr("Untranslated", "screen_room_timeline_syn_legacy_call") }
   /// Search for chats and messages

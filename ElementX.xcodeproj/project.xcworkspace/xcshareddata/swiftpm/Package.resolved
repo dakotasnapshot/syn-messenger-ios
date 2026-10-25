@@ -1,5 +1,5 @@
 {
-  "originHash" : "bcdaa8f9cef68194f84e2cedfc8f5b970018b430090e70cabca834140c3573a5",
+  "originHash" : "676ae2dcb1d65046a3630cf8b28daef9ee1508a75b4540445c4af5bfb58e37a6",
   "pins" : [
     {
       "identity" : "compound-design-tokens",
@@ -73,6 +73,15 @@
       }
     },
     {
+      "identity" : "giphy-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Giphy/giphy-ios-sdk",
+      "state" : {
+        "revision" : "b3275304a96a65199f591f71abc7eda54a844c38",
+        "version" : "2.2.13"
+      }
+    },
+    {
       "identity" : "gzip",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nicklockwood/GZIP",
@@ -106,6 +115,15 @@
       "state" : {
         "revision" : "d27a9557427d261adccdf4b566acc9d9c0fec6f4",
         "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "libwebp-xcode",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/libwebp-Xcode",
+      "state" : {
+        "revision" : "2b5256c29ff4e20f2a0d5ee863b62b1a22144434",
+        "version" : "1.6.0"
       }
     },
     {
@@ -167,8 +185,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/element-hq/matrix-rust-components-swift",
       "state" : {
-        "revision" : "5aba7a6306b02e79157831e8e352a9a959003e5b",
-        "version" : "26.9.1"
+        "revision" : "3718c227f8b9a49268eac51feb9c063433f03304",
+        "version" : "26.9.25"
       }
     },
     {

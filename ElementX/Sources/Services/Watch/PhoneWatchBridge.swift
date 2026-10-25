@@ -5,8 +5,10 @@
 //
 
 import Combine
-import Foundation
+import LinkPresentation
 import MatrixRustSDK
+import SwiftUI
+import UniformTypeIdentifiers
 @preconcurrency import WatchConnectivity
 
 @MainActor
@@ -14,6 +16,7 @@ final class PhoneWatchBridge: NSObject {
     private let session: WCSession?
     private var roomsObserver: AnyCancellable?
     private var clientProxy: ClientProxyProtocol?
+    private var mediaProvider: MediaProviderProtocol?
     private var latestSnapshot = [WatchConversation]()
     private var sendReply: ((String, String) async -> Bool)?
     
@@ -27,6 +30,7 @@ final class PhoneWatchBridge: NSObject {
     func configure(userSession: UserSessionProtocol?) {
         roomsObserver?.cancel()
         clientProxy = userSession?.clientProxy
+        mediaProvider = userSession?.mediaProvider
         sendReply = nil
         latestSnapshot = []
         
@@ -94,10 +98,10 @@ final class PhoneWatchBridge: NSObject {
         try? await Task.sleep(for: .milliseconds(150))
         _ = await timeline.paginateBackwards(requestSize: 50)
         
-        var messages = watchMessages(from: timeline.timelineItemProvider.itemProxies)
+        var messages = await watchMessages(from: timeline.timelineItemProvider.itemProxies)
         for _ in 0..<20 where messages.isEmpty {
             try? await Task.sleep(for: .milliseconds(100))
-            messages = watchMessages(from: timeline.timelineItemProvider.itemProxies)
+            messages = await watchMessages(from: timeline.timelineItemProvider.itemProxies)
         }
         
         _ = await roomProxy.markAsRead(receiptType: .read)
@@ -106,27 +110,102 @@ final class PhoneWatchBridge: NSObject {
         return Array(messages.suffix(30))
     }
     
-    private func watchMessages(from items: [TimelineItemProxy]) -> [WatchMessage] {
+    private func watchMessages(from items: [TimelineItemProxy]) async -> [WatchMessage] {
         var seenIDs = Set<String>()
-        return items.compactMap { item -> WatchMessage? in
+        var messages = [WatchMessage]()
+        var thumbnailCount = 0
+        var linkPreviewCount = 0
+        for item in items.reversed() {
             guard case let .event(event) = item,
                   case let .msgLike(content) = event.content,
                   case let .message(message) = content.kind,
                   let body = watchBody(for: message.msgType) else {
-                return nil
+                continue
             }
             let id = event.id.uniqueID.value
-            guard seenIDs.insert(id).inserted else { return nil }
-            return WatchMessage(id: id,
-                                eventID: event.id.eventID,
-                                reactions: content.reactions.map { reaction in
-                                    WatchReaction(key: String(reaction.key.prefix(16)), count: reaction.senders.count)
-                                },
-                                sender: String((event.sender.displayName ?? event.sender.id).prefix(100)),
-                                body: String(body.prefix(1000)),
-                                timestamp: event.timestamp,
-                                isOutgoing: event.isOwn)
+            guard seenIDs.insert(id).inserted else { continue }
+            let thumbnailData: Data?
+            if thumbnailCount < 2,
+               case .image(let imageContent) = message.msgType,
+               let data = await watchThumbnailData(for: imageContent) {
+                thumbnailData = data
+                thumbnailCount += 1
+            } else {
+                thumbnailData = nil
+            }
+            let linkPreview: WatchLinkPreview?
+            if linkPreviewCount < 2,
+               case .text = message.msgType,
+               let preview = await watchLinkPreview(for: body) {
+                linkPreview = preview
+                linkPreviewCount += 1
+            } else {
+                linkPreview = nil
+            }
+            messages.append(WatchMessage(id: id,
+                                         eventID: event.id.eventID,
+                                         reactions: event.reactions.map { reaction in
+                                             WatchReaction(key: String(reaction.key.prefix(16)), count: reaction.senders.count)
+                                         },
+                                         thumbnailData: thumbnailData,
+                                         linkPreview: linkPreview,
+                                         sender: String((event.sender.displayName ?? event.sender.id).prefix(100)),
+                                         body: String(body.prefix(1000)),
+                                         timestamp: event.timestamp,
+                                         isOutgoing: event.isOwn))
+            if messages.count == 30 {
+                break
+            }
         }
+        return Array(messages.reversed())
+    }
+    
+    private func watchLinkPreview(for body: String) async -> WatchLinkPreview? {
+        guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue),
+              let match = detector.firstMatch(in: body, range: NSRange(body.startIndex..., in: body)),
+              let url = match.url,
+              ["http", "https"].contains(url.scheme?.lowercased()) else {
+            return nil
+        }
+        
+        guard let metadata = try? await LPMetadataProvider().startFetchingMetadata(for: url) else {
+            return WatchLinkPreview(url: url, title: url.host() ?? url.absoluteString, imageData: nil)
+        }
+        
+        let imageData = await watchLinkPreviewImageData(from: metadata.imageProvider)
+        return WatchLinkPreview(url: url,
+                                title: String((metadata.title ?? url.host() ?? url.absoluteString).prefix(120)),
+                                imageData: imageData)
+    }
+    
+    private func watchLinkPreviewImageData(from provider: NSItemProvider?) async -> Data? {
+        guard let provider else { return nil }
+        return await withCheckedContinuation { continuation in
+            provider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { data, _ in
+                guard let data,
+                      let image = UIImage(data: data),
+                      let thumbnail = image.preparingThumbnail(of: .init(width: 180, height: 100))?.jpegData(compressionQuality: 0.45),
+                      thumbnail.count <= 24000 else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+                continuation.resume(returning: thumbnail)
+            }
+        }
+    }
+    
+    private func watchThumbnailData(for content: ImageMessageContent) async -> Data? {
+        guard let mediaProvider else { return nil }
+        let source = content.info?.thumbnailSource ?? content.source
+        let mimeType = content.info?.thumbnailInfo?.mimetype ?? content.info?.mimetype
+        let proxy = MediaSourceProxy(source: source, mimeType: mimeType)
+        guard case let .success(data) = await mediaProvider.loadThumbnailForSource(source: proxy, size: .init(width: 180, height: 180)),
+              let image = UIImage(data: data),
+              let thumbnail = image.jpegData(compressionQuality: 0.5),
+              thumbnail.count <= 24000 else {
+            return nil
+        }
+        return thumbnail
     }
     
     private func toggleReaction(roomID: String, eventID: String, key: String) async -> Bool {
@@ -234,6 +313,13 @@ extension PhoneWatchBridge: WCSessionDelegate {
     }
     
     nonisolated func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any] = [:]) {
+        if userInfo[WatchPayloadKey.requestConversations] as? Bool == true {
+            Task { @MainActor in
+                session.transferUserInfo([WatchPayloadKey.conversations: encodedSnapshot()])
+            }
+            return
+        }
+        
         if let roomID = userInfo[WatchPayloadKey.historyRoomID] as? String {
             Task { @MainActor in
                 let history = await messageHistory(roomID: roomID)

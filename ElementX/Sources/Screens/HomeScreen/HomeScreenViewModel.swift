@@ -271,12 +271,15 @@ class HomeScreenViewModel: HomeScreenViewModelType, HomeScreenViewModelProtocol 
                 switch await roomProxy.flagAsUnread(false) {
                 case .success:
                     analyticsService.trackInteraction(name: .MobileRoomListRoomContextMenuUnreadToggle)
-                    
-                    if case .failure(let error) = await roomProxy.markAsRead(receiptType: appSettings.sharePresence ? .read : .readPrivate) {
-                        MXLog.error("Failed marking room \(roomIdentifier) as read with error: \(error)")
-                    }
                 case .failure(let error):
                     MXLog.error("Failed flagging room \(roomIdentifier) as read with error: \(error)")
+                }
+                
+                if case .failure(let error) = await roomProxy.markAsRead(receiptType: appSettings.sharePresence ? .read : .readPrivate) {
+                    MXLog.error("Failed marking room \(roomIdentifier) as read with error: \(error)")
+                }
+                if case .failure(let error) = await roomProxy.markAsRead(receiptType: .fullyRead) {
+                    MXLog.error("Failed marking room \(roomIdentifier) as fully read with error: \(error)")
                 }
             }
         case .markRoomAsFavourite(let roomIdentifier, let isFavourite):

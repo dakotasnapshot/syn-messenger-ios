@@ -8,12 +8,12 @@
 
 import Foundation
 
-enum NetworkMonitorReachability {
+nonisolated enum NetworkMonitorReachability: Equatable, Sendable {
     case reachable
     case unreachable
 }
 
-enum HomeserverReachability {
+nonisolated enum HomeserverReachability: Equatable, Sendable {
     /// The store is open and the homeserver is reachable.
     case reachable
     /// The homeserver can't be reached even though we're trying to sync (i.e. offline).

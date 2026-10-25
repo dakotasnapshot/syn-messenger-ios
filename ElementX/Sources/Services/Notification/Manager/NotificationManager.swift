@@ -150,14 +150,14 @@ final class NotificationManager: NSObject, NotificationManagerProtocol {
                       let lastMessageDate = roomsToLastMessageDates[roomID] else {
                     return false
                 }
-
+                
                 return notification.date <= lastMessageDate
             }
             .map(\.request.identifier)
-
+        
         notificationCenter.removeDeliveredNotifications(withIdentifiers: notificationsIdentifiers)
     }
-
+    
     func reconcileBadgeCount(with rooms: [RoomSummary]) async {
         let unreadCount = rooms.reduce(0) { count, room in
             count + Int(clamping: room.unreadNotificationsCount)
@@ -168,7 +168,7 @@ final class NotificationManager: NSObject, NotificationManagerProtocol {
             MXLog.error("Failed reconciling app badge count: \(error)")
         }
     }
-
+    
     private func removeReceivedWhileOfflineNotification() {
         notificationCenter.removeDeliveredNotifications(withIdentifiers: [NotificationServiceExtensionActor.receivedWhileOfflineNotificationID])
     }

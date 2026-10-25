@@ -16,6 +16,7 @@ enum TimelineViewModelAction {
     case displayReportContent(itemID: TimelineItemIdentifier, senderID: String)
     case displayCameraPicker
     case displayMediaPicker
+    case displayGIFPicker
     case displayDocumentPicker
     case displayLocationPicker
     case displayNewPollForm

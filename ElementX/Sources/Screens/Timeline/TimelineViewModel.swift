@@ -119,6 +119,13 @@ class TimelineViewModel: TimelineViewModelType, TimelineViewModelProtocol {
         setupSubscriptions()
         setupDirectRoomSubscriptionsIfNeeded()
         
+        if appSettings.sharePresence {
+            Task {
+                // Typing subscriptions only emit on changes, so prompt the homeserver for the current room state.
+                await roomProxy.sendTypingNotification(isTyping: false)
+            }
+        }
+        
         state.audioPlayerStateProvider = { [weak self] itemID -> AudioPlayerState? in
             guard let self else {
                 return nil
@@ -369,6 +376,8 @@ class TimelineViewModel: TimelineViewModelType, TimelineViewModelProtocol {
             actionsSubject.send(.displayCameraPicker)
         case .photoLibrary:
             actionsSubject.send(.displayMediaPicker)
+        case .gif:
+            actionsSubject.send(.displayGIFPicker)
         case .file:
             actionsSubject.send(.displayDocumentPicker)
         case .location:

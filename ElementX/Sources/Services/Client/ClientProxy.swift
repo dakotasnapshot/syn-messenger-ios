@@ -1577,7 +1577,6 @@ private struct ClientProxyServices {
             .syncService()
             .withOfflineMode()
             .withSharePos(enable: true)
-            .withProfilesExtension()
             .finish()
         
         let roomListService = syncService.roomListService()

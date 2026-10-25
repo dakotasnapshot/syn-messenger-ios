@@ -20,6 +20,21 @@ final class TimelineViewModelTests {
         cancellables.removeAll()
     }
     
+    @Test
+    func refreshesTypingMembersWhenOpened() async {
+        let roomProxy = JoinedRoomProxyMock(.init(name: ""))
+        await confirmation { typingRefresh in
+            roomProxy.sendTypingNotificationIsTypingClosure = { isTyping in
+                #expect(!isTyping)
+                typingRefresh()
+                return .success(())
+            }
+            
+            _ = makeViewModel(roomProxy: roomProxy, timelineController: TimelineControllerMock())
+            await Task.yield()
+        }
+    }
+    
     // MARK: - Message Grouping
     
     @Test
@@ -245,11 +260,9 @@ final class TimelineViewModelTests {
         try viewModel.context.send(viewAction: .sendReadReceiptIfNeeded(#require(items.last?.id)))
         try await Task.sleep(for: .milliseconds(100))
         
-        // Then the receipt should be sent.
-        #expect(timelineProxy.sendReadReceiptForTypeCalled == true)
-        let arguments = timelineProxy.sendReadReceiptForTypeReceivedArguments
-        #expect(arguments?.eventID == "t3")
-        #expect(arguments?.type == .read)
+        // Then the read and fully-read receipts should be sent.
+        #expect(timelineProxy.sendReadReceiptForTypeReceivedInvocations.map(\.eventID) == ["t3", "t3"])
+        #expect(timelineProxy.sendReadReceiptForTypeReceivedInvocations.map(\.type) == [.read, .fullyRead])
     }
     
     @Test

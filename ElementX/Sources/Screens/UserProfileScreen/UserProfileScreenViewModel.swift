@@ -96,7 +96,7 @@ class UserProfileScreenViewModel: UserProfileScreenViewModelType, UserProfileScr
         switch await profileResult {
         case .success(let userProfile):
             state.userProfile = userProfile
-            state.permalink = (try? matrixToUserPermalink(userId: state.userID)).flatMap(URL.init(string:))
+            state.permalink = SyndicatePermalink.user(state.userID)
             
             switch userSession.clientProxy.directRoomForUserID(userProfile.id) {
             case .success(let roomID):

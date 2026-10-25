@@ -235,7 +235,7 @@ nonisolated struct AttributedStringBuilder: AttributedStringBuilderProtocol {
                 } else {
                     content.addAttribute(.InlineCode, value: true, range: NSRange(location: 0, length: content.length))
                     // But inline code is (obviously) inline so it's much easier to set the background colour here.
-                    content.addAttribute(.backgroundColor, value: UIColor.compound._bgCodeBlock as Any, range: NSRange(location: 0, length: content.length))
+                    content.addAttribute(.backgroundColor, value: CompoundUIColors.codeBlockBackgroundColor as Any, range: NSRange(location: 0, length: content.length))
                 }
                 
                 // Don't allow identifiers or links in code.
@@ -429,21 +429,19 @@ nonisolated struct AttributedStringBuilder: AttributedStringBuilderProtocol {
     
     func addMatrixEntityPermalinkAttributesTo(_ attributedString: NSMutableAttributedString) {
         attributedString.enumerateAttribute(.link, in: .init(location: 0, length: attributedString.length), options: []) { value, range, _ in
-            if value != nil {
-                if let url = value as? URL,
-                   let matrixEntity = parseMatrixEntityFrom(uri: url.absoluteString) {
-                    switch matrixEntity.id {
-                    case .user(let userID):
-                        mentionBuilder.handleUserMention(for: attributedString, in: range, url: url, userID: userID, userDisplayName: nil)
-                    case .room(let roomID):
-                        mentionBuilder.handleRoomIDMention(for: attributedString, in: range, url: url, roomID: roomID)
-                    case .roomAlias(let alias):
-                        mentionBuilder.handleRoomAliasMention(for: attributedString, in: range, url: url, roomAlias: alias, roomDisplayName: nil)
-                    case .eventOnRoomId(let roomID, let eventID):
-                        mentionBuilder.handleEventOnRoomIDMention(for: attributedString, in: range, url: url, eventID: eventID, roomID: roomID)
-                    case .eventOnRoomAlias(let alias, let eventID):
-                        mentionBuilder.handleEventOnRoomAliasMention(for: attributedString, in: range, url: url, eventID: eventID, roomAlias: alias)
-                    }
+            if let url = value as? URL,
+               let matrixEntity = parseMatrixEntityFrom(uri: url.absoluteString) {
+                switch matrixEntity.id {
+                case .user(let userID):
+                    mentionBuilder.handleUserMention(for: attributedString, in: range, url: url, userID: userID, userDisplayName: nil)
+                case .room(let roomID):
+                    mentionBuilder.handleRoomIDMention(for: attributedString, in: range, url: url, roomID: roomID)
+                case .roomAlias(let alias):
+                    mentionBuilder.handleRoomAliasMention(for: attributedString, in: range, url: url, roomAlias: alias, roomDisplayName: nil)
+                case .eventOnRoomId(let roomID, let eventID):
+                    mentionBuilder.handleEventOnRoomIDMention(for: attributedString, in: range, url: url, eventID: eventID, roomID: roomID)
+                case .eventOnRoomAlias(let alias, let eventID):
+                    mentionBuilder.handleEventOnRoomAliasMention(for: attributedString, in: range, url: url, eventID: eventID, roomAlias: alias)
                 }
             }
         }
