@@ -46,7 +46,6 @@ class TypingMembersObservableObject: ObservableObject {
 class TimelineTableViewController: UIViewController {
     private let coordinator: TimelineViewRepresentable.Coordinator
     private let tableView = UITableView(frame: .zero, style: .plain)
-    private var lastRenderedSize: CGSize = .zero
     
     var timelineItemsDictionary = OrderedDictionary<TimelineItemIdentifier.UniqueID, RoomTimelineItemViewState>() {
         didSet {
@@ -273,23 +272,6 @@ class TimelineTableViewController: UIViewController {
         tableView.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        let size = tableView.bounds.size
-        guard size.width > 0, size.height > 0, size != lastRenderedSize else { return }
-        lastRenderedSize = size
-        
-        // Recreate hosted surfaces after the compact/split and keyboard layout settles.
-        guard #available(iOS 27.1, *) else { return }
-        DispatchQueue.main.async { [weak self] in
-            guard let self, tableView.bounds.size == size,
-                  var snapshot = dataSource?.snapshot(), !snapshot.itemIdentifiers.isEmpty else { return }
-            snapshot.reloadItems(snapshot.itemIdentifiers)
-            dataSource?.apply(snapshot, animatingDifferences: false)
-        }
-    }
-    
     /// Configures a diffable data source for the timeline's table view.
     private func configureDataSource() {
         dataSource = .init(tableView: tableView) { [weak self] tableView, indexPath, id in
@@ -302,6 +284,7 @@ class TimelineTableViewController: UIViewController {
                 
                 cell.contentConfiguration = UIHostingConfiguration {
                     TypingIndicatorView(typingMembers: self.typingMembers)
+                        .ignoresSafeArea()
                 }
                 .margins(.vertical, 0)
                 .minSize(height: 0)
@@ -324,6 +307,8 @@ class TimelineTableViewController: UIViewController {
                 
                 cell.contentConfiguration = UIHostingConfiguration { [coordinator, hideTimelineMedia] in
                     RoomTimelineItemView(viewState: viewState)
+                        // The table owns viewport clipping; cells must not reapply keyboard/fold insets.
+                        .ignoresSafeArea()
                         .id(id)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .environmentObject(coordinator.context) // Attempted fix at a crash in TimelineItemContextMenu
