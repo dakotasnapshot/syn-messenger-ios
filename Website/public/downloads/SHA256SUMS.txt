@@ -20,3 +20,4 @@ b5159805b09f03ec961e37138fafe2e775ef11eb5ecf5bb154e4fa0c2caf371d  Syndicate-Load
 7a0a4f8eab8eeae0d36a1b113f0a7e1a5efccf6352bf3fd2b709ee62c33b034e  Syndicate-Loader-0.1.4-mac-arm64.dmg
 fe99bc9f3ec94aa992567b4a7f1ab4a93fa75d4dc8e685e5eebe51943d57adcf  Syndicate-0.1.5-build43.ipa
 0b7643b1080d9115da1aa4c8c7a82bf1703a68058f8a3e3ecebd190f785c45eb  Syndicate-0.1.5-build44.ipa
+60a9a64901a937a5f10459692798b4fcaf9f6055959e1fe67287c083c46a3e02  Syndicate-10.25.26-build45.ipa
