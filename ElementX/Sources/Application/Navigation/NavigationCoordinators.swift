@@ -358,6 +358,11 @@ private struct NavigationSplitCoordinatorView: View {
             module.coordinator?.toPresentable()
                 .id(module.id)
         }
+        .onChange(of: navigationSplitCoordinator.detailModule, initial: true) { _, detail in
+            if #available(iOS 27.1, *), detail != nil {
+                navigationSplitCoordinator.columnVisibility = .detailOnly
+            }
+        }
         .onChange(of: navigationSplitCoordinator.columnVisibility) { oldValue, _ in
             // Preserve the current column visibility when backgrounding the app
             if scenePhase == .background {

@@ -11,6 +11,7 @@ import SentrySwiftUI
 import SwiftUI
 
 struct HomeScreenContent: View {
+    @Environment(\.floatingNavigationClearance) private var floatingNavigationClearance
     @ObservedObject var context: HomeScreenViewModel.Context
     let scrollViewAdapter: ScrollViewAdapter
     
@@ -102,6 +103,7 @@ struct HomeScreenContent: View {
                     scrollView.setContentOffset(oldOffset, animated: false)
                 }
             }
+            .contentMargins(.horizontal, floatingNavigationClearance > 0 ? 0 : nil, for: .scrollContent)
             .scrollDismissesKeyboard(.immediately)
             .scrollDisabled(context.viewState.roomListMode == .skeletons)
             .scrollBounceBehavior(context.viewState.roomListMode == .empty ? .basedOnSize : .automatic)

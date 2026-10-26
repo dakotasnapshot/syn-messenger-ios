@@ -10,6 +10,7 @@ import Compound
 import SwiftUI
 
 struct SpacesScreen: View {
+    @Environment(\.floatingNavigationClearance) private var floatingNavigationClearance
     @Bindable var context: SpacesScreenViewModel.Context
     
     var body: some View {
@@ -20,6 +21,10 @@ struct SpacesScreen: View {
             .toolbarRole(Compound.supportsGlass ? .editor : .automatic)
             .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
             .toolbarBloom(hasSearchBar: false)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                Color.clear.frame(height: floatingNavigationClearance)
+            }
+            .synFullWidthContent(enabled: floatingNavigationClearance > 0)
     }
     
     @ViewBuilder

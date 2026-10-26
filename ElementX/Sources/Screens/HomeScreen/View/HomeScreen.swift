@@ -12,6 +12,7 @@ import SentrySwiftUI
 import SwiftUI
 
 struct HomeScreen: View {
+    @Environment(\.floatingNavigationClearance) private var floatingNavigationClearance
     @Environment(\.isInSidebar) private var isInSidebar
     @Environment(\.synThemePalette) private var synTheme
     
@@ -36,6 +37,10 @@ struct HomeScreen: View {
             .toolbarRole(Compound.supportsGlass ? .editor : .automatic)
             .background(synTheme.titleBar.ignoresSafeArea())
             .tint(synTheme.usesMonochromeControls ? .white : synTheme.accent)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                Color.clear.frame(height: floatingNavigationClearance)
+            }
+            .synFullWidthContent(enabled: floatingNavigationClearance > 0)
             .track(screen: .Home)
             .toolbarBloom(hasSearchBar: context.viewState.isRoomListSearchEnabled)
             .sentryTrace("\(Self.self)")

@@ -50,3 +50,27 @@ extension View {
         modifier(SYNFoldAwareControls())
     }
 }
+
+/// Extend into unused tab-bar safe areas, while retaining system fold clearances.
+private struct SYNFullWidthContent: ViewModifier {
+    let enabled: Bool
+    @State private var hasDivision = false
+    
+    func body(content: Content) -> some View {
+        if #available(iOS 27.1, *) {
+            content
+                .ignoresSafeArea(.container, edges: enabled && !hasDivision ? .horizontal : [])
+                .onGeometryChange(for: Bool.self) { geometry in
+                    geometry.reservedRegions(kind: .division).contains(where: \.isActive)
+                } action: { hasDivision = $0 }
+        } else {
+            content
+        }
+    }
+}
+
+extension View {
+    func synFullWidthContent(enabled: Bool = true) -> some View {
+        modifier(SYNFullWidthContent(enabled: enabled))
+    }
+}

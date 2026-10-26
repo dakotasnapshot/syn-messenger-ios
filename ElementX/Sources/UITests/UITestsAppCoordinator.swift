@@ -635,6 +635,27 @@ class MockScreen: Identifiable {
                                                     spaceServiceConfiguration: .init(topLevelSpaces: .mockSpaceList.filter(\.isSpace) + .mockSingleRoom),
                                                     roomPreviews: [SpaceServiceRoom].mockSpaceList.map { RoomPreviewProxyMock(spaceServiceRoom: $0) },
                                                     defaultRoomMembers: .allMembersAsAdmin))
+            if id == .appStoreHome {
+                let drafts = ScreenshotDraftStore()
+                let roomLookup = clientProxy.roomForIdentifierClosure
+                clientProxy.roomForIdentifierClosure = { roomID in
+                    let result = await roomLookup?(roomID)
+                    if case let .joined(room) = result, let mock = room as? JoinedRoomProxyMock {
+                        mock.saveDraftThreadRootEventIDClosure = { draft, threadID in
+                            drafts.save(draft, roomID: roomID, threadID: threadID)
+                            return .success(())
+                        }
+                        mock.loadDraftThreadRootEventIDClosure = { threadID in
+                            await .success(drafts.load(roomID: roomID, threadID: threadID))
+                        }
+                        mock.clearDraftThreadRootEventIDClosure = { threadID in
+                            drafts.clear(roomID: roomID, threadID: threadID)
+                            return .success(())
+                        }
+                    }
+                    return result
+                }
+            }
             clientProxy.presenceForReturnValue = .success(.init(presence: .online,
                                                                 statusMessage: "Available",
                                                                 lastActiveAgo: 0,
@@ -960,5 +981,22 @@ private extension Array where Element == RoomSummary {
                     isMarkedUnread: false,
                     isFavourite: id == "weekend",
                     isTombstoned: false)
+    }
+}
+
+// Screenshot fixtures exercise the real draft service without a Matrix server.
+private final class ScreenshotDraftStore {
+    private var drafts: [String: [String?: ComposerDraft]] = [:]
+    
+    func save(_ draft: ComposerDraft, roomID: String, threadID: String?) {
+        drafts[roomID, default: [:]][threadID] = draft
+    }
+    
+    func load(roomID: String, threadID: String?) -> ComposerDraft? {
+        drafts[roomID]?[threadID]
+    }
+    
+    func clear(roomID: String, threadID: String?) {
+        drafts[roomID]?[threadID] = nil
     }
 }

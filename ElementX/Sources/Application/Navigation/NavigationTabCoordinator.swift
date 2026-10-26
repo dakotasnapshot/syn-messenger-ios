@@ -305,6 +305,7 @@ extension EnvironmentValues {
     /// when the split becomes compact, hides the rail but then has enough space to become regular and so
     /// attempts to show the rail etc.
     @Entry var tabViewHorizontalSizeClass: UserInterfaceSizeClass?
+    @Entry var floatingNavigationClearance: CGFloat = 0
 }
 
 /// Tracks whether the tab rail should be shown alongside the split view's sidebar.
@@ -359,6 +360,7 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     @State private var isFullScreen = true
     @State private var railVisibility = TabRailVisibility()
     @State private var railBackgroundColor: Color = .compound.bgCanvasDefault
+    @State private var floatingBarHeight: CGFloat = 80
     
     var body: some View {
         tabView
@@ -387,7 +389,17 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     
     @ViewBuilder
     var tabView: some View {
-        if horizontalSizeClass == .regular, #available(iOS 26, *) {
+        if #available(iOS 27.1, *) {
+            GeometryReader { geometry in
+                if geometry.size.width < 600 || horizontalSizeClass == .compact {
+                    floatingTabLayout
+                        .environment(\.tabViewHorizontalSizeClass, .compact)
+                } else {
+                    tabRailLayout
+                }
+            }
+            .synFullWidthContent()
+        } else if horizontalSizeClass == .regular, #available(iOS 26, *) {
             tabRailLayout
         } else {
             tabViewLayout
@@ -450,12 +462,17 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     }
     
     var tabViewLayout: some View {
+        systemTabView(hidesSystemBar: false)
+    }
+    
+    private func systemTabView(hidesSystemBar: Bool) -> some View {
         TabView(selection: $navigationTabCoordinator.selectedTab) {
             ForEach(navigationTabCoordinator.tabModules) { module in
                 Tab(value: module.details.tag, role: module.details.isSearch ? .search : nil) {
                     module.coordinator?.toPresentable()
                         .id(module.id)
-                        .toolbar(module.details.barVisibility(in: horizontalSizeClass), for: .tabBar)
+                        .environment(\.floatingNavigationClearance, hidesSystemBar && module.details.barVisibility(in: .compact) != .hidden ? floatingBarHeight + 8 : 0)
+                        .toolbar(hidesSystemBar ? .hidden : module.details.barVisibility(in: horizontalSizeClass), for: .tabBar)
                 } label: {
                     Label {
                         Text(module.details.title)
@@ -468,6 +485,54 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         }
         .backportTabBarMinimizeBehaviorOnScrollDown()
         .introspect(.tabView, on: .supportedVersions, customize: configureAppearance)
+    }
+    
+    @available(iOS 27.1, *)
+    private var floatingTabLayout: some View {
+        systemTabView(hidesSystemBar: true)
+            .overlay(alignment: .bottom) {
+                if let selected = navigationTabCoordinator.tabModules.first(where: { $0.details.tag == navigationTabCoordinator.selectedTab }),
+                   selected.details.barVisibility(in: .compact) != .hidden {
+                    floatingTabBar
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 8)
+                        .onGeometryChange(for: CGFloat.self) { geometry in
+                            geometry.size.height
+                        } action: { floatingBarHeight = $0 }
+                }
+            }
+            .synFullWidthContent()
+    }
+    
+    @available(iOS 27.1, *)
+    private var floatingTabBar: some View {
+        HStack(spacing: 8) {
+            ForEach(navigationTabCoordinator.tabModules) { module in
+                let selected = module.details.tag == navigationTabCoordinator.selectedTab
+                Button {
+                    navigationTabCoordinator.selectedTab = module.details.tag
+                } label: {
+                    VStack(spacing: 4) {
+                        CompoundIcon(selected ? module.details.selectedIcon : module.details.icon)
+                        Text(module.details.title)
+                            .font(.caption)
+                        if module.details.badgeCount > 0 {
+                            Text(module.details.badgeCount.formatted())
+                                .font(.caption2.bold())
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .frame(minWidth: 44, minHeight: 52)
+                    .background(selected ? Color.compound.bgSubtleSecondary : .clear, in: Capsule())
+                }
+                .buttonStyle(.plain)
+                .accessibilityAddTraits(selected ? .isSelected : [])
+            }
+        }
+        .padding(6)
+        .glassEffect(.regular, in: Capsule())
+        .accessibilityElement(children: .contain)
+        .accessibilityAddTraits(.isTabBar)
     }
     
     private func configureAppearance(_ tabBarController: UITabBarController) {

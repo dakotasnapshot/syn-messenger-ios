@@ -147,6 +147,7 @@ struct RoomScreen: View {
                 guard notification.object as? String == context.viewState.roomID else { return }
                 wallpaper = SYNRoomWallpaperStore.image(roomID: context.viewState.roomID)
             }
+            .synFullWidthContent()
             .track(screen: .Room)
             .sentryTrace("\(Self.self)")
     }

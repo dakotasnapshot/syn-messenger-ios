@@ -634,7 +634,8 @@ final class ComposerToolbarViewModel: ComposerToolbarViewModelType, ComposerTool
             let fullRange = match.range(at: 0)
             
             let userID = nsText.substring(with: userIDRange)
-            if let url = SyndicatePermalink.user(userID) {
+            // Draft attributes must use a Matrix URI that the SDK mention parser recognizes.
+            if let url = try? URL(string: matrixToUserPermalink(userId: userID)) {
                 callback(fullRange, url)
             }
         }
