@@ -1,0 +1,32 @@
+{
+  "version": "10.27.26",
+  "build": "46",
+  "file": "Syndicate-10.27.26-build46.ipa",
+  "sha256": "4d1fb0fa18b079276835a4faf007511a3e5e9f0dcac0744c55beadca2f397592",
+  "bytes": 135148514,
+  "sourceCheckpoint": "4e9c89e42",
+  "publicSourceCheckpoint": "29d3bfede",
+  "publicIPA": "https://synmessenger.com/downloads/Syndicate-10.27.26-build46.ipa",
+  "deliveryUUID": "7a469339-ac8b-4869-bad5-05d5fd8589ea",
+  "deliveryState": "COMPLETE",
+  "processingState": "VALID",
+  "internalBuildState": "IN_BETA_TESTING",
+  "externalBuildState": "READY_FOR_BETA_SUBMISSION",
+  "internalGroupMembershipVerified": true,
+  "testNotesReadbackVerified": true,
+  "publicFullDownloadVerified": true,
+  "latestLinkVerified": true,
+  "checksumReadbackVerified": true,
+  "historical45Retained": true,
+  "tests": "29 focused tests in4suites passed; same-code keyboard/fold/theme/navigation tests",
+  "debug": "final signedarm64 BUILD SUCCEEDED",
+  "archiveExportValidation": "passed; all5components signatures and versions verified",
+  "runtime": "iPad navigation/sidebar/theme/wallpaper/draftrotation and iPhone compactnav/draftrotation/softwarekeyboard clearance passed",
+  "knownGaps": [
+    "Physical iPad external-keyboard accessory clearance unverified",
+    "Final iPad software keyboard absent; prior same-code keyboard evidence recorded separately",
+    "Phone reverse landscape-to-portrait observation timed out under host contention"
+  ],
+  "simulators": "All task-owned simulators shutdown and native sessions closed",
+  "appReviewSubmitted": false
+}
