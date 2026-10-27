@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Download Syndicate by SYN Messenger</title>
-  <meta name="description" content="Download Syndicate by SYN Messenger for macOS, Linux, and Windows.">
+  <meta name="description" content="Download Syndicate by SYN Messenger for iPhone, iPad, macOS, Linux, and Windows. Get the iPhone/iPad IPA and use Syndicate Loader for Mac to install it on your device.">
   <style>
     :root { color-scheme: dark; font-family: ui-rounded, -apple-system, BlinkMacSystemFont, sans-serif; background: #080b14; color: #f6f7ff; }
     * { box-sizing: border-box; }
@@ -15,11 +15,12 @@
     h1 { font-size: clamp(2.4rem, 8vw, 4.5rem); line-height: .95; letter-spacing: -.05em; margin: 2.5rem 0 1rem; }
     p { color: #bdc9df; line-height: 1.6; }
     .button { display: inline-block; margin: 1rem 0; border: 1px solid #69aefc; border-radius: 999px; padding: .9rem 1.3rem; color: white; text-decoration: none; font-weight: 750; background: #1878df; }
-    .downloads { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .downloads { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr)); gap: 1rem; margin: 1.5rem 0; }
     .download { border: 1px solid #273552; border-radius: 1rem; padding: 1.25rem; background: #0d1424; }
     .download h2 { margin: 0; }
     .download .button { margin-bottom: .25rem; }
     .secondary { background: transparent; }
+    li { color: #bdc9df; line-height: 1.6; margin-bottom: .6rem; }
     .checksum { font-size: .78rem; }
     code { color: #b9dcff; overflow-wrap: anywhere; }
     a { color: #90c5ff; }
@@ -30,6 +31,27 @@
     <a class="brand" href="/"><img src="/logo.svg" alt="">Syndicate</a>
     <h1>Download Syndicate</h1>
     <div class="downloads">
+      <section class="download" id="ios-download">
+        <h2>iPhone &amp; iPad</h2>
+        <p>The Syndicate messaging app for iPhone and iPad. Download the IPA app package here, then use <a href="#loader-download">Syndicate Loader for Mac</a> to help install it on your device.</p>
+        <a class="button" href="/downloads/Syndicate-10.27.26-build46.ipa">Download iPhone / iPad IPA</a>
+        <p>Version 10.27.26 · Build 46</p>
+        <p><strong>Installation required:</strong> downloading the IPA does not install the app. This App Store-signed package must be re-signed with your Apple signing credential and matching device profiles before installation. Loader guides you through that step.</p>
+        <p class="checksum">IPA SHA-256: <code>4d1fb0fa18b079276835a4faf007511a3e5e9f0dcac0744c55beadca2f397592</code></p>
+      </section>
+      <section class="download" id="loader-download">
+        <h2>Syndicate Loader for Mac</h2>
+        <p>A Mac companion that helps you get an IPA onto your iPhone or iPad. Loader is the installer tool—not the messaging app. Requires an Apple Silicon Mac.</p>
+        <a class="button" id="loader-download-link" href="/downloads/Syndicate-Loader-0.1.4-mac-arm64.dmg">Download Loader 0.1.4</a>
+        <ol>
+          <li>Download the <a href="#ios-download">iPhone / iPad IPA</a> and install Loader on your Mac.</li>
+          <li>Connect your iPhone or iPad over USB, trust the Mac, and select the IPA in Loader.</li>
+          <li>Use Loader’s signing step with your Apple signing credential and matching device profiles, then install. Enable Developer Mode if prompted.</li>
+        </ol>
+        <p id="loader-description">Developer ID signed, Apple notarized, and local-first. Installs compatible IPAs over USB or trusted network connections and detects provisioning problems before installation.</p>
+        <p>Start with USB. Trusted Wi-Fi installation is also available when your paired device is discoverable.</p>
+        <p class="checksum">Loader SHA-256: <code id="loader-sha256">7a0a4f8eab8eeae0d36a1b113f0a7e1a5efccf6352bf3fd2b709ee62c33b034e</code></p>
+      </section>
       <section class="download">
         <h2>macOS</h2>
         <p>Universal Apple Silicon and Intel build. Requires macOS 12 or later.</p>
@@ -53,17 +75,6 @@
         <p><strong>Unsigned preview:</strong> Windows SmartScreen may warn before installation. Verify the checksum, then choose <em>More info → Run anyway</em> if you trust this download.</p>
         <p class="checksum">EXE SHA-256: <code>0846688ec5a9b65c0b119e9b74bca8e0029272dc28325f0f0939c24db5d5c8b2</code></p>
         <p class="checksum">MSI SHA-256: <code>6ffbd7aff213f2536382f28df6011d2c39e38a93dab21a763ab6e75e62c329cc</code></p>
-      </section>
-      <section class="download" id="loader-download">
-        <h2>Syndicate Loader</h2>
-        <p>Apple Silicon preview for installing any compatible IPA directly on a trusted iPhone or iPad—without depending on an app store.</p>
-        <a class="button" id="loader-download-link" href="/downloads/Syndicate-Loader-0.1.4-mac-arm64.dmg">Download Loader 0.1.4</a>
-        <a class="button secondary" href="/downloads/Syndicate-10.27.26-build46.ipa">Download latest Syndicate IPA</a>
-        <p id="loader-description">Developer ID signed, Apple notarized, and local-first. Installs compatible IPAs over USB or trusted network connections and detects provisioning problems before installation.</p>
-        <p><strong>Test steps:</strong> install the DMG, connect and trust the device over USB, and choose an IPA. The supplied Syndicate 10.27.26 build 46 IPA uses App Store distribution provisioning and <strong>cannot install as downloaded</strong>. Re-sign it in Loader step 3 using a credential and matching profiles that include your device, then install it. Enable Developer Mode when prompted.</p>
-        <p>USB is the dependable first test. Trusted Wi-Fi and WireGuard support depend on Apple pairing discovery being reachable across that network.</p>
-        <p class="checksum">Loader SHA-256: <code id="loader-sha256">7a0a4f8eab8eeae0d36a1b113f0a7e1a5efccf6352bf3fd2b709ee62c33b034e</code></p>
-        <p class="checksum">Syndicate IPA SHA-256: <code>4d1fb0fa18b079276835a4faf007511a3e5e9f0dcac0744c55beadca2f397592</code></p>
       </section>
     </div>
     <p>Windows code signing is pending. The published checksums let you verify these preview installers.</p>
