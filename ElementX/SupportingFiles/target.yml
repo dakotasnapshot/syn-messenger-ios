@@ -201,6 +201,9 @@ targets:
         fi
 
     postBuildScripts:
+    - name: Configure Giphy
+      basedOnDependencyAnalysis: false
+      script: python3 "$PROJECT_DIR/Tools/Scripts/configure-giphy.py"
     - name: ⚠️ SwiftLint
       runOnlyWhenInstalling: false
       basedOnDependencyAnalysis: false

@@ -153,6 +153,7 @@ enum A11yIdentifiers {
         let attachmentPickerPhotoLibrary = "room-attachment_picker_photo_library"
         let attachmentPickerDocuments = "room-attachment_picker_documents"
         let attachmentPickerCamera = "room-attachment_picker_camera"
+        let attachmentPickerGIF = "room-attachment_picker_gif"
         let attachmentPickerLocation = "room-attachment_picker_location"
         let attachmentPickerPoll = "room-attachment_picker_poll"
         let attachmentPickerTextFormatting = "room-attachment_picker_text_formatting"

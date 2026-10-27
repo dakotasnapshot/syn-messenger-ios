@@ -1112,7 +1112,7 @@ class RoomFlowCoordinator: FlowCoordinatorProtocol {
     private func presentGIFPicker(caption: NSAttributedString,
                                   timelineController: TimelineControllerProtocol,
                                   animated: Bool) {
-        guard let apiKey = Secrets.giphyAPIKey, !apiKey.isEmpty else { return }
+        guard let apiKey = GiphyConfiguration.apiKey, !apiKey.isEmpty else { return }
         Giphy.configure(apiKey: apiKey)
         
         let coordinator = GIFPickerScreenCoordinator(userIndicatorController: flowParameters.userIndicatorController) { [weak self] action in

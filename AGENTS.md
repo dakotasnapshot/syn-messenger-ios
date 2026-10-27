@@ -389,3 +389,7 @@ Same pattern for publishers.
 ## Syndicate Release Rule
 
 - Every iOS release: publish matching validated IPA on `synmessenger.com`. Update downloads page, checksums, latest-release/Loader references. Keep historical files. Verify public checksum and embedded version/build. Publish matching public source; preserve AGPL attribution. TestFlight upload alone not complete.
+
+## Giphy release configuration
+
+- `GiphyConfiguration` reads bundled `SyndicateServices.plist`. Build phase runs `Tools/Scripts/configure-giphy.py`; deployment key stays outside git. See `docs/GIPHY_CONFIGURATION.md`. Release missing key must fail; verify key present in archive/export.

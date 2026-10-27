@@ -74,6 +74,7 @@ struct RoomAttachmentPicker: View {
                 } label: {
                     Label(UntranslatedL10n.screenRoomAttachmentSourceGif, icon: \.image)
                 }
+                .accessibilityIdentifier(A11yIdentifiers.roomScreen.attachmentPickerGIF)
             }
             
             Button {

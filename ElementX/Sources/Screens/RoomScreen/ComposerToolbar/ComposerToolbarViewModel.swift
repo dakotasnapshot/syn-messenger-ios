@@ -66,7 +66,7 @@ final class ComposerToolbarViewModel: ComposerToolbarViewModelType, ComposerTool
         super.init(initialViewState: ComposerToolbarViewState(wysiwygViewModel: wysiwygViewModel,
                                                               isRoomEncrypted: roomProxy.infoPublisher.value.isEncrypted,
                                                               isLocationSharingEnabled: appSettings.mapTilerConfiguration.publisher.value.isEnabled,
-                                                              isGIFPickerEnabled: Secrets.giphyAPIKey?.isEmpty == false,
+                                                              isGIFPickerEnabled: GiphyConfiguration.apiKey?.isEmpty == false,
                                                               bindings: .init()),
                    mediaProvider: mediaProvider)
         
