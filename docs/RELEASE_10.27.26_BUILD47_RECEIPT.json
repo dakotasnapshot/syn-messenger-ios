@@ -1,0 +1,45 @@
+{
+  "version": "10.27.26",
+  "build": "47",
+  "file": "Syndicate-10.27.26-build47.ipa",
+  "sha256": "056ed16905ad4f9fbfe0692ab88bb81c7d35bd27d32dc000007130f407608c79",
+  "bytes": 135152070,
+  "sourceCheckpoint": "d5ee1acf80a4770dc1f5ca8e870964f51ad0aa60",
+  "publicSourceCheckpoint": "7377e82",
+  "publicIPA": "https://synmessenger.com/downloads/Syndicate-10.27.26-build47.ipa",
+  "publicFullDownloadVerified": true,
+  "bundledGiphyVerified": true,
+  "latestLinkVerified": true,
+  "checksumReadbackVerified": true,
+  "historical46Retained": true,
+  "loaderUnchanged": true,
+  "deliveryUUID": "833100c3-1bb6-44fb-9c87-978d8d90e319",
+  "processingState": "VALID",
+  "internalBuildState": "IN_BETA_TESTING",
+  "internalGroupMembershipVerified": true,
+  "testNotesReadbackVerified": true,
+  "testsPassed": 52,
+  "gifUITestsPassed": 1,
+  "review": {
+    "version": "10.27.26",
+    "build": "47",
+    "buildID": "833100c3-1bb6-44fb-9c87-978d8d90e319",
+    "state": "PREPARE_FOR_SUBMISSION",
+    "releaseType": "MANUAL",
+    "notesExactReadbackVerified": true,
+    "privateReviewFieldsPreserved": true,
+    "appReviewSubmitted": false
+  },
+  "screenshotCounts": {
+    "APP_IPHONE_67": 3,
+    "APP_IPAD_PRO_3GEN_129": 3,
+    "APP_IPHONE_61": 4
+  },
+  "watchScreenshotsPreserved": true,
+  "appReviewSubmitted": false,
+  "knownGaps": [
+    "Physical-device Matrix GIF sending not performed; synthetic UI reached upload preview",
+    "Prior provider Apple sign-in failure not re-verified",
+    "Physical-device CallKit/Watch/location recordings not produced; waiver not granted"
+  ]
+}
