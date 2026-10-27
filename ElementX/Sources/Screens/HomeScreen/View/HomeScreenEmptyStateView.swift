@@ -30,7 +30,7 @@ struct HomeScreenEmptyStateView: View {
             Button { context.send(viewAction: .startChat) } label: {
                 Label(L10n.actionStartChat, icon: \.compose)
                     .font(.compound.bodyLGSemibold)
-                    .foregroundColor(.compound.textOnSolidPrimary)
+                    .foregroundColor(Color(uiColor: .systemBackground))
                     .padding(.vertical, 6)
                     .padding(.horizontal, 22)
             }

@@ -12,9 +12,9 @@ import SentrySwiftUI
 import SwiftUI
 
 struct HomeScreen: View {
+    @Environment(\.sidebarNavigationMenu) private var sidebarNavigationMenu
     @Environment(\.floatingNavigationClearance) private var floatingNavigationClearance
     @Environment(\.isInSidebar) private var isInSidebar
-    @Environment(\.synThemePalette) private var synTheme
     
     @ObservedObject var context: HomeScreenViewModel.Context
     
@@ -35,8 +35,8 @@ struct HomeScreen: View {
             .navigationBarTitleDisplayMode(Compound.supportsGlass ? .inline : .automatic)
             .toolbar { toolbar }
             .toolbarRole(Compound.supportsGlass ? .editor : .automatic)
-            .background(synTheme.titleBar.ignoresSafeArea())
-            .tint(synTheme.usesMonochromeControls ? .white : synTheme.accent)
+            .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
+            .tint(.primary)
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 Color.clear.frame(height: floatingNavigationClearance)
             }
@@ -71,10 +71,14 @@ struct HomeScreen: View {
                     .buttonStyle(.borderless)
                 
                 if #available(iOS 26, *) {
-                    Text(title)
-                        .font(isInSidebar ? .compound.bodyLGSemibold : .compound.headingLGBold)
-                        .foregroundStyle(.compound.textPrimary)
-                        .minimumScaleFactor(isInSidebar ? 1 : 0.6) // Allow scaling down to bodyLG if needed.
+                    if let sidebarNavigationMenu {
+                        sidebarNavigationMenu
+                    } else {
+                        Text(title)
+                            .font(isInSidebar ? .compound.bodyLGSemibold : .compound.headingLGBold)
+                            .foregroundStyle(.compound.textPrimary)
+                            .minimumScaleFactor(isInSidebar ? 1 : 0.6) // Allow scaling down to bodyLG if needed.
+                    }
                 }
             }
         }

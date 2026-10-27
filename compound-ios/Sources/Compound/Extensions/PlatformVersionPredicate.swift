@@ -15,6 +15,12 @@ public extension PlatformViewVersionPredicate<NavigationStackType, UINavigationC
     }
 }
 
+public extension PlatformViewVersionPredicate<NavigationSplitViewType, UISplitViewController> {
+    static var supportedVersions: Self {
+        .iOS(.v17...)
+    }
+}
+
 public extension PlatformViewVersionPredicate<WindowType, UIWindow> {
     static var supportedVersions: Self {
         .iOS(.v17...)

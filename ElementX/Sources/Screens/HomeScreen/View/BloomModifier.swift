@@ -41,7 +41,7 @@ private struct BloomModifier: ViewModifier {
                 self.height = height
             }
             .overlay(alignment: .top) {
-                LinearGradient(colors: [.blue.opacity(0.72), Color(red: 0.08, green: 0.04, blue: 0.20), .clear],
+                LinearGradient(colors: [Color.compound.bgCanvasDefault, Color.compound.bgCanvasDefault.opacity(0.92), .clear],
                                startPoint: .top,
                                endPoint: .init(x: 0.5, y: endPointY))
                     .ignoresSafeArea(edges: .all)
@@ -110,7 +110,7 @@ private struct OldBloomModifier: ViewModifier {
     }
     
     private var bloomGradient: some View {
-        LinearGradient(colors: [.blue.opacity(0.72), Color(red: 0.08, green: 0.04, blue: 0.20), .clear],
+        LinearGradient(colors: [Color.compound.bgCanvasDefault, Color.compound.bgCanvasDefault.opacity(0.92), .clear],
                        startPoint: .top,
                        endPoint: .init(x: 0.5, y: endPointY))
             .ignoresSafeArea(edges: .all)

@@ -16,7 +16,6 @@ struct RoomScreen: View {
     @ObservedObject private var timelineContext: TimelineViewModelType.Context
     let composerToolbar: ComposerToolbar
     @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
-    @Environment(\.synThemePalette) private var synTheme
     
     enum MarkAsReadSource {
         case up
@@ -38,6 +37,13 @@ struct RoomScreen: View {
     
     var body: some View {
         TimelineView(timelineContext: timelineContext)
+            .mask(alignment: .top) {
+                VStack(spacing: 0) {
+                    LinearGradient(colors: [.clear, .black], startPoint: .top, endPoint: .bottom)
+                        .frame(height: isVoiceOverEnabled ? 0 : 24)
+                    Color.black
+                }
+            }
             .opacity(wallpaper == nil ? 1 : 0.88)
             .overlay {
                 // Sits below the bottom-trailing overlay in z-order, so taps on the pill or
@@ -130,10 +136,9 @@ struct RoomScreen: View {
             .navigationTitle(L10n.screenRoomTitle) // Hidden but used for back button text.
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbar }
-            .toolbarColorScheme(.dark, for: .navigationBar)
-            .tint(synTheme.usesMonochromeControls ? .white : synTheme.accent)
+            .tint(.primary)
             .toolbarBloom(hasSearchBar: false)
-            .background(synTheme.titleBar.ignoresSafeArea())
+            .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
             .overlay { loadingIndicator }
             .alert(item: $context.alertInfo)
             .timelineMediaPreview(viewModel: $context.mediaPreviewViewModel)
@@ -147,6 +152,7 @@ struct RoomScreen: View {
                 guard notification.object as? String == context.viewState.roomID else { return }
                 wallpaper = SYNRoomWallpaperStore.image(roomID: context.viewState.roomID)
             }
+            .modifier(SYNComposerKeyboardClearance())
             .synFullWidthContent()
             .track(screen: .Room)
             .sentryTrace("\(Self.self)")

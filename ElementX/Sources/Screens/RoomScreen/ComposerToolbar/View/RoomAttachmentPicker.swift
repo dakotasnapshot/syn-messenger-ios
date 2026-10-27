@@ -23,6 +23,7 @@ struct RoomAttachmentPicker: View {
                          size: Compound.supportsGlass ? .medium : .small,
                          relativeTo: .compound.headingLG)
         }
+        .tint(.primary)
         .buttonStyle(ComposerToolbarButtonStyle())
         .accessibilityLabel(L10n.actionAddToTimeline)
         .accessibilityIdentifier(A11yIdentifiers.roomScreen.composerToolbar.openComposeOptions)

@@ -10,6 +10,7 @@ import Compound
 import SwiftUI
 
 struct SpacesScreen: View {
+    @Environment(\.sidebarNavigationMenu) private var sidebarNavigationMenu
     @Environment(\.floatingNavigationClearance) private var floatingNavigationClearance
     @Bindable var context: SpacesScreenViewModel.Context
     
@@ -100,15 +101,20 @@ struct SpacesScreen: View {
     private var toolbar: some ToolbarContent {
         // Use the title placement on iOS 26 to match the chats tab and fix a weird animation.
         ToolbarItem(placement: Compound.supportsGlass ? .title : .navigationBarLeading) {
-            Button {
-                context.send(viewAction: .showSettings)
-            } label: {
-                AvatarSettingsButtonLabel(userProfile: context.viewState.userProfile,
-                                          mediaProvider: context.mediaProvider)
+            HStack(spacing: 8) {
+                Button {
+                    context.send(viewAction: .showSettings)
+                } label: {
+                    AvatarSettingsButtonLabel(userProfile: context.viewState.userProfile,
+                                              mediaProvider: context.mediaProvider)
+                }
+                .buttonStyle(.borderless)
+                .accessibilityLabel(L10n.commonSettings)
+                .accessibilityIdentifier(A11yIdentifiers.homeScreen.userAvatar)
+                if let sidebarNavigationMenu {
+                    sidebarNavigationMenu
+                }
             }
-            .buttonStyle(.borderless)
-            .accessibilityLabel(L10n.commonSettings)
-            .accessibilityIdentifier(A11yIdentifiers.homeScreen.userAvatar)
         }
         .backportSharedBackgroundVisibility(.hidden)
         

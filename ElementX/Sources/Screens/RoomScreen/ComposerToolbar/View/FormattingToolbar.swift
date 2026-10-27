@@ -43,7 +43,7 @@ private extension FormatItem {
     var foregroundColor: Color {
         switch state {
         case .reversed:
-            return .compound.iconAccentPrimary
+            return .primary
         case .enabled:
             return .compound.iconSecondary
         case .disabled:
@@ -54,7 +54,7 @@ private extension FormatItem {
     var backgroundColor: Color {
         switch state {
         case .reversed:
-            return .compound.bgAccentSelected
+            return .primary.opacity(0.12)
         case .enabled, .disabled:
             return .compound.bgCanvasDefault
         }

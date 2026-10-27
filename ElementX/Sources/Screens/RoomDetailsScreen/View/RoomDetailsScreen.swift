@@ -13,7 +13,6 @@ import SwiftUI
 
 struct RoomDetailsScreen: View {
     @Bindable var context: RoomDetailsScreenViewModel.Context
-    @Environment(\.synThemePalette) private var synTheme
     
     @State private var isTopicExpanded = false
     @State private var wallpaperItem: PhotosPickerItem?
@@ -230,14 +229,14 @@ struct RoomDetailsScreen: View {
                 }
             } label: {
                 Label("Built-in Wallpapers", systemImage: "rectangle.3.group.bubble.left.fill")
-                    .foregroundStyle(synTheme.usesMonochromeControls ? .white : synTheme.accent)
+                    .foregroundStyle(Color.primary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .contentShape(Rectangle())
             }
             
             PhotosPicker(selection: $wallpaperItem, matching: .images) {
                 Label("Choose Photo", systemImage: "photo.on.rectangle")
-                    .foregroundStyle(synTheme.usesMonochromeControls ? .white : synTheme.accent)
+                    .foregroundStyle(Color.primary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .contentShape(Rectangle())
             }
@@ -273,7 +272,7 @@ struct RoomDetailsScreen: View {
                         })
             }
         }
-        .tint(synTheme.usesMonochromeControls ? .white : synTheme.accent)
+        .tint(Color.primary)
     }
     
     private var peopleSection: some View {

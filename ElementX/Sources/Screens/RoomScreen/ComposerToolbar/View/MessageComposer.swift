@@ -236,7 +236,7 @@ private struct MessageComposerStyleModifier<Header: View>: ViewModifier {
             header
             
             content
-                .tint(.compound.iconAccentTertiary)
+                .tint(.primary)
                 .padding(.vertical, Compound.supportsGlass ? 11 : 10)
         }
         .padding(.horizontal, Compound.supportsGlass ? 16 : 12)

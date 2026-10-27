@@ -333,6 +333,7 @@ extension EnvironmentValues {
 }
 
 private struct NavigationSplitCoordinatorView: View {
+    @Environment(\.usesExpandedSidebar) private var usesExpandedSidebar
     @Environment(\.tabViewHorizontalSizeClass) private var horizontalSizeClass
     @Environment(\.scenePhase) private var scenePhase
     
@@ -359,8 +360,13 @@ private struct NavigationSplitCoordinatorView: View {
                 .id(module.id)
         }
         .onChange(of: navigationSplitCoordinator.detailModule, initial: true) { _, detail in
-            if #available(iOS 27.1, *), detail != nil {
+            if #available(iOS 27.1, *), !usesExpandedSidebar, detail != nil {
                 navigationSplitCoordinator.columnVisibility = .detailOnly
+            }
+        }
+        .onChange(of: usesExpandedSidebar) { _, expanded in
+            if expanded {
+                navigationSplitCoordinator.columnVisibility = .all
             }
         }
         .onChange(of: navigationSplitCoordinator.columnVisibility) { oldValue, _ in
@@ -397,6 +403,8 @@ private struct NavigationSplitCoordinatorView: View {
                         .id(navigationSplitCoordinator.placeholderModule.id)
                 }
             }
+            .padding(6)
+            .navigationSplitViewColumnWidth(min: 280, ideal: 320, max: 380)
             .environment(\.isInSidebar, true)
             // The tab rail's background tracks the detail module, so exclude the sidebar's background value.
             .transformPreference(CompoundBackgroundPreferenceKey.self) { $0 = nil }
@@ -410,6 +418,15 @@ private struct NavigationSplitCoordinatorView: View {
             }
         }
         .navigationSplitViewStyle(.balanced)
+        .introspect(.navigationSplitView, on: .supportedVersions) { controller in
+            guard let sidebar = controller.viewController(for: .primary)?.view else { return }
+            sidebar.layer.cornerCurve = .continuous
+            sidebar.layer.cornerRadius = usesExpandedSidebar ? 24 : 0
+            sidebar.layer.borderWidth = usesExpandedSidebar ? 0.5 : 0
+            sidebar.layer.borderColor = UIColor.label.withAlphaComponent(0.14)
+                .resolvedColor(with: sidebar.traitCollection).cgColor
+            sidebar.clipsToBounds = usesExpandedSidebar
+        }
         .navigationDestination(for: NavigationModule.self) { module in
             module.coordinator?.toPresentable()
                 .id(module.id)

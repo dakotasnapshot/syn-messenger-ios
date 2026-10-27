@@ -18,7 +18,7 @@ struct FormActionButtonStyle: ButtonStyle {
         VStack(spacing: 4) {
             configuration.label
                 .buttonStyle(.plain)
-                .foregroundColor(synTheme.isRetro ? synTheme.accent : synTheme.usesMonochromeControls ? .white : .compound.iconSecondary)
+                .foregroundColor(.primary)
                 .scaledFrame(size: 24)
             
             Text(title)

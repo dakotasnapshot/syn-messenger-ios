@@ -82,6 +82,6 @@ private struct SYNThemedFormModifier: ViewModifier {
         content
             .scrollContentBackground(.hidden)
             .background(palette.background.ignoresSafeArea())
-            .tint(palette.usesMonochromeControls ? .white : palette.accent)
+            .tint(.primary)
     }
 }

@@ -66,6 +66,7 @@
 		071244C4CCD5E932ACC3D36D /* TimelineFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F65178687F725E8924B723C /* TimelineFixtures.swift */; };
 		071A017E415AD378F2961B11 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227AC5D71A4CE43512062243 /* URL.swift */; };
 		0728314DD51AC3819F818EA8 /* LogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2711E5996016ABD6EAAEB58A /* LogLevel.swift */; };
+		07315196B623028F7DDE7A3B /* SYNKeyboardClearanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A387AC59E3519C4EB834D368 /* SYNKeyboardClearanceTests.swift */; };
 		07376A5274822EB45CC320C7 /* InvitedRoomProxyMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A21027F05874B1BCC3E452B /* InvitedRoomProxyMock.swift */; };
 		0743CF689EBDAAF1CC0B4283 /* DeclineAndBlockScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011AFA4990C585D157829679 /* DeclineAndBlockScreenViewModel.swift */; };
 		074F741578307EF0179EE47C /* MapTilerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F2AAA3F0F2B72D2FFE4D0 /* MapTilerConfiguration.swift */; };
@@ -270,6 +271,7 @@
 		29491EE7AE37E239E839C5A3 /* LocationSharingScreenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEBF0E59F25E842EDB6FD11 /* LocationSharingScreenModels.swift */; };
 		2955F4C160CFD7794D819C64 /* EffectsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024F7398C5FC12586FB10E9D /* EffectsScene.swift */; };
 		298F9EC30E918F12AB7F1EE8 /* TypingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0325E252B057FAEEE1B2D /* TypingIndicatorView.swift */; };
+		29D13B090A7578D6B737CBCE /* SYNComposerKeyboardClearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1926DE1B2F5320BD610CD531 /* SYNComposerKeyboardClearance.swift */; };
 		29E411E37D3FBF3899B3ED69 /* UserDefaultsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA4547BE58E17899E95CDE /* UserDefaultsProtocol.swift */; };
 		29EE1791E0AFA1ABB7F23D2F /* GZIP in Frameworks */ = {isa = PBXBuildFile; productRef = 1BCD21310B997A6837B854D6 /* GZIP */; };
 		2A4B7856611589DD7B1B36CA /* SearchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79A78330B9329E3A99E4105 /* SearchScreen.swift */; };
@@ -1958,6 +1960,7 @@
 		18F2958E6D247AE2516BEEE8 /* ClientProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientProxy.swift; sourceTree = "<group>"; };
 		190EC7285D3CFEF0D3011BCF /* GeoURI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoURI.swift; sourceTree = "<group>"; };
 		1912062B53CE95E6F700DA60 /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
+		1926DE1B2F5320BD610CD531 /* SYNComposerKeyboardClearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SYNComposerKeyboardClearance.swift; sourceTree = "<group>"; };
 		196004E7695FBA292A7944AF /* ScreenTrackerViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTrackerViewModifier.swift; sourceTree = "<group>"; };
 		19DD166C3625EE426203FA29 /* AppLockSetupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockSetupTests.swift; sourceTree = "<group>"; };
 		19FF46006358DF7E6F47A61A /* GalleryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryListView.swift; sourceTree = "<group>"; };
@@ -2781,6 +2784,7 @@
 		A232D9156D225BD9FD1D0C43 /* PhotoLibraryPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPicker.swift; sourceTree = "<group>"; };
 		A243A6E6207297123E60DE48 /* TimelineItemMacContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineItemMacContextMenu.swift; sourceTree = "<group>"; };
 		A2723A4AF3AB9F5E18D26E49 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A387AC59E3519C4EB834D368 /* SYNKeyboardClearanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SYNKeyboardClearanceTests.swift; sourceTree = "<group>"; };
 		A3A4F56855188DAD23E59031 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A3B4B58B79A6FA250B24A1EC /* HomeScreenContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenContent.swift; sourceTree = "<group>"; };
 		A3E3DE6616DCA81AD5F4791B /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -5433,6 +5437,7 @@
 				6DF438EAFC732D2D95D34BF6 /* StartChatViewModelTests.swift */,
 				2CEBCB9676FCD1D0F13188DD /* StringTests.swift */,
 				961A1EE68E154E2FDF9DE7F9 /* SYNFoldLayoutTests.swift */,
+				A387AC59E3519C4EB834D368 /* SYNKeyboardClearanceTests.swift */,
 				24BB253B84FCF8C554A851E9 /* SYNThemeProfileTests.swift */,
 				026B1EE010E9EA65F3BCAA62 /* SYNWindowAppearanceTests.swift */,
 				53C65A839BC897F6C236E8A5 /* TimelineInteractionHandlerTests.swift */,
@@ -5585,6 +5590,7 @@
 				5221DFDF809142A2D6AC82B9 /* RoomScreen.swift */,
 				4137900E28201C314C835C11 /* RoomScreenFooterView.swift */,
 				4552D3466B1453F287223ADA /* SwipeRightAction.swift */,
+				1926DE1B2F5320BD610CD531 /* SYNComposerKeyboardClearance.swift */,
 				464C6BFAA853DC755B9C1F60 /* PinnedItemsBanner */,
 			);
 			path = View;
@@ -8599,6 +8605,7 @@
 				15913A5B07118C1268A840E4 /* RoomSummaryTests.swift in Sources */,
 				62811275F1ED9EA55638838E /* RoomTests.swift in Sources */,
 				B392D17DE3E9C7A7DEFC1F0A /* SYNFoldLayoutTests.swift in Sources */,
+				07315196B623028F7DDE7A3B /* SYNKeyboardClearanceTests.swift in Sources */,
 				9D5DA650620BE35620B1BA11 /* SYNThemeProfileTests.swift in Sources */,
 				77764141110B16E818AC836E /* SYNWindowAppearanceTests.swift in Sources */,
 				D69CCEC785E6C819551B402F /* SearchScreenViewModelTests.swift in Sources */,
@@ -9557,6 +9564,7 @@
 				82434593648CB74121F1A821 /* RowDivider.swift in Sources */,
 				3F55721B5C08E8D9F1295592 /* SDKListener.swift in Sources */,
 				88CBF1595E39CE697928DE48 /* SFNumberedListView.swift in Sources */,
+				29D13B090A7578D6B737CBCE /* SYNComposerKeyboardClearance.swift in Sources */,
 				340BE4B16D162841B28473B3 /* SYNFoldAwareControls.swift in Sources */,
 				BEAD04716ED248C4D841EA6F /* SYNRoomWallpaperStore.swift in Sources */,
 				190173590F4ABA9D5EB1EB43 /* SYNThemeHost.swift in Sources */,
@@ -10553,7 +10561,7 @@
 				CLASSIC_APP_KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).app.syn.messenger.classic.keychain.shared";
 				CLASSIC_APP_KEYCHAIN_SERVICE_IDENTIFIER = "app.syn.messenger.classic.encryption-manager-service";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = S6BUVDCKVJ;
 				ENABLE_BITCODE = NO;
@@ -10571,7 +10579,7 @@
 				IS_NIGHTLY_BUILD = NO;
 				KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).$(BASE_BUNDLE_IDENTIFIER)";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 10.25.26;
+				MARKETING_VERSION = 10.27.26;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCTION_APP_NAME = "SYN Messenger";
@@ -10627,7 +10635,7 @@
 				CLASSIC_APP_KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).app.syn.messenger.classic.keychain.shared";
 				CLASSIC_APP_KEYCHAIN_SERVICE_IDENTIFIER = "app.syn.messenger.classic.encryption-manager-service";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = S6BUVDCKVJ;
 				ENABLE_BITCODE = NO;
@@ -10651,7 +10659,7 @@
 				IS_NIGHTLY_BUILD = NO;
 				KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).$(BASE_BUNDLE_IDENTIFIER)";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 10.25.26;
+				MARKETING_VERSION = 10.27.26;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

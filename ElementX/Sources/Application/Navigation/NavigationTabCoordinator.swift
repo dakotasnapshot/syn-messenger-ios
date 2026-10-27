@@ -306,6 +306,8 @@ extension EnvironmentValues {
     /// attempts to show the rail etc.
     @Entry var tabViewHorizontalSizeClass: UserInterfaceSizeClass?
     @Entry var floatingNavigationClearance: CGFloat = 0
+    @Entry var sidebarNavigationMenu: AnyView?
+    @Entry var usesExpandedSidebar = false
 }
 
 /// Tracks whether the tab rail should be shown alongside the split view's sidebar.
@@ -361,6 +363,7 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     @State private var railVisibility = TabRailVisibility()
     @State private var railBackgroundColor: Color = .compound.bgCanvasDefault
     @State private var floatingBarHeight: CGFloat = 80
+    @State private var usesExpandedSidebar = false
     
     var body: some View {
         tabView
@@ -415,7 +418,7 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     
     var tabRailLayout: some View {
         HStack(spacing: 0) {
-            if railVisibility.isVisible {
+            if railVisibility.isVisible, !usesExpandedSidebar {
                 TabRailView(navigationTabCoordinator: navigationTabCoordinator, isFullScreen: isFullScreen)
                     .background(railBackgroundColor.ignoresSafeArea())
                     .animation(.easeInOut(duration: 0.4).disabledDuringTests(), value: railBackgroundColor)
@@ -424,8 +427,13 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
             if let module = navigationTabCoordinator.tabModules.first(where: { $0.details.tag == navigationTabCoordinator.selectedTab }) {
                 module.coordinator?.toPresentable()
                     .id(module.id)
+                    .environment(\.sidebarNavigationMenu, usesExpandedSidebar ? AnyView(sidebarNavigationMenu) : nil)
+                    .environment(\.usesExpandedSidebar, usesExpandedSidebar)
             }
         }
+        .onGeometryChange(for: Bool.self) { geometry in
+            geometry.size.width >= 1000
+        } action: { usesExpandedSidebar = $0 }
         // Match the rail's background to the colour of the split view's detail (or the root if there isn't a split).
         .onPreferenceChange(CompoundBackgroundPreferenceKey.self) { background in
             railBackgroundColor = background?.colorValue ?? .compound.bgCanvasDefault
@@ -459,6 +467,35 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
                 railVisibility.splitVisibilityChanged(to: selectedTabSplitColumnVisibility)
             }
         }
+    }
+    
+    private var sidebarNavigationMenu: some View {
+        Menu {
+            ForEach(navigationTabCoordinator.tabModules) { module in
+                Button {
+                    navigationTabCoordinator.selectedTab = module.details.tag
+                } label: {
+                    Label {
+                        Text(module.details.title)
+                    } icon: {
+                        CompoundIcon(module.details.tag == navigationTabCoordinator.selectedTab ? module.details.selectedIcon : module.details.icon)
+                    }
+                }
+                .accessibilityAddTraits(module.details.tag == navigationTabCoordinator.selectedTab ? .isSelected : [])
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Text(navigationTabCoordinator.tabModules.first(where: { $0.details.tag == navigationTabCoordinator.selectedTab })?.details.title ?? L10n.screenRoomlistMainSpaceTitle)
+                    .font(.compound.bodyLGSemibold)
+                    .lineLimit(1)
+                Image(systemName: "chevron.down")
+                    .font(.caption2.weight(.semibold))
+            }
+            .frame(minHeight: 44)
+        }
+        .tint(.primary)
+        .accessibilityLabel(L10n.screenRoomlistMainSpaceTitle + ", " + L10n.screenSpaceListTitle)
+        .accessibilityIdentifier("SYN.SidebarNavigation")
     }
     
     var tabViewLayout: some View {

@@ -27,7 +27,7 @@ struct SYNThemeHost<Content: View>: View {
         let palette = SYNThemePalette.palette(for: appearance, colorMode: resolvedColorMode)
         content
             .preferredColorScheme(colorMode.preferredColorScheme)
-            .tint(palette.usesMonochromeControls ? Color(white: 0.82) : customProfile?.accentColor ?? appearance.accentColor)
+            .tint(.primary)
             .fontDesign(customProfile?.fontDesign ?? appearance.fontDesign)
             .environment(\.synThemePalette, palette)
             .onReceive(appSettings.appAppearancePublisher) {
