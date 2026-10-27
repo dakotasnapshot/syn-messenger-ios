@@ -14,7 +14,12 @@
 - Watch Debug and Release simulator builds passed (arm64).
 - 29 focused tests passed in four suites: keyboard clearance geometry, theme profiles, fold layout and navigation split coordination.
 - Built app declares iPhone/iPad device families and all four orientations.
-- Final synthetic iPad and ordinary iPhone interaction checks resumed October 27. The first resumed compile caught a missing split-view introspection predicate; added the supported-version predicate matching existing navigation helpers. Final build and release evidence pending.
+- Final signed Debug simulator build passed after adding the missing typed split-view introspection predicate.
+- Final synthetic iPad checks passed: Chats/Spaces title navigation, full-sidebar bezel, light/dark controls, wallpaper, and two-line draft preservation across landscape-to-portrait rotation.
+- Final ordinary iPhone checks passed: compact tab routing, conversation/attachment controls, portrait-to-landscape draft preservation, and software-keyboard composer clearance.
+- Prior same-code iPad software-keyboard checks passed; the final iPad run did not display a software keyboard/accessory. Physical external-keyboard clearance remains unverified.
+- Return-to-portrait phone observation timed out under host contention; both owned simulators and native sessions were closed. No app crash or blocking bug observed in completed checks.
+- Signed Release archive and App Store Connect IPA export passed. All five app/extension/Watch components, versions, signatures, iPhone/iPad support and orientations verified; icon alpha absent. Apple validation passed with no errors. TestFlight and website delivery pending.
 
 ## Privacy and compatibility
 
