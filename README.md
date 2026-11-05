@@ -1,5 +1,7 @@
 # SYN Messenger
 
+Maintained personally by [Dakota Cole (@dakotasnapshot)](https://github.com/dakotasnapshot).
+
 SYN Messenger is an independent, open-source Matrix client for iPhone and Apple Watch. It is based on Element X iOS and uses the Matrix Rust SDK.
 
 ## Status
