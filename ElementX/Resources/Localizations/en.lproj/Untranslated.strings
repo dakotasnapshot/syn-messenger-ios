@@ -34,3 +34,18 @@
 "screen_settings_presence_description" = "Automatic shows you online while SYN is active and away when it is in the background. Turn sharing off to appear offline.";
 "screen_room_attachment_source_gif" = "GIFs";
 "screen_gif_picker_download_error" = "Couldn’t download that GIF.";
+
+"screen_room_schedule_title" = "Scheduled notifications";
+"screen_room_schedule_enabled" = "Use notification schedule";
+"screen_room_schedule_start" = "Notify from";
+"screen_room_schedule_end" = "Notify until";
+"screen_room_schedule_timezone" = "Time zone";
+"screen_room_schedule_description" = "Choose notification hours in the selected time zone. Overnight hours belong to the starting day. Preferences sync with Syndicate on Mac. Background alert filtering is not enabled in this development build.";
+"screen_room_schedule_unavailable" = "Could not load the schedule. Check your connection and try again.";
+"screen_room_schedule_save_error" = "Could not save the schedule. Check your connection and try again.";
+"screen_room_schedule_override" = "Notification behavior";
+"screen_room_schedule_follow" = "Follow schedule";
+"screen_room_schedule_mute" = "Always mute";
+"screen_room_schedule_normal" = "Normal notifications";
+"screen_room_schedule_conflict" = "The saved schedule changed on another device. Reload it before saving. Reloading discards your unsaved edits.";
+"screen_room_schedule_reload" = "Reload saved schedule";

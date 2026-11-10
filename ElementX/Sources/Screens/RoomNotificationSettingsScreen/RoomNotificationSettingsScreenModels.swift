@@ -43,6 +43,11 @@ extension RoomNotificationSettingsState {
 }
 
 struct RoomNotificationSettingsScreenViewState: BindableState {
+    var scheduleSupported = false
+    var scheduleLoading = true
+    var scheduleSaving = false
+    var scheduleError = false
+    var scheduleConflict = false
     var bindings: RoomNotificationSettingsScreenViewStateBindings
     let strings = RoomNotificationSettingsScreenStrings()
     var notificationSettingsState: RoomNotificationSettingsState = .loading
@@ -72,12 +77,15 @@ struct RoomNotificationSettingsScreenViewState: BindableState {
 }
 
 struct RoomNotificationSettingsScreenViewStateBindings {
+    var schedule = RoomNotificationSchedule()
     var allowCustomSetting = false
     /// Information describing the currently displayed alert.
     var alertInfo: AlertInfo<RoomNotificationSettingsScreenErrorType>?
 }
 
 enum RoomNotificationSettingsScreenViewAction {
+    case saveSchedule
+    case reloadSchedule
     case changedAllowCustomSettings
     case setCustomMode(RoomNotificationModeProxy)
     case customSettingFootnoteLinkTapped

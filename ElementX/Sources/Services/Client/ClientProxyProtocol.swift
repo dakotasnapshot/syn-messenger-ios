@@ -301,6 +301,8 @@ protocol ClientProxyProtocol: AnyObject {
     func setTimelineMediaVisibility(_ value: TimelineMediaVisibility) async -> Result<Void, ClientProxyError>
     func setHideInviteAvatars(_ value: Bool) async -> Result<Void, ClientProxyError>
     
+    func roomNotificationSchedule(roomID: String, saving schedule: RoomNotificationSchedule?) async throws -> RoomNotificationScheduleResponse
+    
     // MARK: - Presence
     
     /// Configures the client-owned presence used by future sync requests and shared with clones and notification children.

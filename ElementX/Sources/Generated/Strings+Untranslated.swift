@@ -32,6 +32,34 @@ internal nonisolated enum UntranslatedL10n {
   internal static var screenOnboardingSynWelcomeTitle: String { return UntranslatedL10n.tr("Untranslated", "screen_onboarding_syn_welcome_title") }
   /// GIFs
   internal static var screenRoomAttachmentSourceGif: String { return UntranslatedL10n.tr("Untranslated", "screen_room_attachment_source_gif") }
+  /// The saved schedule changed on another device. Reload it before saving. Reloading discards your unsaved edits.
+  internal static var screenRoomScheduleConflict: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_conflict") }
+  /// Choose notification hours in the selected time zone. Overnight hours belong to the starting day. Preferences sync with Syndicate on Mac. Background alert filtering is not enabled in this development build.
+  internal static var screenRoomScheduleDescription: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_description") }
+  /// Use notification schedule
+  internal static var screenRoomScheduleEnabled: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_enabled") }
+  /// Notify until
+  internal static var screenRoomScheduleEnd: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_end") }
+  /// Follow schedule
+  internal static var screenRoomScheduleFollow: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_follow") }
+  /// Always mute
+  internal static var screenRoomScheduleMute: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_mute") }
+  /// Normal notifications
+  internal static var screenRoomScheduleNormal: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_normal") }
+  /// Notification behavior
+  internal static var screenRoomScheduleOverride: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_override") }
+  /// Reload saved schedule
+  internal static var screenRoomScheduleReload: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_reload") }
+  /// Could not save the schedule. Check your connection and try again.
+  internal static var screenRoomScheduleSaveError: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_save_error") }
+  /// Notify from
+  internal static var screenRoomScheduleStart: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_start") }
+  /// Time zone
+  internal static var screenRoomScheduleTimezone: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_timezone") }
+  /// Scheduled notifications
+  internal static var screenRoomScheduleTitle: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_title") }
+  /// Could not load the schedule. Check your connection and try again.
+  internal static var screenRoomScheduleUnavailable: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_unavailable") }
   /// Unsupported call. Ask the caller to update their Matrix app and try again.
   internal static var screenRoomTimelineSynLegacyCall: String { return UntranslatedL10n.tr("Untranslated", "screen_room_timeline_syn_legacy_call") }
   /// Search for chats and messages

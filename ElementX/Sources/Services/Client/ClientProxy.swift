@@ -1078,6 +1078,17 @@ class ClientProxy: ClientProxyProtocol {
         try validatePresenceResponse(response)
     }
     
+    func roomNotificationSchedule(roomID: String, saving schedule: RoomNotificationSchedule?) async throws -> RoomNotificationScheduleResponse {
+        let session = try client.session()
+        let request = try RoomNotificationScheduleAPI.request(homeserver: session.homeserverUrl,
+                                                              userID: userID,
+                                                              roomID: roomID,
+                                                              accessToken: session.accessToken,
+                                                              saving: schedule)
+        let (data, response) = try await URLSession.shared.data(for: request)
+        return try RoomNotificationScheduleAPI.response(data: data, response: response, saved: schedule)
+    }
+    
     private func presenceRequest(userID: String, method: String) throws -> URLRequest {
         let session = try client.session()
         guard let homeserverURL = URL(string: session.homeserverUrl) else {

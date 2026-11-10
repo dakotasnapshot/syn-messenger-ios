@@ -4361,6 +4361,52 @@ nonisolated class ClientProxyMock: ClientProxyProtocol, @unchecked Sendable {
             return setHideInviteAvatarsReturnValue
         }
     }
+    //MARK: - roomNotificationSchedule
+
+    nonisolated(unsafe) var roomNotificationScheduleRoomIDSavingThrowableError: Error?
+    private let roomNotificationScheduleRoomIDSavingCallsCountLock = NSLock()
+    private nonisolated(unsafe) var roomNotificationScheduleRoomIDSavingUnderlyingCallsCount = 0
+    var roomNotificationScheduleRoomIDSavingCallsCount: Int {
+        get { roomNotificationScheduleRoomIDSavingCallsCountLock.withLock { roomNotificationScheduleRoomIDSavingUnderlyingCallsCount } }
+        set { roomNotificationScheduleRoomIDSavingCallsCountLock.withLock { roomNotificationScheduleRoomIDSavingUnderlyingCallsCount = newValue } }
+    }
+    var roomNotificationScheduleRoomIDSavingCalled: Bool {
+        return roomNotificationScheduleRoomIDSavingCallsCount > 0
+    }
+    private let roomNotificationScheduleRoomIDSavingReceivedArgumentsLock = NSLock()
+    private nonisolated(unsafe) var roomNotificationScheduleRoomIDSavingUnderlyingReceivedArguments: (roomID: String, schedule: RoomNotificationSchedule?)?
+    var roomNotificationScheduleRoomIDSavingReceivedArguments: (roomID: String, schedule: RoomNotificationSchedule?)? {
+        get { roomNotificationScheduleRoomIDSavingReceivedArgumentsLock.withLock { roomNotificationScheduleRoomIDSavingUnderlyingReceivedArguments } }
+        set { roomNotificationScheduleRoomIDSavingReceivedArgumentsLock.withLock { roomNotificationScheduleRoomIDSavingUnderlyingReceivedArguments = newValue } }
+    }
+    private let roomNotificationScheduleRoomIDSavingReceivedInvocationsLock = NSLock()
+    private nonisolated(unsafe) var roomNotificationScheduleRoomIDSavingUnderlyingReceivedInvocations: [(roomID: String, schedule: RoomNotificationSchedule?)] = []
+    var roomNotificationScheduleRoomIDSavingReceivedInvocations: [(roomID: String, schedule: RoomNotificationSchedule?)] {
+        get { roomNotificationScheduleRoomIDSavingReceivedInvocationsLock.withLock { roomNotificationScheduleRoomIDSavingUnderlyingReceivedInvocations } }
+        set { roomNotificationScheduleRoomIDSavingReceivedInvocationsLock.withLock { roomNotificationScheduleRoomIDSavingUnderlyingReceivedInvocations = newValue } }
+    }
+
+    private let roomNotificationScheduleRoomIDSavingReturnValueLock = NSLock()
+    private nonisolated(unsafe) var roomNotificationScheduleRoomIDSavingUnderlyingReturnValue: RoomNotificationScheduleResponse!
+    var roomNotificationScheduleRoomIDSavingReturnValue: RoomNotificationScheduleResponse! {
+        get { roomNotificationScheduleRoomIDSavingReturnValueLock.withLock { roomNotificationScheduleRoomIDSavingUnderlyingReturnValue } }
+        set { roomNotificationScheduleRoomIDSavingReturnValueLock.withLock { roomNotificationScheduleRoomIDSavingUnderlyingReturnValue = newValue } }
+    }
+    nonisolated(unsafe) var roomNotificationScheduleRoomIDSavingClosure: ((String, RoomNotificationSchedule?) async throws -> RoomNotificationScheduleResponse)?
+
+    @concurrent func roomNotificationSchedule(roomID: String, saving schedule: RoomNotificationSchedule?) async throws -> RoomNotificationScheduleResponse {
+        if let error = roomNotificationScheduleRoomIDSavingThrowableError {
+            throw error
+        }
+        roomNotificationScheduleRoomIDSavingCallsCountLock.withLock { roomNotificationScheduleRoomIDSavingUnderlyingCallsCount += 1 }
+        roomNotificationScheduleRoomIDSavingReceivedArguments = (roomID: roomID, schedule: schedule)
+        roomNotificationScheduleRoomIDSavingReceivedInvocationsLock.withLock { roomNotificationScheduleRoomIDSavingUnderlyingReceivedInvocations.append((roomID: roomID, schedule: schedule)) }
+        if let roomNotificationScheduleRoomIDSavingClosure = roomNotificationScheduleRoomIDSavingClosure {
+            return try await roomNotificationScheduleRoomIDSavingClosure(roomID, schedule)
+        } else {
+            return roomNotificationScheduleRoomIDSavingReturnValue
+        }
+    }
     //MARK: - configurePresence
 
     private let configurePresenceStatusMessageSendImmediatelyCallsCountLock = NSLock()

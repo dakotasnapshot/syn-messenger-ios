@@ -14,6 +14,9 @@ struct RoomNotificationSettingsUserDefinedScreen: View {
     
     var body: some View {
         Form {
+            #if DEBUG
+            RoomNotificationScheduleSection(context: context)
+            #endif
             RoomNotificationSettingsCustomSectionView(context: context)
             
             deleteButton

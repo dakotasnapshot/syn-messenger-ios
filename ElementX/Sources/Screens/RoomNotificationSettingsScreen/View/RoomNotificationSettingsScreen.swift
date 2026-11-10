@@ -14,6 +14,9 @@ struct RoomNotificationSettingsScreen: View {
     
     var body: some View {
         Form {
+            #if DEBUG
+            RoomNotificationScheduleSection(context: context)
+            #endif
             allowCustomSettingSection
             
             if !context.allowCustomSetting {

@@ -14,6 +14,7 @@ struct RoomNotificationSettingsScreenCoordinatorParameters {
     let notificationSettingsProxy: NotificationSettingsProxyProtocol
     let roomProxy: JoinedRoomProxyProtocol
     let displayAsUserDefinedRoomSettings: Bool
+    var clientProxy: ClientProxyProtocol?
 }
 
 enum RoomNotificationSettingsScreenCoordinatorAction {
@@ -35,7 +36,8 @@ final class RoomNotificationSettingsScreenCoordinator: CoordinatorProtocol {
         self.parameters = parameters
         viewModel = RoomNotificationSettingsScreenViewModel(notificationSettingsProxy: parameters.notificationSettingsProxy,
                                                             roomProxy: parameters.roomProxy,
-                                                            displayAsUserDefinedRoomSettings: parameters.displayAsUserDefinedRoomSettings)
+                                                            displayAsUserDefinedRoomSettings: parameters.displayAsUserDefinedRoomSettings,
+                                                            clientProxy: parameters.clientProxy)
     }
     
     func start() {

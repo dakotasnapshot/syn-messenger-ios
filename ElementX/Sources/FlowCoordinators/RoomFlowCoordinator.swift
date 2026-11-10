@@ -1320,7 +1320,8 @@ class RoomFlowCoordinator: FlowCoordinatorProtocol {
     private func presentNotificationSettingsScreen() {
         let parameters = RoomNotificationSettingsScreenCoordinatorParameters(notificationSettingsProxy: userSession.clientProxy.notificationSettings,
                                                                              roomProxy: roomProxy,
-                                                                             displayAsUserDefinedRoomSettings: false)
+                                                                             displayAsUserDefinedRoomSettings: false,
+                                                                             clientProxy: userSession.clientProxy)
         
         let coordinator = RoomNotificationSettingsScreenCoordinator(parameters: parameters)
         coordinator.actions.sink { [weak self] actions in

@@ -15,6 +15,8 @@ class RoomNotificationSettingsScreenViewModel: RoomNotificationSettingsScreenVie
     private let actionsSubject: PassthroughSubject<RoomNotificationSettingsScreenViewModelAction, Never> = .init()
     private let notificationSettingsProxy: NotificationSettingsProxyProtocol
     private let roomProxy: JoinedRoomProxyProtocol
+    private let clientProxy: ClientProxyProtocol?
+    private var loadedSchedule: RoomNotificationSchedule?
     
     @CancellableTask private var fetchNotificationSettingsTask: Task<Void, Error>?
     
@@ -22,10 +24,11 @@ class RoomNotificationSettingsScreenViewModel: RoomNotificationSettingsScreenVie
         actionsSubject.eraseToAnyPublisher()
     }
     
-    init(notificationSettingsProxy: NotificationSettingsProxyProtocol, roomProxy: JoinedRoomProxyProtocol, displayAsUserDefinedRoomSettings: Bool) {
+    init(notificationSettingsProxy: NotificationSettingsProxyProtocol, roomProxy: JoinedRoomProxyProtocol, displayAsUserDefinedRoomSettings: Bool, clientProxy: ClientProxyProtocol? = nil) {
         let bindings = RoomNotificationSettingsScreenViewStateBindings()
         self.notificationSettingsProxy = notificationSettingsProxy
         self.roomProxy = roomProxy
+        self.clientProxy = clientProxy
         let navigationTitle = displayAsUserDefinedRoomSettings ? roomProxy.infoPublisher.value.displayName : L10n.screenRoomDetailsNotificationTitle
         let customSettingsSectionHeader = displayAsUserDefinedRoomSettings ? L10n.screenRoomNotificationSettingsRoomCustomSettingsTitle : L10n.screenRoomNotificationSettingsCustomSettingsTitle
         super.init(initialViewState: RoomNotificationSettingsScreenViewState(bindings: bindings,
@@ -35,12 +38,19 @@ class RoomNotificationSettingsScreenViewModel: RoomNotificationSettingsScreenVie
         
         setupNotificationSettingsSubscription()
         fetchNotificationSettings()
+        #if DEBUG
+        Task { await loadSchedule() }
+        #endif
     }
     
     // MARK: - Public
     
     override func process(viewAction: RoomNotificationSettingsScreenViewAction) {
         switch viewAction {
+        case .saveSchedule:
+            Task { await saveSchedule() }
+        case .reloadSchedule:
+            Task { await loadSchedule() }
         case .changedAllowCustomSettings:
             toogleCustomSetting()
         case .setCustomMode(let mode):
@@ -53,6 +63,44 @@ class RoomNotificationSettingsScreenViewModel: RoomNotificationSettingsScreenVie
     }
     
     // MARK: - Private
+    
+    private func loadSchedule() async {
+        guard !state.scheduleSaving else { return }
+        state.scheduleLoading = true
+        defer { state.scheduleLoading = false }
+        guard let clientProxy else { return }
+        do {
+            let response = try await clientProxy.roomNotificationSchedule(roomID: roomProxy.id, saving: nil)
+            state.scheduleSupported = response.supported
+            loadedSchedule = response.schedule
+            state.bindings.schedule = response.schedule ?? RoomNotificationSchedule()
+            state.scheduleError = false
+            state.scheduleConflict = false
+        } catch {
+            state.scheduleSupported = false
+        }
+    }
+    
+    private func saveSchedule() async {
+        guard let clientProxy, !state.scheduleSaving, !state.scheduleLoading, state.bindings.schedule.isValid else { return }
+        state.scheduleSaving = true
+        state.scheduleError = false
+        state.scheduleConflict = false
+        defer { state.scheduleSaving = false }
+        do {
+            let current = try await clientProxy.roomNotificationSchedule(roomID: roomProxy.id, saving: nil)
+            guard current.schedule == loadedSchedule else {
+                state.scheduleConflict = true
+                return
+            }
+            let response = try await clientProxy.roomNotificationSchedule(roomID: roomProxy.id, saving: state.bindings.schedule)
+            guard response.supported, let saved = response.schedule else { throw ClientProxyError.forbiddenAccess }
+            state.bindings.schedule = saved
+            loadedSchedule = saved
+        } catch {
+            state.scheduleError = true
+        }
+    }
     
     private func setupNotificationSettingsSubscription() {
         notificationSettingsProxy.callbacks
