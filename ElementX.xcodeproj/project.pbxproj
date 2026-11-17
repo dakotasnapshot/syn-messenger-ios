@@ -937,6 +937,7 @@
 		90EB25D13AE6EEF034BDE9D2 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D52BAA5BADB06E5E8C295D /* Assets.swift */; };
 		914BDF61447C723F104BCE33 /* SessionDirectories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C2067FF58B4996323EB40C /* SessionDirectories.swift */; };
 		915B4CDAF220D9AEB4047D45 /* PollInteractionHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259E5B05BDE6E20C26CF11B4 /* PollInteractionHandlerProtocol.swift */; };
+		91866890098AE9A1133CBCE6 /* SYNBackgroundLifecycleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77862126E2C74532B846D0F0 /* SYNBackgroundLifecycleUITests.swift */; };
 		91ABC91758A6E4A5FAA2E9C4 /* ReadReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314F1C79850BE46E8ABEAFCB /* ReadReceipt.swift */; };
 		91C590378C591DCA3E40416A /* UserSessionHook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9773983346838AABFAA914D /* UserSessionHook.swift */; };
 		91C6AC0E9D2B9C0C76CC6AD4 /* RoomDirectorySearchScreenScreenModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3984C93B8E9B10C92DADF9EE /* RoomDirectorySearchScreenScreenModelProtocol.swift */; };
@@ -1025,6 +1026,7 @@
 		9DD5AA10E85137140FEA86A3 /* MediaProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17EFA1D3D09FC2F9C5E1CB2 /* MediaProvider.swift */; };
 		9DD84E014ADFB2DD813022D5 /* RoomDetailsEditScreenViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5B2CBEF8F96424F095508 /* RoomDetailsEditScreenViewModelTests.swift */; };
 		9DE801D278AC34737467F937 /* VoiceMessageMediaManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889DEDD63C68ABDA8AD29812 /* VoiceMessageMediaManagerProtocol.swift */; };
+		9DEEDB59EF7A9E8DFE945C0A /* BackgroundServiceTaskManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BBBD98F35D0A9D698D039A /* BackgroundServiceTaskManagerTests.swift */; };
 		9E838A62918E47BC72D6640D /* UserIndicatorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB54B4F94686CCF0289B72F /* UserIndicatorPresenter.swift */; };
 		9EBDC79CAC9B63A0D626E333 /* LegalInformationScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB2CAA266B921D128C35710 /* LegalInformationScreenCoordinator.swift */; };
 		9ED768A43A2A302F9812C5DF /* ContentScannerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0013D4F8EA288D589CFBF37 /* ContentScannerProxy.swift */; };
@@ -1379,6 +1381,7 @@
 		D5FE90A6AF5FD5AE91BD37C7 /* NotificationSettingsEditScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780258F1B9D15E30549FF4BE /* NotificationSettingsEditScreenViewModel.swift */; };
 		D6152E21036B88C44ECB22E7 /* EncryptionResetPasswordScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303D9438EFB481F57A366E82 /* EncryptionResetPasswordScreenViewModel.swift */; };
 		D63974A88CF2BC721F109C77 /* Compound in Frameworks */ = {isa = PBXBuildFile; productRef = DCA3C4A997AD28E6918D4CE5 /* Compound */; };
+		D6826705EF5F32864D630911 /* BackgroundServiceTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10B2B07A8C4E55F39785F33 /* BackgroundServiceTaskManager.swift */; };
 		D69CCEC785E6C819551B402F /* SearchScreenViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5413213B56FB76C1071E2BFB /* SearchScreenViewModelTests.swift */; };
 		D6DE764B17FB4A9A12C33BF4 /* MessageComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1DF3FFFE5ED2B8133F43A7 /* MessageComposer.swift */; };
 		D75C591C44C2510FDFA9C3D8 /* Macros in Frameworks */ = {isa = PBXBuildFile; productRef = AF574A0FC6F3A83D3BFFC9B3 /* Macros */; };
@@ -2528,6 +2531,7 @@
 		76A46ABD27628CB5FC402541 /* Backports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backports.swift; sourceTree = "<group>"; };
 		7720ACAC6155AB7F9C70B546 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = nb; path = nb.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		7773CBFDBD458E0B7E270507 /* PillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillView.swift; sourceTree = "<group>"; };
+		77862126E2C74532B846D0F0 /* SYNBackgroundLifecycleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SYNBackgroundLifecycleUITests.swift; sourceTree = "<group>"; };
 		77AB44FFCF7DA5300D943169 /* SpaceAddRoomsScreenSelectedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceAddRoomsScreenSelectedItem.swift; sourceTree = "<group>"; };
 		780258F1B9D15E30549FF4BE /* NotificationSettingsEditScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsEditScreenViewModel.swift; sourceTree = "<group>"; };
 		78483F0143E185EDC6ECD741 /* TopBannerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBannerModifier.swift; sourceTree = "<group>"; };
@@ -2983,6 +2987,7 @@
 		C08E9043618AE5B0BF7B07E1 /* TemplateScreenViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateScreenViewModelTests.swift; sourceTree = "<group>"; };
 		C0900BBF0A5D5D775E917C70 /* EventBasedMessageTimelineItemProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventBasedMessageTimelineItemProtocol.swift; sourceTree = "<group>"; };
 		C0FEA560929DD73FFEF8C3DF /* HomeScreenEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenEmptyStateView.swift; sourceTree = "<group>"; };
+		C10B2B07A8C4E55F39785F33 /* BackgroundServiceTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundServiceTaskManager.swift; sourceTree = "<group>"; };
 		C11397904D19CFF0E3689F0E /* SpaceScreenModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceScreenModels.swift; sourceTree = "<group>"; };
 		C142248014E08E885E323E56 /* Avatars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatars.swift; sourceTree = "<group>"; };
 		C1511766C534367700C8DD75 /* RoomNotificationModeProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomNotificationModeProxy.swift; sourceTree = "<group>"; };
@@ -3176,6 +3181,7 @@
 		E2520C4F33AA0C061D209C28 /* RoomMembersListScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomMembersListScreenTests.swift; sourceTree = "<group>"; };
 		E2776E63E02719B20758EB78 /* EditRoomAddressListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRoomAddressListRow.swift; sourceTree = "<group>"; };
 		E2B1CC9AA154F4D5435BF60A /* Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparable.swift; sourceTree = "<group>"; };
+		E2BBBD98F35D0A9D698D039A /* BackgroundServiceTaskManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundServiceTaskManagerTests.swift; sourceTree = "<group>"; };
 		E2F96CCBEAAA7F2185BFA354 /* ClientProxyMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientProxyMock.swift; sourceTree = "<group>"; };
 		E3059CFA00C67D8787273B20 /* ServerSelectionScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSelectionScreenViewModel.swift; sourceTree = "<group>"; };
 		E321E840DCC63790049984F4 /* ElementCallServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementCallServiceMock.swift; sourceTree = "<group>"; };
@@ -5359,6 +5365,7 @@
 				671C338B7259DC5774816885 /* AuthenticationServiceTests.swift */,
 				8FB89DC7F9A4A91020037001 /* AuthenticationStartScreenViewModelTests.swift */,
 				93E1FF0DFBB3768F79FDBF6D /* AVMetadataMachineReadableCodeObjectExtensionsTest.swift */,
+				E2BBBD98F35D0A9D698D039A /* BackgroundServiceTaskManagerTests.swift */,
 				240610DF32F3213BEC5611D7 /* BlockedUsersScreenViewModelTests.swift */,
 				7EECE8B331CD169790EF284F /* BugReportScreenViewModelTests.swift */,
 				EFFD3200F9960D4996159F10 /* BugReportServiceTests.swift */,
@@ -6135,6 +6142,7 @@
 				D8AA084E10B80D64449C02A9 /* SessionVerificationTests.swift */,
 				0367E0AF1163F42292D788BD /* StartChatTests.swift */,
 				013AD1E5E2CE501F96631B3E /* SYNAdaptiveLayoutUITests.swift */,
+				77862126E2C74532B846D0F0 /* SYNBackgroundLifecycleUITests.swift */,
 				C4EF88981D569996FDA94C2E /* SYNGiphyUITests.swift */,
 				F899D02CF26EA7675EEBE74C /* UserSessionScreenTests.swift */,
 			);
@@ -6444,6 +6452,7 @@
 				CA89A2DD51B6BBE1DA55E263 /* Application.swift */,
 				B53AC78E49A297AC1D72A7CF /* AppMediator.swift */,
 				05AF58372CA884A789EB9C5A /* AppMediatorProtocol.swift */,
+				C10B2B07A8C4E55F39785F33 /* BackgroundServiceTaskManager.swift */,
 				B251F5B4511D1CA0BA8361FE /* CoordinatorProtocol.swift */,
 				7B9FCA1CFD07B8CF9BD21266 /* FlowCoordinatorProtocol.swift */,
 				6D7FC278484FAD792287BBC7 /* SYNThemeHost.swift */,
@@ -8560,6 +8569,7 @@
 				192A3CDCD0174AD1E4A128E4 /* AudioRecorderTests.swift in Sources */,
 				92012C96039BC8C2CAEBA9E2 /* AuthenticationServiceTests.swift in Sources */,
 				8ED8AF57A06F5EE9978ED23F /* AuthenticationStartScreenViewModelTests.swift in Sources */,
+				9DEEDB59EF7A9E8DFE945C0A /* BackgroundServiceTaskManagerTests.swift in Sources */,
 				CEAEA57B7665C8E790599A78 /* BlockedUsersScreenViewModelTests.swift in Sources */,
 				1B2F9F368619FFF8C63C87CC /* BugReportScreenViewModelTests.swift in Sources */,
 				7F61F9ACD5EC9E845EF3EFBF /* BugReportServiceTests.swift in Sources */,
@@ -8926,6 +8936,7 @@
 				4AAA8606FBA290E23D15422E /* AvatarHeaderView.swift in Sources */,
 				52511848C094F3097F858F00 /* AvatarSettingsButtonLabel.swift in Sources */,
 				1621BF6316FFFEF5AE067C77 /* Avatars.swift in Sources */,
+				D6826705EF5F32864D630911 /* BackgroundServiceTaskManager.swift in Sources */,
 				42239FD59394A086E046C9BF /* Backports.swift in Sources */,
 				7A25D6926A2C01DB8D0D67A5 /* BadgeLabel.swift in Sources */,
 				A4B0BAD62A12ED76BD611B79 /* BadgeView.swift in Sources */,
@@ -9975,6 +9986,7 @@
 				DBC3FDE1540B39702A117D8E /* RoomRolesAndPermissionsTests.swift in Sources */,
 				94EB81606839C175CA6C2ADB /* RoomScreenTests.swift in Sources */,
 				A1EF922F51CF32732126A447 /* SYNAdaptiveLayoutUITests.swift in Sources */,
+				91866890098AE9A1133CBCE6 /* SYNBackgroundLifecycleUITests.swift in Sources */,
 				9BE6B1F407790AA162D2F46D /* SYNGiphyUITests.swift in Sources */,
 				E9985DCD1B0D026D7E8BF809 /* ServerSelectionTests.swift in Sources */,
 				D5C2DA52162A978743A183F2 /* SessionVerificationTests.swift in Sources */,
@@ -10621,7 +10633,7 @@
 				CLASSIC_APP_KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).app.syn.messenger.classic.keychain.shared";
 				CLASSIC_APP_KEYCHAIN_SERVICE_IDENTIFIER = "app.syn.messenger.classic.encryption-manager-service";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 47;
+				CURRENT_PROJECT_VERSION = 48;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = S6BUVDCKVJ;
 				ENABLE_BITCODE = NO;
@@ -10639,7 +10651,7 @@
 				IS_NIGHTLY_BUILD = NO;
 				KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).$(BASE_BUNDLE_IDENTIFIER)";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 10.27.26;
+				MARKETING_VERSION = 11.16.26;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCTION_APP_NAME = "SYN Messenger";
@@ -10695,7 +10707,7 @@
 				CLASSIC_APP_KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).app.syn.messenger.classic.keychain.shared";
 				CLASSIC_APP_KEYCHAIN_SERVICE_IDENTIFIER = "app.syn.messenger.classic.encryption-manager-service";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 47;
+				CURRENT_PROJECT_VERSION = 48;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = S6BUVDCKVJ;
 				ENABLE_BITCODE = NO;
@@ -10719,7 +10731,7 @@
 				IS_NIGHTLY_BUILD = NO;
 				KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).$(BASE_BUNDLE_IDENTIFIER)";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 10.27.26;
+				MARKETING_VERSION = 11.16.26;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

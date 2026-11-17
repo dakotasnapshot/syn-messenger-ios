@@ -32,9 +32,11 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
     private let elementCallService: ElementCallServiceProtocol
     private let phoneWatchBridge: PhoneWatchBridge
     
-    /// Common background task to continue long-running tasks in the background.
-    private var backgroundTask: UIBackgroundTaskIdentifier?
-    private var backgroundPauseTask: Task<Void, Never>?
+    private lazy var backgroundServiceTasks = BackgroundServiceTaskManager(begin: { [appMediator] handler in
+        appMediator.beginBackgroundTask(expirationHandler: handler)
+    }, end: { [appMediator] identifier in
+        appMediator.endBackgroundTask(identifier)
+    })
     
     private var userSessionMigrationsOldVersion: Version?
     private var userSession: UserSessionProtocol? {
@@ -192,9 +194,9 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
                     // When reporting a VoIP call through the CXProvider's `reportNewIncomingVoIPPushPayload`
                     // the UIApplication states don't change and services are neither started nor ran on
                     // a background task. Handle both manually here.
-                    Task {
+                    self?.backgroundServiceTasks.run { [weak self] in
                         await self?.resumeClientServices()
-                        self?.schedulePauseServices()
+                        await self?.pauseClientServices(isBackgroundTask: true)
                     }
                 default:
                     break
@@ -1094,7 +1096,9 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
         }
         
         await userSession?.clientProxy.pauseServices()
-        clientProxyObserver = nil
+        if !isBackgroundTask || UIApplication.shared.applicationState == .background {
+            clientProxyObserver = nil
+        }
     }
     
     private func resumeClientServices() async {
@@ -1185,18 +1189,8 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
     }
     
     private func schedulePauseServices() {
-        guard backgroundTask == nil else {
-            return
-        }
-        
-        backgroundTask = appMediator.beginBackgroundTask { [weak self] in
-            MXLog.info("Background task is about to expire.")
-            self?.endActiveBackgroundTask()
-        }
-        backgroundPauseTask = Task { [weak self] in
-            guard let self else { return }
-            await pauseClientServices(isBackgroundTask: true)
-            endActiveBackgroundTask()
+        backgroundServiceTasks.run { [weak self] in
+            await self?.pauseClientServices(isBackgroundTask: true)
         }
     }
     
@@ -1204,9 +1198,6 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
     private func applicationWillEnterForeground() {
         MXLog.info("Application will enter foreground")
         updateWindowAppearance(colorMode: appSettings.synColorMode)
-        backgroundPauseTask?.cancel()
-        backgroundPauseTask = nil
-        endActiveBackgroundTask()
         Task {
             await resumeClientServices()
         }
@@ -1216,17 +1207,6 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
     private func applicationDidBecomeActive() {
         MXLog.info("Application did become active")
         updateWindowAppearance(colorMode: appSettings.synColorMode, refreshKeyboard: true)
-    }
-    
-    private func endActiveBackgroundTask() {
-        guard let backgroundTask else {
-            return
-        }
-        
-        MXLog.info("Ending background task.")
-        appMediator.endBackgroundTask(backgroundTask)
-        self.backgroundTask = nil
-        backgroundPauseTask = nil
     }
     
     // MARK: Background app refresh
