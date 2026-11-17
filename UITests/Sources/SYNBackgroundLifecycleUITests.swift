@@ -14,6 +14,8 @@ final class SYNBackgroundLifecycleUITests: XCTestCase {
         // No UI_TESTS_SCREEN: exercise the real lifecycle coordinator, not a screen fixture.
         app.launch()
         XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 20))
+        let signIn = app.buttons[A11yIdentifiers.authenticationStartScreen.signIn]
+        XCTAssertTrue(signIn.waitForExistence(timeout: 10))
         
         for _ in 0..<5 {
             XCUIDevice.shared.press(.home)
@@ -26,6 +28,13 @@ final class SYNBackgroundLifecycleUITests: XCTestCase {
             XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10))
             XCTAssertTrue(app.windows.firstMatch.exists)
         }
+        
+        // RunningForeground precedes completion of SpringBoard's activation animation.
+        Thread.sleep(forTimeInterval: 1)
+        signIn.tap()
+        let server = app.textFields[A11yIdentifiers.changeServerScreen.server]
+        XCTAssertTrue(server.waitForExistence(timeout: 10))
+        XCTAssertTrue(server.isHittable)
         
         let screenshot = XCTAttachment(screenshot: app.screenshot())
         screenshot.name = "Lifecycle smoke after five background transitions"
