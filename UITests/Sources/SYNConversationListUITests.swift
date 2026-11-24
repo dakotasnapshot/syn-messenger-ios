@@ -43,7 +43,7 @@ final class SYNConversationListUITests: XCTestCase {
         }
         capture(name: "Conversation list top")
         let lastRoom = app.buttons[A11yIdentifiers.homeScreen.roomName("Conversation 24")]
-        for _ in 0..<12 {
+        for _ in 0..<32 {
             if lastRoom.exists, lastRoom.isHittable, lastRoom.frame.maxY < list.frame.maxY - fadeClearance {
                 break
             }
