@@ -330,6 +330,7 @@ import SwiftUI
 extension EnvironmentValues {
     /// Whether or not the current view is part of the sidebar module of a `NavigationSplitCoordinator`.
     @Entry var isInSidebar = false
+    @Entry var hasNavigationSidebar = false
 }
 
 private struct NavigationSplitCoordinatorView: View {
@@ -412,6 +413,7 @@ private struct NavigationSplitCoordinatorView: View {
             if let detailModule = navigationSplitCoordinator.detailModule {
                 detailModule.coordinator?.toPresentable()
                     .id(detailModule.id)
+                    .environment(\.hasNavigationSidebar, navigationSplitCoordinator.columnVisibility != .detailOnly)
             } else {
                 navigationSplitCoordinator.placeholderModule.coordinator?.toPresentable()
                     .id(navigationSplitCoordinator.placeholderModule.id)

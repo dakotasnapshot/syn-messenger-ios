@@ -16,6 +16,7 @@ struct RoomScreen: View {
     @ObservedObject private var timelineContext: TimelineViewModelType.Context
     let composerToolbar: ComposerToolbar
     @Environment(\.accessibilityVoiceOverEnabled) private var isVoiceOverEnabled
+    @Environment(\.hasNavigationSidebar) private var hasNavigationSidebar
     
     enum MarkAsReadSource {
         case up
@@ -153,7 +154,8 @@ struct RoomScreen: View {
                 wallpaper = SYNRoomWallpaperStore.image(roomID: context.viewState.roomID)
             }
             .modifier(SYNComposerKeyboardClearance())
-            .synFullWidthContent()
+            // Split-view safe areas reserve the sidebar; extending into them clips the composer.
+            .synFullWidthContent(enabled: !hasNavigationSidebar)
             .track(screen: .Room)
             .sentryTrace("\(Self.self)")
     }

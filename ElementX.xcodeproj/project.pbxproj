@@ -1633,6 +1633,7 @@
 		FE578B12750E5E602D62B365 /* ComposerDisabledView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC4B431B0117BDEE697DB4A /* ComposerDisabledView.swift */; };
 		FE9A5D4715C7AB68682C030C /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDCAC6CAAD65A2C24EA9C4B /* Dictionary.swift */; };
 		FEC03105D1BDE0F49BD7F243 /* PinnedEventsTimelineScreenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6572E6EF5D5F4B0C338A40 /* PinnedEventsTimelineScreenModels.swift */; };
+		FEE338DD83F1621EA34AB836 /* SYNComposerPaneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CC5436AAB66BF62D0D6A96 /* SYNComposerPaneUITests.swift */; };
 		FEF0E0D2EDB8A4A9FE1842EE /* portrait_test_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D48D415C7A4284DEBEB34924 /* portrait_test_video.mp4 */; };
 		FEFD5290B31FCBA6999912C8 /* RoomChangePermissionsScreenViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2721D7B051F0159AA919DA05 /* RoomChangePermissionsScreenViewModelProtocol.swift */; };
 		FF34BF2AF731340AF9414A18 /* SwipeRightAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552D3466B1453F287223ADA /* SwipeRightAction.swift */; };
@@ -1966,6 +1967,7 @@
 		184CF8C196BE143AE226628D /* DecorationTimelineItemProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationTimelineItemProtocol.swift; sourceTree = "<group>"; };
 		18678D0A4177D8F0A255BC36 /* NotificationToneManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationToneManagerMock.swift; sourceTree = "<group>"; };
 		18B223FA339BF53085328DEE /* SpaceScreenViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceScreenViewModelTests.swift; sourceTree = "<group>"; };
+		18CC5436AAB66BF62D0D6A96 /* SYNComposerPaneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SYNComposerPaneUITests.swift; sourceTree = "<group>"; };
 		18F2958E6D247AE2516BEEE8 /* ClientProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientProxy.swift; sourceTree = "<group>"; };
 		190EC7285D3CFEF0D3011BCF /* GeoURI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoURI.swift; sourceTree = "<group>"; };
 		1912062B53CE95E6F700DA60 /* Pagination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
@@ -6143,6 +6145,7 @@
 				0367E0AF1163F42292D788BD /* StartChatTests.swift */,
 				013AD1E5E2CE501F96631B3E /* SYNAdaptiveLayoutUITests.swift */,
 				77862126E2C74532B846D0F0 /* SYNBackgroundLifecycleUITests.swift */,
+				18CC5436AAB66BF62D0D6A96 /* SYNComposerPaneUITests.swift */,
 				C4EF88981D569996FDA94C2E /* SYNGiphyUITests.swift */,
 				F899D02CF26EA7675EEBE74C /* UserSessionScreenTests.swift */,
 			);
@@ -9987,6 +9990,7 @@
 				94EB81606839C175CA6C2ADB /* RoomScreenTests.swift in Sources */,
 				A1EF922F51CF32732126A447 /* SYNAdaptiveLayoutUITests.swift in Sources */,
 				91866890098AE9A1133CBCE6 /* SYNBackgroundLifecycleUITests.swift in Sources */,
+				FEE338DD83F1621EA34AB836 /* SYNComposerPaneUITests.swift in Sources */,
 				9BE6B1F407790AA162D2F46D /* SYNGiphyUITests.swift in Sources */,
 				E9985DCD1B0D026D7E8BF809 /* ServerSelectionTests.swift in Sources */,
 				D5C2DA52162A978743A183F2 /* SessionVerificationTests.swift in Sources */,
@@ -10633,7 +10637,7 @@
 				CLASSIC_APP_KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).app.syn.messenger.classic.keychain.shared";
 				CLASSIC_APP_KEYCHAIN_SERVICE_IDENTIFIER = "app.syn.messenger.classic.encryption-manager-service";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 48;
+				CURRENT_PROJECT_VERSION = 49;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = S6BUVDCKVJ;
 				ENABLE_BITCODE = NO;
@@ -10651,7 +10655,7 @@
 				IS_NIGHTLY_BUILD = NO;
 				KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).$(BASE_BUNDLE_IDENTIFIER)";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 11.16.26;
+				MARKETING_VERSION = 11.24.26;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCTION_APP_NAME = "SYN Messenger";
@@ -10707,7 +10711,7 @@
 				CLASSIC_APP_KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).app.syn.messenger.classic.keychain.shared";
 				CLASSIC_APP_KEYCHAIN_SERVICE_IDENTIFIER = "app.syn.messenger.classic.encryption-manager-service";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 48;
+				CURRENT_PROJECT_VERSION = 49;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = S6BUVDCKVJ;
 				ENABLE_BITCODE = NO;
@@ -10731,7 +10735,7 @@
 				IS_NIGHTLY_BUILD = NO;
 				KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).$(BASE_BUNDLE_IDENTIFIER)";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 11.16.26;
+				MARKETING_VERSION = 11.24.26;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
