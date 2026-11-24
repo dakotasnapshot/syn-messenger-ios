@@ -446,11 +446,13 @@ private struct NavigationSplitCoordinatorView: View {
                 if navigationSplitCoordinator.columnVisibility != .detailOnly {
                     navigationSplitCoordinator.sidebarModule?.coordinator?.toPresentable()
                         .id(navigationSplitCoordinator.sidebarModule?.id)
+                        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
                         .padding(6)
                         .frame(width: min(requestedSidebarWidth, max(96, geometry.size.width - 320)))
-                        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 24))
+                        .background(Color.compound.bgCanvasDefault, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
                         .overlay {
-                            RoundedRectangle(cornerRadius: 24)
+                            RoundedRectangle(cornerRadius: 24, style: .continuous)
                                 .stroke(.secondary.opacity(0.14), lineWidth: 0.5)
                                 .allowsHitTesting(false)
                         }
@@ -481,6 +483,7 @@ private struct NavigationSplitCoordinatorView: View {
                     }
                 }
             }
+            .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
         }
     }
     

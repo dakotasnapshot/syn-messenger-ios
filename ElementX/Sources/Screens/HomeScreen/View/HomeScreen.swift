@@ -36,6 +36,8 @@ struct HomeScreen: View {
             .navigationBarTitleDisplayMode(Compound.supportsGlass ? .inline : .automatic)
             .toolbar { toolbar }
             .toolbarRole(Compound.supportsGlass ? .editor : .automatic)
+            .toolbarBackground(isInSidebar ? AnyShapeStyle(Color.compound.bgCanvasDefault) : AnyShapeStyle(.bar), for: .navigationBar)
+            .toolbarBackground(isInSidebar ? .visible : .automatic, for: .navigationBar)
             .background {
                 if !isInSidebar {
                     Color.compound.bgCanvasDefault.ignoresSafeArea()
