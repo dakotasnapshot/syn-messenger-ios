@@ -1,0 +1,38 @@
+{
+  "version": "11.24.26",
+  "build": "49",
+  "deliveryUUID": "b75e7577-802f-4c03-904a-bf17c10df62d",
+  "processingState": "VALID",
+  "internalBuildState": "IN_BETA_TESTING",
+  "internalGroupMembershipVerified": true,
+  "testNotesReadbackVerified": true,
+  "publicIPA": "https://github.com/dakotasnapshot/syndicate-releases/releases/download/ios-11.24.26-build49/Syndicate-11.24.26-build49.ipa",
+  "sha256": "a4fbe0685de84d098df07e14ce1d2c6174ffa6a94aa032731736e7150afb8231",
+  "bytes": 135203491,
+  "publicBuildSource": "956bbcd265fd10dac8ca799a72111cbdcb751957",
+  "nativeComposerRunsPassed": 3,
+  "nativeCoverage": [
+    "iPadOS 27.0 split conversation",
+    "iOS 27.0 compact iPhone",
+    "iOS 27.1 sidebar conversation"
+  ],
+  "focusedTestsPassed": 9,
+  "watchDebugReleasePassed": true,
+  "appleValidationPassed": true,
+  "exportedAppStoreDistributionProfilesVerified": 5,
+  "offHostRecoveryFreshReadbackVerified": true,
+  "website": {
+    "downloadPageReadbackVerified": true,
+    "checksumManifestReadbackVerified": true,
+    "loaderMetadataUnchanged": true,
+    "historicalBuild48Retained": true,
+    "publicIPAWholeFileVerified": true,
+    "version": "11.24.26",
+    "build": "49",
+    "url": "https://github.com/dakotasnapshot/syndicate-releases/releases/download/ios-11.24.26-build49/Syndicate-11.24.26-build49.ipa",
+    "sha256": "a4fbe0685de84d098df07e14ce1d2c6174ffa6a94aa032731736e7150afb8231"
+  },
+  "physicalAffectedIPadVerified": false,
+  "appStoreReviewSubmitted": false,
+  "verifiedAt": "2026-11-24T13:37:28.301572+00:00"
+}
