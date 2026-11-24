@@ -12,7 +12,6 @@ final class SYNComposerPaneUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchEnvironment = ["UI_TESTS_SCREEN": UITestsScreenIdentifier.userSessionScreen.rawValue]
         app.launch()
-        XCUIDevice.shared.orientation = .portrait
         let room = app.buttons[A11yIdentifiers.homeScreen.roomName("Foundation 🔭🪐🌌")]
         XCTAssertTrue(room.waitForExistence(timeout: 10))
         room.tap()
@@ -35,13 +34,14 @@ final class SYNComposerPaneUITests: XCTestCase {
         bounds.name = "Conversation pane bounds"
         bounds.lifetime = .keepAlways
         add(bounds)
-        if room.exists, room.isHittable, room.frame.maxX < app.frame.midX {
+        if room.exists, room.isHittable {
             XCTAssertGreaterThanOrEqual(composer.frame.minX, room.frame.maxX,
                                         "Composer must begin inside the conversation, not behind its sidebar.")
         }
-        XCTAssertGreaterThanOrEqual(composer.frame.minX, app.frame.minX)
-        XCTAssertLessThanOrEqual(composer.frame.maxX, app.frame.maxX)
-        XCTAssertTrue(app.buttons[A11yIdentifiers.roomScreen.sendButton].isHittable)
+        let sendButton = app.buttons[A11yIdentifiers.roomScreen.sendButton]
+        XCTAssertTrue(sendButton.isHittable)
+        XCTAssertLessThanOrEqual(composer.frame.maxX, sendButton.frame.minX,
+                                 "The input must end before the send control within the same pane.")
         composer.typeText(XCUIKeyboardKey.delete.rawValue)
         XCTAssertEqual(composer.value as? String, "123456789101112131415161718192021222")
         composer.typeText(String(repeating: " wrapped draft", count: 12))
