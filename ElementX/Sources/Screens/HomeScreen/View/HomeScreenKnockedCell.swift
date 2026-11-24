@@ -12,12 +12,34 @@ import MatrixRustSDKMocks
 import SwiftUI
 
 struct HomeScreenKnockedCell: View {
+    @Environment(\.sidebarExpansion) private var sidebarExpansion
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
     let room: HomeScreenRoom
     let context: HomeScreenViewModel.Context
     
     var body: some View {
+        if sidebarExpansion < 0.65 {
+            Button {
+                if let roomID = room.roomID {
+                    context.send(viewAction: .selectRoom(roomIdentifier: roomID))
+                }
+            } label: {
+                RoomAvatarImage(avatar: room.avatar,
+                                avatarSize: .custom(52),
+                                mediaProvider: context.mediaProvider)
+                    .frame(maxWidth: .infinity, minHeight: 72)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(room.name)
+            .accessibilityIdentifier(A11yIdentifiers.homeScreen.roomName(room.name))
+        } else {
+            expandedContent
+        }
+    }
+    
+    private var expandedContent: some View {
         HStack(alignment: .top, spacing: 16) {
             if dynamicTypeSize < .accessibility3 {
                 RoomAvatarImage(avatar: room.avatar,

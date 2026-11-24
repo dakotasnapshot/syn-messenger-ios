@@ -39,6 +39,13 @@ private struct TimelineItemAccessibilityModifier: ViewModifier {
                         action()
                     }
                 }
+        case let timelineItem as TextBasedRoomTimelineItem:
+            content
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel(timelineItem.sender.displayName ?? timelineItem.sender.id)
+                .accessibilityActions {
+                    Button(L10n.commonMessageActions) { action() }
+                }
         case let timelineItem as EventBasedTimelineItemProtocol:
             content
                 .accessibilityRepresentation {

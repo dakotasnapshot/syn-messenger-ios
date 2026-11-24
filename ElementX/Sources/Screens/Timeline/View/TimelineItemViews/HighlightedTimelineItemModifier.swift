@@ -16,6 +16,7 @@ extension View {
 }
 
 private struct HighlightedTimelineItemModifier: ViewModifier {
+    @Environment(\.colorScheme) private var colorScheme
     let isHighlighted: Bool
     
     func body(content: Content) -> some View {
@@ -24,15 +25,15 @@ private struct HighlightedTimelineItemModifier: ViewModifier {
             .background {
                 if isHighlighted {
                     VStack(spacing: 0) {
-                        Color.compound.gradientSubtleStop1
-                        LinearGradient(gradient: .compound.subtle,
+                        Color.indigo.opacity(colorScheme == .dark ? 0.30 : 0.14)
+                        LinearGradient(colors: [Color.purple.opacity(colorScheme == .dark ? 0.22 : 0.10), .clear],
                                        startPoint: .top,
                                        endPoint: .bottom)
                             .frame(maxHeight: 200)
                             .layoutPriority(1)
                     }
                     .overlay(alignment: .top) {
-                        Color.compound.borderAccentSubtle
+                        Color.indigo.opacity(0.5)
                             .frame(height: 1)
                     }
                 }

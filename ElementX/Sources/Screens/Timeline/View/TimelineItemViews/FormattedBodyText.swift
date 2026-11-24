@@ -51,16 +51,10 @@ struct FormattedBodyText: View {
                   boostFontSize: boostFontSize)
     }
     
-    /// Details components contain a control that VoiceOver needs to reach, so their children can't be merged away.
-    private var containsDetails: Bool {
-        attributedString.runs[\.details].contains { $0.0 != nil }
-    }
-    
     var body: some View {
         layout
             .tint(.compound.textLinkExternal)
-            .accessibilityElement(children: containsDetails ? .contain : .ignore)
-            .accessibilityLabel(Text(attributedString))
+            .accessibilityElement(children: .contain)
     }
     
     /// The attributed components laid out for the bubbles timeline style.

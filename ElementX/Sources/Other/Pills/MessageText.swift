@@ -9,26 +9,10 @@
 import MatrixRustSDK
 import SwiftUI
 
-final class MessageTextView: UITextView, PillAttachmentViewProviderDelegate, UIGestureRecognizerDelegate {
+final class MessageTextView: UITextView, PillAttachmentViewProviderDelegate {
     var timelineContext: TimelineViewModel.Context?
     var updateClosure: (() -> Void)?
     private var pillViews = NSHashTable<UIView>.weakObjects()
-    
-    override func addGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
-        // We don't need to change the behaviour on MacOS
-        if !ProcessInfo.processInfo.isiOSAppOnMac {
-            gestureRecognizer.delegate = self
-        }
-        super.addGestureRecognizer(gestureRecognizer)
-    }
-    
-    /// This prevents the magnifying glass from showing up
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if otherGestureRecognizer is UILongPressGestureRecognizer {
-            return false
-        }
-        return true
-    }
     
     func invalidateTextAttachmentsDisplay() {
         attributedText.enumerateAttribute(.attachment,
@@ -172,12 +156,13 @@ struct MessageText: UIViewRepresentable {
                 return
             }
         }
+        textView.accessibilityIdentifier = "SYN.MessageText"
         textView.isEditable = false
         textView.isScrollEnabled = false
         textView.adjustsFontForContentSizeCategory = true
         
         // Required to allow tapping links
-        // We disable selection at delegate level
+        // Native selection allows copying part of a message without editing it.
         textView.isSelectable = true
         textView.isUserInteractionEnabled = true
         
@@ -236,13 +221,6 @@ struct MessageText: UIViewRepresentable {
         
         init(openURLAction: OpenURLAction) {
             self.openURLAction = openURLAction
-        }
-        
-        func textViewDidChangeSelection(_ textView: UITextView) {
-            guard !ProcessInfo.processInfo.isiOSAppOnMac else {
-                return
-            }
-            textView.selectedTextRange = nil
         }
         
         func textView(_ textView: UITextView, primaryActionFor textItem: UITextItem, defaultAction: UIAction) -> UIAction? {

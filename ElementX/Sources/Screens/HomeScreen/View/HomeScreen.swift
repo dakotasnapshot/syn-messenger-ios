@@ -14,6 +14,7 @@ import SwiftUI
 struct HomeScreen: View {
     @Environment(\.sidebarNavigationMenu) private var sidebarNavigationMenu
     @Environment(\.floatingNavigationClearance) private var floatingNavigationClearance
+    @Environment(\.sidebarExpansion) private var sidebarExpansion
     @Environment(\.isInSidebar) private var isInSidebar
     
     @ObservedObject var context: HomeScreenViewModel.Context
@@ -31,7 +32,7 @@ struct HomeScreen: View {
             .alert(item: $context.leaveRoomAlertItem,
                    actions: leaveRoomAlertActions,
                    message: leaveRoomAlertMessage)
-            .navigationTitle(title)
+            .navigationTitle(isInSidebar && sidebarExpansion < 0.65 ? "" : title)
             .navigationBarTitleDisplayMode(Compound.supportsGlass ? .inline : .automatic)
             .toolbar { toolbar }
             .toolbarRole(Compound.supportsGlass ? .editor : .automatic)
@@ -46,7 +47,7 @@ struct HomeScreen: View {
             }
             .synFullWidthContent(enabled: floatingNavigationClearance > 0)
             .track(screen: .Home)
-            .toolbarBloom(hasSearchBar: context.viewState.isRoomListSearchEnabled)
+            .toolbarBloom(hasSearchBar: context.viewState.isRoomListSearchEnabled && !isInSidebar)
             .sentryTrace("\(Self.self)")
             .sheet(item: $context.spaceFiltersViewModel) { vm in
                 ChatsSpaceFiltersScreen(context: vm.context)
@@ -67,47 +68,67 @@ struct HomeScreen: View {
     
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
-        ToolbarItem(placement: Compound.supportsGlass ? .title : .navigationBarLeading) {
-            HStack(spacing: isInSidebar ? 8 : 12) {
-                // The settings button is inside the title on iOS 26 to workaround a
-                // weird liquid glass transition when pushing/popping a room.
-                settingsButton
-                    .buttonStyle(.borderless)
-                
-                if #available(iOS 26, *) {
+        if isInSidebar, sidebarExpansion < 0.65 {
+            ToolbarItem(placement: .principal) {
+                Menu {
+                    Button(L10n.commonSettings) { context.send(viewAction: .showSettings) }
+                    Button(L10n.actionStartChat) { context.send(viewAction: .startChat) }
+                    if context.viewState.shouldShowSpaceFilters {
+                        Button(L10n.screenRoomlistYourSpaces) { context.send(viewAction: .spaceFilters) }
+                    }
                     if let sidebarNavigationMenu {
                         sidebarNavigationMenu
-                    } else {
-                        Text(title)
-                            .font(isInSidebar ? .compound.bodyLGSemibold : .compound.headingLGBold)
-                            .foregroundStyle(.compound.textPrimary)
-                            .minimumScaleFactor(isInSidebar ? 1 : 0.6) // Allow scaling down to bodyLG if needed.
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                        .frame(minWidth: 44, minHeight: 44)
+                }
+                .accessibilityLabel(UntranslatedL10n.screenRoomlistSidebarActionsIos)
+                .accessibilityIdentifier("SYN.SidebarActions")
+            }
+        } else {
+            ToolbarItem(placement: Compound.supportsGlass ? .title : .navigationBarLeading) {
+                HStack(spacing: isInSidebar ? 8 : 12) {
+                    // The settings button is inside the title on iOS 26 to workaround a
+                    // weird liquid glass transition when pushing/popping a room.
+                    settingsButton
+                        .buttonStyle(.borderless)
+                    
+                    if #available(iOS 26, *) {
+                        if let sidebarNavigationMenu {
+                            sidebarNavigationMenu
+                        } else {
+                            Text(title)
+                                .font(isInSidebar ? .compound.bodyLGSemibold : .compound.headingLGBold)
+                                .foregroundStyle(.compound.textPrimary)
+                                .minimumScaleFactor(isInSidebar ? 1 : 0.6) // Allow scaling down to bodyLG if needed.
+                        }
                     }
                 }
             }
-        }
-        .backportSharedBackgroundVisibility(.hidden)
-        
-        ToolbarItem(placement: .primaryAction) {
-            if #available(iOS 26, *) {
-                newRoomButton
-            } else {
-                newRoomButton
-                    .buttonStyle(.compound(.super, size: .toolbarIcon))
-            }
-        }
-        
-        if context.viewState.shouldShowSpaceFilters {
-            if #available(iOS 26, *) {
-                ToolbarSpacer(.fixed, placement: .primaryAction)
-            }
+            .backportSharedBackgroundVisibility(.hidden)
             
             ToolbarItem(placement: .primaryAction) {
-                SpaceFiltersButton(selected: context.viewState.selectedSpaceFilter != nil) {
-                    context.send(viewAction: .spaceFilters)
+                if #available(iOS 26, *) {
+                    newRoomButton
+                } else {
+                    newRoomButton
+                        .buttonStyle(.compound(.super, size: .toolbarIcon))
                 }
-                .matchedTransitionSource(id: NavigationTransitionSourceID.spaceFilters,
-                                         in: navigationTransitionNamespace)
+            }
+            
+            if context.viewState.shouldShowSpaceFilters {
+                if #available(iOS 26, *) {
+                    ToolbarSpacer(.fixed, placement: .primaryAction)
+                }
+                
+                ToolbarItem(placement: .primaryAction) {
+                    SpaceFiltersButton(selected: context.viewState.selectedSpaceFilter != nil) {
+                        context.send(viewAction: .spaceFilters)
+                    }
+                    .matchedTransitionSource(id: NavigationTransitionSourceID.spaceFilters,
+                                             in: navigationTransitionNamespace)
+                }
             }
         }
     }

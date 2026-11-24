@@ -49,3 +49,8 @@
 "screen_room_schedule_normal" = "Normal notifications";
 "screen_room_schedule_conflict" = "The saved schedule changed on another device. Reload it before saving. Reloading discards your unsaved edits.";
 "screen_room_schedule_reload" = "Reload saved schedule";
+
+"screen_roomlist_sidebar_actions_ios" = "Sidebar actions";
+"screen_roomlist_resize_sidebar_ios" = "Resize conversations";
+"screen_roomlist_show_sidebar_ios" = "Show Sidebar";
+"screen_roomlist_hide_sidebar_ios" = "Hide Sidebar";

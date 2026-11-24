@@ -331,12 +331,20 @@ extension EnvironmentValues {
     /// Whether or not the current view is part of the sidebar module of a `NavigationSplitCoordinator`.
     @Entry var isInSidebar = false
     @Entry var hasNavigationSidebar = false
+    @Entry var sidebarExpansion: CGFloat = 1
+    @Entry var usesResizableConversationPane = false
+    @Entry var conversationSidebarToggle: (() -> Void)? = nil
 }
 
 private struct NavigationSplitCoordinatorView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.usesExpandedSidebar) private var usesExpandedSidebar
     @Environment(\.tabViewHorizontalSizeClass) private var horizontalSizeClass
     @Environment(\.scenePhase) private var scenePhase
+    
+    @State private var sidebarWidth: CGFloat = 320
+    @State private var requestedSidebarWidth: CGFloat = 320
+    @State private var sidebarDragStartWidth: CGFloat?
     
     @Bindable var navigationSplitCoordinator: NavigationSplitCoordinator
     
@@ -344,6 +352,8 @@ private struct NavigationSplitCoordinatorView: View {
         Group {
             if horizontalSizeClass == .compact {
                 navigationStack
+            } else if supportsAvatarSidebar {
+                resizableConversations
             } else {
                 navigationSplitView
             }
@@ -389,6 +399,88 @@ private struct NavigationSplitCoordinatorView: View {
                     module.coordinator?.toPresentable()
                         .id(module.id)
                 }
+        }
+    }
+    
+    private var supportsAvatarSidebar: Bool {
+        if let stack = navigationSplitCoordinator.sidebarCoordinator as? NavigationStackCoordinator {
+            return stack.rootCoordinator is HomeScreenCoordinator
+        }
+        return navigationSplitCoordinator.sidebarCoordinator is HomeScreenCoordinator
+    }
+    
+    private var sidebarResizeHandle: some View {
+        Capsule()
+            .fill(.secondary.opacity(0.45))
+            .frame(width: 4, height: 44)
+            .frame(width: 20, height: 88)
+            .contentShape(Rectangle())
+            .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
+                .onChanged { value in
+                    if sidebarDragStartWidth == nil {
+                        sidebarDragStartWidth = sidebarWidth
+                    }
+                    resizeSidebar(to: (sidebarDragStartWidth ?? sidebarWidth) + value.translation.width)
+                }
+                .onEnded { _ in sidebarDragStartWidth = nil })
+            .accessibilityElement()
+            .accessibilityLabel(UntranslatedL10n.screenRoomlistResizeSidebarIos)
+            .accessibilityValue(String(Int(requestedSidebarWidth)))
+            .accessibilityIdentifier("SYN.SidebarResizeHandle")
+            .accessibilityAdjustableAction { direction in
+                switch direction {
+                case .increment: resizeSidebar(to: requestedSidebarWidth + 40)
+                case .decrement: resizeSidebar(to: requestedSidebarWidth - 40)
+                @unknown default: break
+                }
+            }
+    }
+    
+    private func resizeSidebar(to width: CGFloat) {
+        requestedSidebarWidth = min(420, max(96, width))
+    }
+    
+    private var resizableConversations: some View {
+        GeometryReader { geometry in
+            HStack(spacing: 0) {
+                if navigationSplitCoordinator.columnVisibility != .detailOnly {
+                    navigationSplitCoordinator.sidebarModule?.coordinator?.toPresentable()
+                        .id(navigationSplitCoordinator.sidebarModule?.id)
+                        .padding(6)
+                        .frame(width: min(requestedSidebarWidth, max(96, geometry.size.width - 320)))
+                        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 24))
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 24)
+                                .stroke(.secondary.opacity(0.14), lineWidth: 0.5)
+                                .allowsHitTesting(false)
+                        }
+                        .overlay(alignment: .trailing) { sidebarResizeHandle }
+                        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width in
+                            withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.16)) { sidebarWidth = width }
+                        }
+                        .environment(\.sidebarExpansion, min(1, max(0, (sidebarWidth - 140) / 140)))
+                        .environment(\.isInSidebar, true)
+                        .environment(\.usesResizableConversationPane, true)
+                        .transformPreference(CompoundBackgroundPreferenceKey.self) { $0 = nil }
+                }
+                
+                Group {
+                    if let detailModule = navigationSplitCoordinator.detailModule {
+                        detailModule.coordinator?.toPresentable()
+                            .id(detailModule.id)
+                    } else {
+                        navigationSplitCoordinator.placeholderModule.coordinator?.toPresentable()
+                            .id(navigationSplitCoordinator.placeholderModule.id)
+                    }
+                }
+                .frame(minWidth: 0, maxWidth: .infinity, maxHeight: .infinity)
+                .environment(\.hasNavigationSidebar, navigationSplitCoordinator.columnVisibility != .detailOnly)
+                .environment(\.conversationSidebarToggle) {
+                    withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) {
+                        navigationSplitCoordinator.columnVisibility = navigationSplitCoordinator.columnVisibility == .detailOnly ? .all : .detailOnly
+                    }
+                }
+            }
         }
     }
     
@@ -721,16 +813,33 @@ private struct NavigationSplitCoordinatorView: View {
 }
 
 private struct NavigationStackCoordinatorView: View {
+    @Environment(\.conversationSidebarToggle) private var conversationSidebarToggle
+    @Environment(\.hasNavigationSidebar) private var hasNavigationSidebar
     @Bindable var navigationStackCoordinator: NavigationStackCoordinator
+    
+    @ToolbarContentBuilder
+    private var conversationSidebarToolbar: some ToolbarContent {
+        if let conversationSidebarToggle {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: conversationSidebarToggle) {
+                    Image(systemName: "sidebar.left")
+                }
+                .accessibilityLabel(hasNavigationSidebar ? UntranslatedL10n.screenRoomlistHideSidebarIos : UntranslatedL10n.screenRoomlistShowSidebarIos)
+                .accessibilityIdentifier("SYN.ToggleConversationSidebar")
+            }
+        }
+    }
     
     var body: some View {
         // swiftlint:disable:next prefer_element_navigation_stack
         NavigationStack(path: $navigationStackCoordinator.stackModules) {
             navigationStackCoordinator.rootModule?.coordinator?.toPresentable()
                 .id(navigationStackCoordinator.rootModule?.id) // Is a nil ID ok?
+                .toolbar { conversationSidebarToolbar }
                 .navigationDestination(for: NavigationModule.self) { module in
                     module.coordinator?.toPresentable()
                         .id(module.id)
+                        .toolbar { conversationSidebarToolbar }
                 }
         }
         .sheet(item: $navigationStackCoordinator.sheetModule) { module in

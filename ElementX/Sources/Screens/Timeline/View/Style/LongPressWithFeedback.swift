@@ -151,6 +151,17 @@ private struct LongPressGestureRepresentable: UIGestureRecognizerRepresentable {
             false
         }
         
+        func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+            var view = touch.view
+            while let current = view {
+                if current is MessageTextView {
+                    return false
+                }
+                view = current.superview
+            }
+            return true
+        }
+        
         func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
             true
         }

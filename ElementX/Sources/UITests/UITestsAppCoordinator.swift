@@ -639,7 +639,7 @@ class MockScreen: Identifiable {
                                                     spaceServiceConfiguration: .init(topLevelSpaces: .mockSpaceList.filter(\.isSpace) + .mockSingleRoom),
                                                     roomPreviews: [SpaceServiceRoom].mockSpaceList.map { RoomPreviewProxyMock(spaceServiceRoom: $0) },
                                                     defaultRoomMembers: .allMembersAsAdmin))
-            if id == .appStoreHome {
+            do {
                 let drafts = ScreenshotDraftStore()
                 let roomLookup = clientProxy.roomForIdentifierClosure
                 clientProxy.roomForIdentifierClosure = { roomID in

@@ -62,6 +62,14 @@ internal nonisolated enum UntranslatedL10n {
   internal static var screenRoomScheduleUnavailable: String { return UntranslatedL10n.tr("Untranslated", "screen_room_schedule_unavailable") }
   /// Unsupported call. Ask the caller to update their Matrix app and try again.
   internal static var screenRoomTimelineSynLegacyCall: String { return UntranslatedL10n.tr("Untranslated", "screen_room_timeline_syn_legacy_call") }
+  /// Hide Sidebar
+  internal static var screenRoomlistHideSidebarIos: String { return UntranslatedL10n.tr("Untranslated", "screen_roomlist_hide_sidebar_ios") }
+  /// Resize conversations
+  internal static var screenRoomlistResizeSidebarIos: String { return UntranslatedL10n.tr("Untranslated", "screen_roomlist_resize_sidebar_ios") }
+  /// Show Sidebar
+  internal static var screenRoomlistShowSidebarIos: String { return UntranslatedL10n.tr("Untranslated", "screen_roomlist_show_sidebar_ios") }
+  /// Sidebar actions
+  internal static var screenRoomlistSidebarActionsIos: String { return UntranslatedL10n.tr("Untranslated", "screen_roomlist_sidebar_actions_ios") }
   /// Search for chats and messages
   internal static var screenSearchEmptyStateMessage: String { return UntranslatedL10n.tr("Untranslated", "screen_search_empty_state_message") }
   /// Start searching...

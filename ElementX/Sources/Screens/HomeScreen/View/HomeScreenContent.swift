@@ -12,10 +12,13 @@ import SwiftUI
 
 struct HomeScreenContent: View {
     @Environment(\.floatingNavigationClearance) private var floatingNavigationClearance
+    @Environment(\.sidebarExpansion) private var sidebarExpansion
+    @Environment(\.usesResizableConversationPane) private var usesResizableConversationPane
     @Environment(\.isInSidebar) private var isInSidebar
     @ObservedObject var context: HomeScreenViewModel.Context
     let scrollViewAdapter: ScrollViewAdapter
     
+    @FocusState private var isSidebarSearchFocused: Bool
     @State private var topSectionHeight: CGFloat = 0
     @State private var scrollViewportTopInset: CGFloat = 0
     
@@ -62,7 +65,7 @@ struct HomeScreenContent: View {
                             topSection
                         }
                     }
-                    .roomListSearchable(isEnabled: context.viewState.isRoomListSearchEnabled,
+                    .roomListSearchable(isEnabled: context.viewState.isRoomListSearchEnabled && !isInSidebar,
                                         isSearchFieldFocused: $context.isSearchFieldFocused,
                                         searchQuery: $context.searchQuery)
                 }
@@ -77,7 +80,28 @@ struct HomeScreenContent: View {
             .onReceive(scrollViewAdapter.isScrolling) { _ in
                 updateVisibleRange()
             }
+            .onChange(of: isSidebarSearchFocused) {
+                if isInSidebar {
+                    // The model flag tracks active search, even after the keyboard is dismissed.
+                    context.isSearchFieldFocused = isSidebarSearchFocused || !context.searchQuery.isEmpty
+                }
+            }
+            .onChange(of: context.isSearchFieldFocused) {
+                if isInSidebar {
+                    isSidebarSearchFocused = context.isSearchFieldFocused
+                }
+            }
+            .onChange(of: sidebarExpansion < 0.65) {
+                if sidebarExpansion < 0.65 {
+                    context.searchQuery = ""
+                    isSidebarSearchFocused = false
+                    context.isSearchFieldFocused = false
+                }
+            }
             .onChange(of: context.searchQuery) {
+                if isInSidebar {
+                    context.isSearchFieldFocused = isSidebarSearchFocused || !context.searchQuery.isEmpty
+                }
                 updateVisibleRange()
             }
             .onChange(of: context.viewState.visibleRooms) {
@@ -119,15 +143,18 @@ struct HomeScreenContent: View {
             .scrollBounceBehavior(context.viewState.roomListMode == .empty ? .basedOnSize : .automatic)
             .animation(.elementDefault, value: context.viewState.roomListMode)
             .animation(.none, value: context.viewState.visibleRooms)
-            .sidebarConversationSurface(enabled: isInSidebar, topInset: min(scrollViewportTopInset, max(0, geometry.size.height)))
+            .sidebarConversationSurface(enabled: isInSidebar, topInset: usesResizableConversationPane ? 0 : min(scrollViewportTopInset, max(0, geometry.size.height)))
         }
     }
     
     @ViewBuilder
     private var topSection: some View {
         // An empty VStack causes glitches within the room list
-        if context.viewState.shouldShowFilters || context.viewState.shouldShowBanner {
+        if sidebarExpansion > 0.65, (isInSidebar && context.viewState.isRoomListSearchEnabled) || context.viewState.shouldShowFilters || context.viewState.shouldShowBanner {
             VStack(spacing: 0) {
+                if isInSidebar, context.viewState.isRoomListSearchEnabled {
+                    sidebarSearch
+                }
                 if context.viewState.shouldShowFilters {
                     RoomListFiltersView(state: $context.filtersState)
                 }
@@ -141,6 +168,37 @@ struct HomeScreenContent: View {
             .background(Color.compound.bgCanvasDefault)
             .readHeight($topSectionHeight)
         }
+    }
+    
+    private var sidebarSearch: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(.secondary)
+            TextField(L10n.actionSearch, text: $context.searchQuery)
+                .focused($isSidebarSearchFocused)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .submitLabel(.search)
+                .onSubmit {
+                    isSidebarSearchFocused = false
+                    context.isSearchFieldFocused = !context.searchQuery.isEmpty
+                }
+                .accessibilityIdentifier("SYN.SidebarSearch")
+            if isSidebarSearchFocused || !context.searchQuery.isEmpty {
+                Button {
+                    context.searchQuery = ""
+                    isSidebarSearchFocused = false
+                    context.isSearchFieldFocused = false
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                }
+                .accessibilityLabel(context.searchQuery.isEmpty ? L10n.actionCancel : L10n.actionClear)
+            }
+        }
+        .padding(.horizontal, 12)
+        .frame(minHeight: 44)
+        .background(.quaternary, in: Capsule())
+        .padding(12)
     }
     
     /// Often times the scroll view's content size isn't correct yet when this method is called e.g. when cancelling a search

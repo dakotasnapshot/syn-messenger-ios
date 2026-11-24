@@ -12,6 +12,9 @@ import MatrixRustSDKMocks
 import SwiftUI
 
 struct HomeScreenRoomCell: View {
+    @Environment(\.sidebarExpansion) private var sidebarExpansion
+    @Environment(\.isInSidebar) private var isInSidebar
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @Environment(\.redactionReasons) private var redactionReasons
     @Environment(\.synThemePalette) private var synTheme
@@ -22,8 +25,8 @@ struct HomeScreenRoomCell: View {
     let mediaProvider: MediaProviderProtocol!
     let action: (HomeScreenViewAction) -> Void
     
-    private let verticalInsets = 12.0
-    private let horizontalInsets = 16.0
+    private let verticalInsets: CGFloat = 12
+    private let horizontalInsets: CGFloat = 16
     
     var body: some View {
         Button {
@@ -31,24 +34,39 @@ struct HomeScreenRoomCell: View {
                 action(.selectRoom(roomIdentifier: roomID))
             }
         } label: {
-            HStack(spacing: 16.0) {
+            HStack(spacing: 16 * sidebarExpansion) {
                 avatar
+                    .overlay(alignment: .topTrailing) {
+                        if sidebarExpansion < 0.5, room.badges.isDotShown {
+                            Circle().fill(synTheme.accent).frame(width: 10, height: 10)
+                                .accessibilityHidden(true)
+                        }
+                    }
                 
-                content
-                    .padding(.vertical, verticalInsets)
-                    .rowDivider(horizontalInsets: horizontalInsets)
+                if sidebarExpansion > 0 {
+                    content
+                        .padding(.vertical, verticalInsets)
+                        .rowDivider(horizontalInsets: horizontalInsets)
+                        .opacity(sidebarExpansion)
+                        .clipped()
+                        .accessibilityHidden(sidebarExpansion < 0.5)
+                }
             }
-            .padding(.horizontal, horizontalInsets)
+            .frame(maxWidth: .infinity, minHeight: 72)
+            .padding(.horizontal, isInSidebar ? 8 + 8 * sidebarExpansion : horizontalInsets)
+            .animation(reduceMotion ? nil : .easeInOut(duration: 0.18), value: sidebarExpansion == 0)
             .accessibilityElement(children: .combine)
         }
         .buttonStyle(HomeScreenRoomCellButtonStyle(isSelected: isSelected, palette: synTheme))
         .accessibilityIdentifier(A11yIdentifiers.homeScreen.roomName(room.name))
+        .accessibilityLabel(room.name, isEnabled: sidebarExpansion < 0.5)
+        .accessibilityValue(room.badges.isDotShown ? L10n.a11yNotificationsNewMessages : "", isEnabled: sidebarExpansion < 0.5)
         .accessibilityHidden(redactionReasons.contains(.placeholder) ? true : false)
     }
     
     @ViewBuilder
     private var avatar: some View {
-        if dynamicTypeSize < .accessibility3 {
+        if dynamicTypeSize < .accessibility3 || sidebarExpansion < 1 {
             RoomAvatarImage(avatar: room.avatar,
                             avatarSize: .room(on: .chats),
                             mediaProvider: mediaProvider)
