@@ -30,7 +30,8 @@ final class SYNComposerPaneUITests: XCTestCase {
         attachment.name = "Conversation pane numeric draft"
         attachment.lifetime = .keepAlways
         add(attachment)
-        let bounds = XCTAttachment(string: "composer=\(composer.frame) room=\(room.frame) app=\(app.frame)")
+        let sidebarFrame = room.exists ? room.frame : .null
+        let bounds = XCTAttachment(string: "composer=\(composer.frame) sidebar=\(sidebarFrame) app=\(app.frame)")
         bounds.name = "Conversation pane bounds"
         bounds.lifetime = .keepAlways
         add(bounds)
