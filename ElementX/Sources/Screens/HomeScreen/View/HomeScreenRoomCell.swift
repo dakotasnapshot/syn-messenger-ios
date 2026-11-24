@@ -225,8 +225,13 @@ private extension ClientProxyPresence {
 }
 
 struct HomeScreenRoomCellButtonStyle: ButtonStyle {
+    @Environment(\.isInSidebar) private var isInSidebar
     let isSelected: Bool
     let palette: SYNThemePalette
+    
+    private var cornerRadius: CGFloat {
+        palette.isRetro ? palette.cornerRadius : (isInSidebar ? 14 : 0)
+    }
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -237,11 +242,11 @@ struct HomeScreenRoomCellButtonStyle: ButtonStyle {
                         .stroke(palette.border, lineWidth: 1)
                 }
             }
-            .clipShape(RoundedRectangle(cornerRadius: palette.isRetro ? palette.cornerRadius : 0))
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             .shadow(color: .black.opacity(0.18), radius: palette.shadowRadius, y: 1)
-            .padding(.horizontal, palette.isRetro ? 6 : 0)
-            .padding(.vertical, palette.isRetro ? 2 : 0)
-            .contentShape(Rectangle())
+            .padding(.horizontal, palette.isRetro || isInSidebar ? 6 : 0)
+            .padding(.vertical, palette.isRetro || isInSidebar ? 2 : 0)
+            .contentShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             .animation(isSelected ? .none : .easeOut(duration: 0.1).disabledDuringTests(), value: isSelected)
     }
 }

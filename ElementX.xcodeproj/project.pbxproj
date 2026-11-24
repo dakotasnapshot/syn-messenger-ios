@@ -377,6 +377,7 @@
 		3982C505960006B341CFD0C6 /* UserDetailsEditScreenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D0EA07BD545CC9F234DB8D /* UserDetailsEditScreenModels.swift */; };
 		3982E60F9C126437D5E488A3 /* PillContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A6314FDC51DA25712D9A81 /* PillContextTests.swift */; };
 		39A987B3E41B976D1DF944C6 /* CallScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A63A59BFDDC494B1C20119 /* CallScreenViewModel.swift */; };
+		39C33C28F349B3C54569180E /* SYNConversationListUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A106B5AB6FE6BF38B2DBC9 /* SYNConversationListUITests.swift */; };
 		39DFC4B9EB6A8757210BDEC6 /* RoomSelectionScreenViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD2A058F3566FEEBA1D11B3 /* RoomSelectionScreenViewModelProtocol.swift */; };
 		3A08584ECDD4A4541DBF21F8 /* EmojiLoaderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201305507D7DFD16E544563A /* EmojiLoaderProtocol.swift */; };
 		3A0D1A201E2CD209A04CE89B /* SearchScreenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD63A653BCA2C8112654B19 /* SearchScreenModels.swift */; };
@@ -3176,6 +3177,7 @@
 		E157152B11E347F735C3FD6E /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = tr; path = tr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		E1573D28C8A9FB6399D0EEFB /* SecureBackupLogoutConfirmationScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureBackupLogoutConfirmationScreenCoordinator.swift; sourceTree = "<group>"; };
 		E1714DD78BFE27ADD40A6F89 /* LinkNewDeviceScreenViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkNewDeviceScreenViewModelTests.swift; sourceTree = "<group>"; };
+		E1A106B5AB6FE6BF38B2DBC9 /* SYNConversationListUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SYNConversationListUITests.swift; sourceTree = "<group>"; };
 		E1A5FEF17ED7E6176D922D4F /* RoomDetailsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailsScreen.swift; sourceTree = "<group>"; };
 		E1E0B4A34E69BD2132BEC521 /* MessageText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageText.swift; sourceTree = "<group>"; };
 		E1ED17433ADC77287F8904F9 /* CallNotificationRoomTimelineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallNotificationRoomTimelineItem.swift; sourceTree = "<group>"; };
@@ -6146,6 +6148,7 @@
 				013AD1E5E2CE501F96631B3E /* SYNAdaptiveLayoutUITests.swift */,
 				77862126E2C74532B846D0F0 /* SYNBackgroundLifecycleUITests.swift */,
 				18CC5436AAB66BF62D0D6A96 /* SYNComposerPaneUITests.swift */,
+				E1A106B5AB6FE6BF38B2DBC9 /* SYNConversationListUITests.swift */,
 				C4EF88981D569996FDA94C2E /* SYNGiphyUITests.swift */,
 				F899D02CF26EA7675EEBE74C /* UserSessionScreenTests.swift */,
 			);
@@ -9991,6 +9994,7 @@
 				A1EF922F51CF32732126A447 /* SYNAdaptiveLayoutUITests.swift in Sources */,
 				91866890098AE9A1133CBCE6 /* SYNBackgroundLifecycleUITests.swift in Sources */,
 				FEE338DD83F1621EA34AB836 /* SYNComposerPaneUITests.swift in Sources */,
+				39C33C28F349B3C54569180E /* SYNConversationListUITests.swift in Sources */,
 				9BE6B1F407790AA162D2F46D /* SYNGiphyUITests.swift in Sources */,
 				E9985DCD1B0D026D7E8BF809 /* ServerSelectionTests.swift in Sources */,
 				D5C2DA52162A978743A183F2 /* SessionVerificationTests.swift in Sources */,
@@ -10637,7 +10641,7 @@
 				CLASSIC_APP_KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).app.syn.messenger.classic.keychain.shared";
 				CLASSIC_APP_KEYCHAIN_SERVICE_IDENTIFIER = "app.syn.messenger.classic.encryption-manager-service";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 49;
+				CURRENT_PROJECT_VERSION = 50;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = S6BUVDCKVJ;
 				ENABLE_BITCODE = NO;
@@ -10711,7 +10715,7 @@
 				CLASSIC_APP_KEYCHAIN_ACCESS_GROUP_IDENTIFIER = "$(DEVELOPMENT_TEAM).app.syn.messenger.classic.keychain.shared";
 				CLASSIC_APP_KEYCHAIN_SERVICE_IDENTIFIER = "app.syn.messenger.classic.encryption-manager-service";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 49;
+				CURRENT_PROJECT_VERSION = 50;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = S6BUVDCKVJ;
 				ENABLE_BITCODE = NO;

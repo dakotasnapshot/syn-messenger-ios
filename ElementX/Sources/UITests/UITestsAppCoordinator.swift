@@ -625,6 +625,10 @@ class MockScreen: Identifiable {
                 [[RoomSummary].mockSpaceInvites[0]] + .mockRooms
             } else if id == .appStoreHome {
                 .appStoreRooms
+            } else if ProcessInfo.processInfo.environment["UI_TESTS_LONG_ROOM_LIST"] == "1" {
+                .mockRooms + (1...24).map {
+                    [RoomSummary].appStoreRoom(id: "sidebar-\($0)", name: "Conversation \($0)", message: "Synthetic sidebar scrolling example", unread: 0)
+                }
             } else {
                 .mockRooms
             }

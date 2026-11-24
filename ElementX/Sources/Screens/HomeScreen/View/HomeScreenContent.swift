@@ -12,13 +12,16 @@ import SwiftUI
 
 struct HomeScreenContent: View {
     @Environment(\.floatingNavigationClearance) private var floatingNavigationClearance
+    @Environment(\.isInSidebar) private var isInSidebar
     @ObservedObject var context: HomeScreenViewModel.Context
     let scrollViewAdapter: ScrollViewAdapter
     
     @State private var topSectionHeight: CGFloat = 0
+    @State private var scrollViewportTopInset: CGFloat = 0
     
     var body: some View {
         roomList
+            .ignoresSafeArea(.container, edges: isInSidebar ? .bottom : [])
             .sentryTrace("\(Self.self)")
     }
     
@@ -104,11 +107,19 @@ struct HomeScreenContent: View {
                 }
             }
             .contentMargins(.horizontal, floatingNavigationClearance > 0 ? 0 : nil, for: .scrollContent)
+            .contentMargins(.bottom, isInSidebar ? 40 : nil, for: .scrollContent)
+            .onScrollGeometryChange(for: CGFloat.self) { geometry in
+                max(0, geometry.contentInsets.top)
+            } action: { _, topInset in
+                scrollViewportTopInset = topInset
+            }
+            .accessibilityIdentifier("SYN.ConversationList")
             .scrollDismissesKeyboard(.immediately)
             .scrollDisabled(context.viewState.roomListMode == .skeletons)
             .scrollBounceBehavior(context.viewState.roomListMode == .empty ? .basedOnSize : .automatic)
             .animation(.elementDefault, value: context.viewState.roomListMode)
             .animation(.none, value: context.viewState.visibleRooms)
+            .sidebarConversationSurface(enabled: isInSidebar, topInset: min(scrollViewportTopInset, max(0, geometry.size.height)))
         }
     }
     
@@ -173,6 +184,29 @@ struct HomeScreenContent: View {
 }
 
 private extension View {
+    @ViewBuilder
+    func sidebarConversationSurface(enabled: Bool, topInset: CGFloat) -> some View {
+        if enabled {
+            background(Color.compound.bgCanvasDefault)
+                .mask {
+                    VStack(spacing: 0) {
+                        Color.clear.frame(height: topInset)
+                        RoundedRectangle(cornerRadius: 24, style: .continuous)
+                            .fill(.black)
+                            .mask {
+                                VStack(spacing: 0) {
+                                    Color.black
+                                    LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+                                        .frame(height: 32)
+                                }
+                            }
+                    }
+                }
+        } else {
+            self
+        }
+    }
+    
     @ViewBuilder
     func roomListSearchable(isEnabled: Bool, isSearchFieldFocused: Binding<Bool>, searchQuery: Binding<String>) -> some View {
         if isEnabled {
