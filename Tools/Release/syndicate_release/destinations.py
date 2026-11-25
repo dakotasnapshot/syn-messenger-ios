@@ -148,7 +148,28 @@ def wiki(release):
     if page['path'] != cfg['page_path']:
         raise Blocked('Wiki operational page identity mismatch')
     m = r.manifest
-    block = '\n<!-- syndicate-release-runner:start -->\n## Current iOS release\n\n' + f"Syndicate **{m['version']} ({m['build']})**: VALID / IN_BETA_TESTING; existing internal group verified.\n\n" + 'Canonical assets, checksum and source: https://github.com/' + r.config['github']['releases_repository'] + '/releases/tag/' + m['tag'] + '\n\n' + 'Release orchestration/runbook: ' + m['source']['repository'] + '/blob/syn/main/Tools/Release/README.md\n\n' + 'One immutable candidate and private status/receipts; the native runner resumes delivery without rebuilding or reuploading. Recovery mount identity and whole-file hashes, anonymous public IPA, website CAS/readback and source are verified before completion. No secrets or machine configuration belong in the repository. Physical-device acceptance is recorded per candidate; do not infer it from simulator tests. Restore reviewed website rollback files to roll back links; keep immutable release payloads/history.\n<!-- syndicate-release-runner:end -->\n'
+    block = f"""
+<!-- syndicate-release-runner:start -->
+## Current iOS release and delivery lane
+
+Syndicate **{m['version']} ({m['build']})**: VALID / IN_BETA_TESTING; existing internal group verified.
+
+Canonical assets, checksum and source: https://github.com/{r.config['github']['releases_repository']}/releases/tag/{m['tag']}
+
+Operational runbook: {m['source']['repository']}/blob/syn/main/Tools/Release/README.md
+
+- Architecture: committed development/tests → immutable signed candidate → resumable native delivery. GitHub is the public release authority; the website is a generated snapshot, not a separate hand-maintained version store.
+- Private profile: `~/.config/syndicate-release/config.json`; it contains credential references, never publish it. Private environment, stable public-source checkout and per-release state: `~/.local/share/syndicate-release/`. Existing Apple/GitHub/wiki credentials remain outside git.
+- Status: run the private environment's Python with `Tools/Release/release.py --state ~/.local/share/syndicate-release/releases/<tag> status`. `audit` performs fresh Apple/public/recovery reconciliation without a new upload. Inspect `status.json`, destination logs and immutable website CAS plans for blockers.
+- Future delivery worker: dedicated user LaunchAgent `app.syn.release.<tag>` in `~/Library/LaunchAgents/`, installed only for a validated/admitted candidate. It survives chat termination, retries transient waits for at most 24 hours and exits cleanly on deliberate blocks. It does not change/restart OpenClaw or add a cron/model poller. Inspect with `launchctl print gui/<uid>/app.syn.release.<tag>`; resume only after inspecting its receipts.
+- Dependencies: Xcode/signing tools, private Python environment with PyJWT/cryptography, GitHub/App Store Connect, SSH access to the existing recovery and web hosts, and this wiki. Partial failures preserve the candidate and receipts; accepted uploads are never blindly repeated.
+- Storage: archive/export/evidence and the adopted immutable IPA stay private/local; verified IPA/checksum/manifest copies remain on the existing mounted recovery destination. Mount identity, capacity admission and fresh whole-file hashes are required. No automatic deletion/pruning or backup-schedule change is introduced.
+- Website: same-origin `ios-release.json` plus generated static mobile fallback; browsers do not call GitHub APIs. Only mobile metadata/assets/index and historical checksum manifest are written. Loader, desktop, counters and account data remain protected. Newer server/static build numbers reject stale-release downgrades.
+- Rollback: use the candidate's private `website-plan*.json` and reviewed before-state copies on the web host under `{r.config['website']['rollback_directory']}/<tag>`. Restore only matching metadata after checking current hashes; preserve immutable GitHub assets and historical releases. A conflicting before-hash stops deployment.
+- Acceptance limits: the existing completed build was reconciled without another build/upload. Worker crash/intent/locking behavior is covered by synthetic tests; the first future real upload through the new LaunchAgent is not yet observed. Physical-device acceptance is recorded per candidate and cannot be inferred from simulator tests.
+<!-- syndicate-release-runner:end -->
+"""
+
     import re
     pattern = r'\n<!-- syndicate-release-runner:start -->.*?<!-- syndicate-release-runner:end -->\n'
     content = re.sub(pattern, lambda _: block, page['content'], flags=re.S) if re.search(pattern, page['content'], re.S) else page['content'] + block
