@@ -124,6 +124,9 @@ def install_worker(r, config_path):
                '--state', str(r.directory), 'worker']
     data = {'Label': label, 'ProgramArguments': command, 'RunAtLoad': True,
             'KeepAlive': {'SuccessfulExit': False}, 'ThrottleInterval': 60,
+            'WorkingDirectory': r.config['source']['local'],
+            'EnvironmentVariables': {'PATH': '/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin',
+                                     'LANG': 'en_US.UTF-8'},
             'StandardOutPath': str(r.directory / 'worker.log'), 'StandardErrorPath': str(r.directory / 'worker-error.log')}
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.exists():

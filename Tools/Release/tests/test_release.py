@@ -165,6 +165,8 @@ class ReleaseTests(unittest.TestCase):
             agent=plistlib.loads(path.read_bytes())
             self.assertEqual(agent['KeepAlive'],{'SuccessfulExit':False})
             self.assertEqual(agent['ProgramArguments'][-1],'worker')
+            self.assertIn('/opt/homebrew/bin',agent['EnvironmentVariables']['PATH'])
+            self.assertEqual(agent['WorkingDirectory'],self.config['source']['local'])
             self.assertNotIn('gateway',' '.join(agent['ProgramArguments']))
 
     def test_completed_release_does_not_install_worker(self):
