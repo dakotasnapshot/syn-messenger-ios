@@ -24,18 +24,7 @@ private struct HighlightedTimelineItemModifier: ViewModifier {
             .padding(.top, isHighlighted ? 1 : 0)
             .background {
                 if isHighlighted {
-                    VStack(spacing: 0) {
-                        Color.indigo.opacity(colorScheme == .dark ? 0.30 : 0.14)
-                        LinearGradient(colors: [Color.purple.opacity(colorScheme == .dark ? 0.22 : 0.10), .clear],
-                                       startPoint: .top,
-                                       endPoint: .bottom)
-                            .frame(maxHeight: 200)
-                            .layoutPriority(1)
-                    }
-                    .overlay(alignment: .top) {
-                        Color.indigo.opacity(0.5)
-                            .frame(height: 1)
-                    }
+                    Color.indigo.opacity(colorScheme == .dark ? 0.30 : 0.14)
                 }
             }
     }

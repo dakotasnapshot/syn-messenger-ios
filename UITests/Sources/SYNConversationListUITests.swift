@@ -173,7 +173,7 @@ final class SYNConversationListUITests: XCTestCase {
         while let signal = await iterator.next(isolation: #isolation), signal != .success { }
         try await Task.sleep(for: .seconds(2))
         XCTAssertTrue(app.textViews[A11yIdentifiers.roomScreen.messageComposer].exists)
-        capture(name: "Purple blue focused message highlight")
+        capture(name: "Uniform indigo focused message highlight")
     }
     
     private func dragSidebar(in app: XCUIApplication, list: XCUIElement, toWidth: CGFloat) {
