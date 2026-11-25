@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 @preconcurrency import WatchConnectivity
+import WidgetKit
 
 @MainActor
 @Observable
@@ -248,8 +249,11 @@ enum WatchSnapshotStore {
     private static let key = "conversationSnapshot"
     
     static func save(_ conversations: [WatchConversation]) {
-        guard let data = try? JSONEncoder().encode(conversations) else { return }
-        UserDefaults(suiteName: suiteName)?.set(data, forKey: key)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        guard let data = try? encoder.encode(conversations), let defaults = UserDefaults(suiteName: suiteName), defaults.data(forKey: key) != data else { return }
+        defaults.set(data, forKey: key)
+        WidgetCenter.shared.reloadTimelines(ofKind: "SYNComplication")
     }
     
     static func load() -> [WatchConversation] {

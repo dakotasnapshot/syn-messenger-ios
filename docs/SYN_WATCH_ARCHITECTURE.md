@@ -16,7 +16,9 @@ This gives the user automatic companion provisioning while avoiding credential d
 
 ## Complication privacy
 
-The four supported families are accessory inline, circular, corner, and rectangular. Inline, circular, and corner show only aggregate unread state. The rectangular family can show the latest room name and marks that detail as privacy-sensitive.
+The four supported families are accessory inline, circular, corner, and rectangular. Inline, circular, and corner show only aggregate unread state. The rectangular Smart Stack card shows the aggregate unread count and first unread room (not the first room regardless of unread state). All families mark their rendered content privacy-sensitive. Missing or invalid cache shows “Open Syndicate to sync”, not a false zero-unread state; a valid empty cache shows “No unread messages”. Gallery previews use synthetic data. Counts reject negative contributions, saturate on overflow, and display 999+ above 999. The cache decoder is bounded to 256 KB.
+
+After saving a changed, deterministically encoded conversation snapshot, the Watch app requests `WidgetCenter.shared.reloadTimelines(ofKind: "SYNComplication")`; unchanged snapshots skip the request. WidgetKit may coalesce reloads. A 15-minute timeline fallback remains. No permanent or fabricated Live Activity is added to Syndicate. Physical Watch Smart Stack behavior still requires device confirmation; the original photographed placeholder could not be attributed to an app.
 
 ## Next integration steps
 
