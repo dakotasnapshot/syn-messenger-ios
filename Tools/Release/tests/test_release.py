@@ -108,6 +108,16 @@ class ReleaseTests(unittest.TestCase):
             with self.assertRaises(Pending): Apple(self.r).verify('delivery')
         self.assertNotIn('testflight', self.r.state['steps'])
 
+    def test_uncertain_notification_does_not_mark_delivery_complete(self):
+        from syndicate_release.cli import deliver
+        from syndicate_release.github import GitHub
+        self.r.config['notify']={'argv':['synthetic','{message}']}
+        self.r.intent('notification',{})
+        with patch.object(Apple,'upload',return_value='existing'), patch.object(Apple,'verify'), patch.object(GitHub,'draft'), patch.object(GitHub,'publish',return_value={}), patch.object(destinations,'recovery'), patch.object(destinations,'source'), patch.object(destinations,'website'), patch.object(destinations,'wiki'):
+            with self.assertRaises(Blocked): deliver(self.r)
+        self.assertTrue(self.r.state['destinationsComplete'])
+        self.assertFalse(self.r.state.get('complete',False))
+
     def test_notification_is_not_repeated(self):
         self.r.config['notify'] = {'argv': ['synthetic', '{message}']}
         self.r.receipt('notification', {'delivered': True})

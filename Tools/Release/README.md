@@ -61,7 +61,7 @@ For attended delivery use `deliver`; for resumption use the same state directory
 6. Publish GitHub and anonymously download/verify the whole IPA, embedded version/build, checksum and manifest.
 7. Generate `ios-release.json` and the static mobile section from that manifest. Deploy metadata/assets before HTML using a saved, replayable CAS plan. Preserve historical checksums, other platforms, Loader/counter scripts and account state; require live exact readback.
 8. Update/read back the existing operational wiki page's managed current-release block; link the canonical GitHub release instead of maintaining another hand-written release narrative.
-9. Record completion and send one scoped completion notification. An uncertain notification is not blindly resent. Deliberate blockers produce a scoped alert and preserved state.
+9. Record completion and send one scoped completion notification. An uncertain notification is not blindly resent, and overall completion is withheld until required notification delivery is confirmed. Deliberate blockers produce a scoped alert and preserved state.
 
 `deliver` resumes verified steps through reconciliation. It may recheck live state but never rebuilds or repeats an accepted upload. Existing assets/copies are reused only after exact identity verification. Network failures back off in the native worker for at most 24 hours; conflicting state stops it.
 

@@ -27,9 +27,11 @@ def deliver(r):
     manifest = GitHub(r).publish()
     destinations.website(r, manifest)
     destinations.wiki(r)
-    r.state['complete'] = True
+    r.state['destinationsComplete'] = True
     r.save()
     notify(r)
+    r.state['complete'] = True
+    r.save()
 
 
 def notify(r, blocked=False):
