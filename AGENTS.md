@@ -393,3 +393,12 @@ Same pattern for publishers.
 ## Giphy release configuration
 
 - `GiphyConfiguration` reads bundled `SyndicateServices.plist`. Build phase runs `Tools/Scripts/configure-giphy.py`; deployment key stays outside git. See `docs/GIPHY_CONFIGURATION.md`. Release missing key must fail; verify key present in archive/export.
+
+## iOS Release Orchestration
+
+- Read `Tools/Release/README.md`. Use `Tools/Release/release.py`; no copied dated-report release scripts.
+- Three stages: committed product/tests → one validated candidate → resumable delivery.
+- Keep machine config, credentials, archives and status outside git. Use stable public-source checkout from private profile.
+- GitHub release manifest owns public version/hash/source. Generate mobile website metadata; preserve Loader, desktop, history and counters.
+- Accepted upload never repeated. Native worker owns Apple wait and terminal notification; chat session need not remain alive.
+- Website-only pipeline changes: reconcile existing release; no app build/upload. Report physical-device and future-worker acceptance honestly.

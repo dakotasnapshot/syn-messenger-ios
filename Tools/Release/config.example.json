@@ -1,0 +1,49 @@
+{
+  "source": {
+    "local": "/path/to/syndicate",
+    "public_checkout": "/private/release/public-source",
+    "repository": "https://github.com/OWNER/syn-messenger-ios",
+    "remote": "syn-public",
+    "ref": "refs/heads/syn/main",
+    "verify_files": ["project.yml", "SYNWatch/Complications/SYNComplications.swift"],
+    "allowed_dirty": [],
+    "private_patterns": []
+  },
+  "apple": {
+    "issuer": "ISSUER_ID",
+    "key_id": "KEY_ID",
+    "key_file": "~/.appstoreconnect/private_keys/AuthKey_KEY_ID.p8",
+    "app_id": "APP_ID",
+    "team": "TEAM_ID",
+    "internal_group": "EXISTING_INTERNAL_GROUP_ID",
+    "export_options": "~/.config/syndicate-release/ExportOptions.plist"
+  },
+  "github": {
+    "username": "OWNER",
+    "credentials_file": "~/.git-credentials",
+    "releases_repository": "OWNER/syndicate-releases"
+  },
+  "recovery": {
+    "host": "user@recovery-host",
+    "mount": "/mounted/recovery",
+    "mount_identity": "EXPECTED_SOURCE on /mounted/recovery ",
+    "directory": "/mounted/recovery/Syndicate/Releases"
+  },
+  "website": {
+    "host": "user@web-host",
+    "directory": "/srv/www/downloads",
+    "rollback_directory": "/private/release-rollback",
+    "public_url": "https://synmessenger.com/downloads",
+    "sudo": false,
+    "protected_files": ["loader-release.js", "syndicate-loader-latest.json", "download-counts.js"]
+  },
+  "wiki": {
+    "url": "https://wiki.example.invalid",
+    "token_file": "~/.config/wiki-token.txt",
+    "page_id": 1,
+    "page_path": "operations/syndicate"
+  },
+  "notify": {
+    "argv": ["/path/to/openclaw", "message", "send", "--channel", "matrix", "--target", "TRUSTED_RELEASE_ROOM", "--message", "{message}", "--json"]
+  }
+}

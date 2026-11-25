@@ -1,0 +1,13 @@
+{
+  "title": "Describe the completed product change",
+  "notes": "Describe the tested user-visible changes and remaining physical-device limitations.",
+  "physical_device": false,
+  "source_files": ["project.yml", "ElementX.xcodeproj/project.pbxproj", "REPLACE_WITH_EXPLICIT_CHANGED_PRODUCT_FILES"],
+  "gates": [
+    {"name": "source_checks", "argv": ["git", "-c", "core.whitespace=-blank-at-eol,blank-at-eof,space-before-tab", "diff", "--check"]},
+    {"name": "native_tests", "argv": ["xcodebuild", "-project", "REPLACE_WITH_FOCUSED_TEST_PROJECT", "-scheme", "REPLACE_WITH_FOCUSED_SCHEME", "-destination", "REPLACE_WITH_OWNED_DEVICE", "-resultBundlePath", "/private/release/native.xcresult", "-parallel-testing-enabled", "NO", "test"], "xcresult": "/private/release/native.xcresult"},
+    {"name": "phone_debug", "argv": ["xcodebuild", "-project", "ElementX.xcodeproj", "-scheme", "ElementX", "-configuration", "Debug", "-destination", "generic/platform=iOS Simulator", "-jobs", "2", "build"]},
+    {"name": "watch_debug", "argv": ["xcodebuild", "-project", "ElementX.xcodeproj", "-scheme", "SYN Watch App", "-configuration", "Debug", "-destination", "generic/platform=watchOS Simulator", "-jobs", "2", "build"]},
+    {"name": "watch_release", "argv": ["xcodebuild", "-project", "ElementX.xcodeproj", "-scheme", "SYN Watch App", "-configuration", "Release", "-destination", "generic/platform=watchOS Simulator", "-jobs", "2", "build"]}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "build": "53",
+  "bytes": 135321044,
+  "manifest": "https://github.com/dakotasnapshot/syndicate-releases/releases/download/ios-11.25.26-build53/release-manifest.json",
+  "release": "https://github.com/dakotasnapshot/syndicate-releases/releases/tag/ios-11.25.26-build53",
+  "schema": 1,
+  "sha256": "23e04d85b79fea771154124758bbf83d039ea02ae0fb404b7edd03208261e820",
+  "source": {
+    "commit": "c591efabc7fe538fecec11b040fb461518ce6964",
+    "repository": "https://github.com/dakotasnapshot/syn-messenger-ios"
+  },
+  "url": "https://github.com/dakotasnapshot/syndicate-releases/releases/download/ios-11.25.26-build53/Syndicate-11.25.26-build53.ipa",
+  "version": "11.25.26"
+}
